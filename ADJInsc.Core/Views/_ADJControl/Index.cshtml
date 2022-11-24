@@ -1,0 +1,51 @@
+﻿@model ADJInsc.Models.ViewModels.UsuarioTitularViewModel
+
+<p>
+    <h2>Sistema de Inscripción / Actualización de Datos del IVUJ</h2>
+</p>
+
+<p style="background-color: lightgray;color: black;font-weight: bold;">
+    @if (Model.MensajeModel != string.Empty)
+    {
+    @Model.MensajeModel
+    }
+</p>
+
+<hr />
+<div class="card text-center">
+    <div class="card-header">
+        <!-- Formulario -->
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div method="post" class="form-inline">
+
+                    @Html.AntiForgeryToken()
+                    <!--<form>-->
+
+                    <form class="form-group" asp-controller="_ADJControl" asp-action="_BPersona">
+                        <div class="form-row ">
+                            <label class=" mb-2 mr-sm-2">D.N.I.</label>
+                            <input type="number" class="form-control mb-2 mr-sm-2" id="dniInput" placeholder="D.N.I." name="numDni" maxlength="8">
+
+                            <div class="form-group mb-2 mr-sm-2 ">
+                                <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
+                                <button id="btnBuscar" class="btn btn-info" >
+                                    Buscar
+                                </button>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-2">
+
+            </div>
+           
+        </div>
+        <!--Fin Formulario-->
+
+    </div>
+</div>

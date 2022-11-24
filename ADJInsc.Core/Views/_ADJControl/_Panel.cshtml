@@ -1,0 +1,263 @@
+﻿@model ADJInsc.Models.ViewModels.UsuarioTitularViewModel
+
+<p style="background-color: lightgray;color: black;font-weight: bold;">
+    @if (Model.MensajeModel != string.Empty)
+    {
+        @Model.MensajeModel
+    }
+</p>
+
+<br />
+<h2 class=" text-light bg-info">
+    Sistema de Inscripción / Actualización de Datos del IVUJ
+</h2>
+<div class="col-xs-12">
+    <h5><strong>Nº de Inscripción  @Model.InsId.ToString("D8") </strong></h5>
+    @if (Model.InsFicha != 0)
+    {
+        <h5>
+            (Usted se había registrado anteriormente con el número <strong> @Model.InsFicha?.ToString("D8")</strong>
+            El cual ahora queda sin efecto y se establece como vigente el que generó el sistema actualmente).
+        </h5>
+    }
+</div>
+<br />
+
+<div class="container card border-info">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="subida">
+
+                    <div class="form-row">
+                        <!-- agregar esto -->
+                        <div class="col-md-6">
+                            <!--//PRIMERA COLUMNA -->
+                            <div class="form-group form-row">
+                                <!-- agregar esto -->
+                                <label for="" class="col-sm-2 col-form-label-sm">Titular</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" value="@Model.InsNombre" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group form-row">
+                                <!-- agregar esto -->
+                                <label for="" class="col-sm-2 col-form-label-sm">D.N.I.</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputCuil" placeholder="D.N.I." value="@Model.InsNumdoc" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group form-row">
+                                <!-- agregar esto -->
+                                <label for="" class="col-sm-2 col-form-label-sm">CUIT/CUIL</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputCuil" placeholder="D.N.I." value="@Model.CuitCuil" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group form-row">
+                                <!-- agregar esto -->
+                                <label for="" class="col-sm-2 col-form-label-sm">Fec. Alta</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputFecAlt" value="@Model.InsFecalt" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group form-row">
+                                <!-- agregar esto -->
+                                <label for="" class="col-sm-2 col-form-label-sm">Teléfono</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputTel" placeholder=" Teléfono " value="@Model.InsTelef" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!--//SEGUNDA COLUMNA -->
+                            <div class="form-group form-row">
+                                <!-- agregar esto -->
+                                <label class="col-sm-2 col-form-label-sm">  <strong>Estado</strong></label>
+                                <div class="col-sm-10">
+                                    @if (Model.InsEstado == "A")
+                                    {
+                                    <div class="col-sm-8">                                        
+                                        <p><strong>Usuario Inscripto, sin validar el e-mail.</strong></p>
+                                    </div>
+                                    }
+                                    else
+                                    {
+                                        @if (Model.InsEstado == "M")
+                                        {
+                                <div class="col-sm-8">                                    
+                                    <p><strong>Titular NO inscripto en la web.</strong></p>
+                                </div>
+                                        }
+                                        else
+                                        {
+                                            @if (Model.InsEstado == "E")
+                                            {
+                                <div class="col-sm-8">
+                                    
+                                    <p><strong>Usuario con e-mail validado, pero sin inscripción.</strong></p>
+                                </div>
+                                            }
+                                            else
+                                            {
+                                                @if (Model.InsEstado == "I")
+                                                {
+                                <div class="col-sm-8">
+                                    
+                                    <p><strong>Titular Inscripto en la web.</strong></p>
+                                </div>
+                                                }
+                                                else
+                                                {
+                                                    @if (Model.InsEstado == "S")
+                                                    {
+                                                        <div class="col-sm-8">
+                                                            <p><strong>Usuario se encuentra bajo Evaluación de Requisitos.</strong></p>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                <div class="col-sm-8">                                   
+                                    <p><strong>No Registrado.</strong></p>
+                                </div>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+
+        <h5 class=" text-light bg-info">Datos del Grupo Familiar</h5>
+        <div>
+
+            <div></div>
+            <table id="tablaFamilia" class="table table-striped table-responsive" cellspacing="0" width="100%">
+                <!--table table-sm table-striped table-hover border-bottom table table-bordered mb-0-->
+                <thead>
+                    <tr>
+
+                        <th>
+                            Nombre y Apellido
+                        </th>
+                        <th>
+                            Documento
+                        </th>
+                        <th>
+                            Nacimiento
+                        </th>
+                        <th>
+                            Discapacidad ?
+                        </th>
+                        <th>
+                            Veterano Mal. ?
+                        </th>
+                        <th>
+                            Minero ?
+                        </th>
+                        <th>
+                            Parentesco
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.GrupoFamiliar.Count() > 0)
+                    {
+                        foreach (var item in Model.GrupoFamiliar)
+                        {
+                            if (item.InsfEstado == "B")
+                            {
+
+                            }
+                            else
+                            {
+                                <tr>
+                                    @Html.HiddenFor(modelItem => item.InsfNumdoc, new { id = "idEscondido" })
+
+                                    <td id="valorNombre">
+                                        @Html.DisplayFor(modelItem => item.InsfNombre)
+                                    </td>
+                                    <td id="valorDoc">
+                                        @Html.DisplayFor(modelItem => item.InsfNumdoc)
+                                    </td>
+                                    <td id="valorFec">
+                                        @Html.DisplayFor(modelItem => item.FechaShow)
+                                    </td>
+
+                                    <td>
+                                        @if (item.InsfDiscapacitado == 1)
+                                        {
+                                            <p>Si</p>
+                                        }
+                                        else
+                                        {
+                                            <p>No</p>
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @if (item.InsfVeterano == 1)
+                                        {
+                                            <p>Si</p>
+                                        }
+                                        else
+                                        {
+                                            <p>No</p>
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @if (item.InsfMinero == 1)
+                                        {
+                                            <p>Si</p>
+                                        }
+                                        else
+                                        {
+                                            <p>No</p>
+                                        }
+
+                                    </td>
+                                    <td id="valorP">
+                                        @Html.DisplayFor(modelItem => item.ParentescoDesc, new { id = "idSoloParentesco" })
+                                    </td>
+
+                                </tr>
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                Sin Datos
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+
+}

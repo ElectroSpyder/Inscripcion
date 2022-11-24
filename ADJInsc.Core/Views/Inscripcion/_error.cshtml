@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+
+
+    <div class="modal fade in" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sistema</h5>
+                </div>
+                <div class="modal-body card">
+                    <div>
+                                <div class="modal-body card">
+
+
+                                    <h3>
+                                        Disculpe las molestias, vuelva a intentarlo más tarde.
+                                    </h3>
+                                </div>
+                                <div class="modal-footer">
+
+                                    <button type="button" id="btnHideModal" class="btn btn-outline-info">
+                                        Volver
+                                    </button>
+                                </div>
+                 </div>
+</div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+
+</html>
+
+@section scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <style type="text/css">
+        .span3 {
+            position: relative;
+            height: 200px;
+            overflow: auto;
+        }
+
+        .card-body {
+            padding-bottom: 0rem;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#loginModal").modal();
+        });
+
+        $(function () {
+
+            $("#btnLogin").click(function () {
+                $("#AjaxLoaderLogin").show("fast");
+                $("#loginModal").modal('show');
+            });
+
+            $("#btnHideModal").click(function () {
+                $("#loginModal").modal('hide');
+                history.back();
+            });
+        });
+
+
+    </script>
+}

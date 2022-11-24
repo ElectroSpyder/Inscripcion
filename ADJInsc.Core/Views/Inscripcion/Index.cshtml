@@ -1,0 +1,136 @@
+﻿@model ADJInsc.Models.ViewModels.AltaTitularViewModel
+
+<p>
+    <h2>Sistema de Inscripción / Actualización de Datos del IVUJ</h2>
+</p>
+
+<p style="background-color: lightgray;color: black;font-weight: bold;">
+    @if (Model.MensajeModel != string.Empty)
+    {
+        @Model.MensajeModel
+    }
+</p>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-controller="Inscripcion" asp-action="CargarDatos">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group card border-info">
+                <h3 class="card-header text-light bg-info"> Titular</h3>
+                <p class=" text-light bg-info">Cargar los datos del Titular</p>
+                <div class="form-row card-body">
+                    <div class="form-group col-md-6">
+                        <label>DNI Nº (*)</label>
+                        <input asp-for="@Model.InsNumdoc" type="text" class="form-control" id="inputDni" placeholder="D.N.I." disabled>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Apellido/s y Nombre/s (completos) (*)</label>
+                        <input type="text" class="form-control" id="inputNombre" placeholder=" Apellido y Nombre " asp-for="@Model.InsNombre">
+                        <span asp-validation-for="@Model.InsNombre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Teléfono (anteponiendo código de área) (*)</label>
+                        <input type="text" class="form-control" id="inputTel" placeholder=" Teléfono" asp-for="@Model.InsTelef">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label>Estado Civil (seleccionar) (*)</label>
+                        @Html.DropDownListFor(x => Model.InsTipflia, Model.TipoFamiliaList ?? new List<SelectListItem>(), "----Selecciona Estado Civil----", htmlAttributes: new { @class = "form-control", id = "ddTipoFamiliaId" })
+                    </div>
+
+                    <div class="form-inline col-md-6" style="width:auto; margin-bottom:10px;">
+                        Cuit / Cuil
+                        <input id="inputCuitUno" type="number" class="form-control" style="width:16%; margin-left:4px;" asp-for="@Model.CuitCuilUno"> -
+                        <input type="text" class="form-control" id="inputCuitDos" placeholder="D.N.I." value="@Model.InsNumdoc" disabled style="width:40%"> -
+                        
+                        <input id="inputCuitTres" type="number" class="form-control" style="width:16%" asp-for="@Model.CuitCuilDos">
+                        <span asp-validation-for="@Model.CuitCuilUno" class="text-danger"></span>
+                        <span asp-validation-for="@Model.CuitCuilDos" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="form-group card border-info">
+                <h5 class="card-header text-light bg-info"> Registro de Usuario</h5>
+
+                <div class="form-row card-body">
+                    <h6 class="card-title">
+                        Debe crear un usuario con una cuenta de correo electrónico vigente.
+                        A su e-mail le enviaremos un correo a través del cual deberá validar su registro. Una vez hecho eso,
+                        podrá continuar la inscripción o actualización (Consulte en la carpeta de “Recibidos”, “Spam” o “Correo no deseado”).
+                    </h6>
+                    <div class="form-group col-md-6">
+                        <label>Correo electrónico </label>
+                        <input type="email" class="form-control" placeholder="Correo" asp-for="@Model.InsEmail">
+                        <span asp-validation-for="@Model.InsEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Repetir correo electrónico</label>
+                        <input type="email" class="form-control" placeholder="Correo" asp-for="@Model.Usuario">
+                        <span asp-validation-for="@Model.Usuario" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Contraseña</label>
+                        <input id="input1"  type="password" class="form-control" placeholder="Contraseña" asp-for="@Model.Clave">
+                        <span asp-validation-for="@Model.Clave" class="text-danger"></span>
+                        <!-- An element to toggle between password visibility -->
+                        <input type="checkbox" id="showPass1"> Visualizar Clave
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Repetir contraseña</label>
+                        <input id="input2" type="password" class="form-control myInput" placeholder="Repetir Contraseña" asp-for="@Model.ConfirmarClave">
+                        <span asp-validation-for="@Model.ConfirmarClave" class="text-danger"></span>
+                        <!-- An element to toggle between password visibility -->
+                        <input type="checkbox" id="showPass2"> Visualizar Clave
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Guardar y enviar correo electrónico" class="btn btn-outline-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<form asp-controller="Inscripcion" asp-action="GoHome">
+    <button class="btn btn-outline-danger float-sm-right" id="btnLogin">Cerrar y volver</button>
+</form>
+
+@section scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+    <script type="text/javascript">
+
+        $(function myFunction() {
+            $("#showPass1").change(function () {
+                var checked = $(this).is(":checked");
+                if (checked) {
+                    $("#input1").attr("type", "text");
+                } else {
+                    $("#input1").attr("type", "password");
+                }
+            });
+
+            $("#showPass2").change(function () {
+                var checked = $(this).is(":checked");
+                if (checked) {
+                    $("#input2").attr("type", "text");
+                } else {
+                    $("#input2").attr("type", "password");
+                }
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,196 @@
+﻿<p>
+    <h2>Sistema de Inscripción / Actualización de Datos del IVUJ</h2>
+</p>
+
+
+<br/>
+<div class="card text-center">
+
+    
+
+    <div class="card-header">
+        <!-- Formulario -->
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div method="post" class="form-inline">
+
+                    @Html.AntiForgeryToken()
+                    <!--<form>-->
+
+                    <form class="form-group" asp-controller="Inscripcion" asp-action="BuscarPersona">
+                        <div class="form-row ">
+                            <label class=" mb-2 mr-sm-2">D.N.I.</label>
+                            <input type="number" class="form-control mb-2 mr-sm-2" id="dniInput" placeholder="D.N.I." name="numDni" maxlength="8">
+
+                            <div class="form-group mb-2 mr-sm-2 ">
+                                <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
+                                <button id="btnBuscar" class="btn btn-info" disabled>
+                                    Buscar
+                                </button>
+
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-sm-2">
+
+            </div>
+            <div class="col-sm-4">
+                <div style="float:right;">
+                    <img id="AjaxLoaderLogin" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
+                    <button class="btn btn-outline-danger float-sm-right btn-block" id="btnLogin">Ingresar con Usuario</button>
+                    <button id="btnShowDeclaracion" class="btn btn-outline-info float-sm-right btn-block">Declaración Jurada</button>
+                    <button id="btnShowRecuperar" class="btn btn-outline-success float-sm-right btn-block">Recuperar Contraseña</button>
+                </div>
+            </div>
+        </div>
+        <!--Fin Formulario-->
+        
+    </div>
+    <div class="card-body">
+        <h5 class="card-title"> Bienvenido/a, para Inscribirse/Actualizar Datos deberá tener a mano:</h5>
+        <p class="card-text">* Número de Documento Nacional de Identidad del Titular y Cotitular</p>
+        <p class="card-text">* CUIL</p>
+        <p class="card-text">* Correo electrónico (exacto, sin error, ya que allí se le enviarán las comunicaciones)</p>
+        <p class="card-text">* Ingresos netos aproximados por mes, actualizados (del grupo familiar)</p>
+        <p class="card-text">* Lugar donde trabaja</p>
+        <p class="card-text">* Teléfono fijo o celular</p>
+        <p class="card-text">* Datos completos del Grupo Familiar (ver en “Requisitos” qué se entiende por grupo familiar).</p>
+
+    </div>
+    <div class="card-footer text-muted">
+        <!--Si estás accediendo desde un teléfono celular, para avanzar, buscá el menú y la opción "Cargar datos".-->
+    </div>
+</div>
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Inicio de Sesión</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-controller="Bandeja" asp-action="Index">
+                <div class="modal-body card">
+
+                    <div class="form-group ">
+                        <input class="form-control" type="email"
+                               placeholder="Correo" id="inputUserName" name="inputUserName" />
+                    </div>
+                    <div class="form-group ">
+                        <input class="form-control" placeholder="Contraseña"
+                               type="password" id="inputPassword" name="inputPassword" />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="loginClic" type="submit" class="btn btn-primary">Iniciar</button>
+                    <button type="button" id="btnHideModal" class="btn btn-outline-info">
+                        Cerrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="declaracionModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title list-group-item active">Sistema de Inscripción / Actualización de Datos del IVU</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+                <div class="modal-body card">
+                    <p class="text-justify">El formulario que completaré reviste carácter de DECLARACIÓN JURADA por lo tanto DECLARO CONOCER Y ACEPTAR que el ocultamiento y/o falsedad de la información que aquí brindo, o las que a posterior aportaré, o el no contar con la documentación respaldatoria, dará lugar a mi Exclusión para la inscripción del/los Programa/s de viviendas de referencia.</p>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item active">
+                            Requisitos para la Inscripción / Actualización de Datos del IVUJ
+                        </a>
+                        <a href="#" class="list-group-item">1. Ser mayor de 18 años, o menor emancipado/a.</a>
+                        <a href="#" class="list-group-item">
+                            2. El/la titular de la inscripción deberá ser argentino/a, nativo/a o por opción.
+                        </a>
+                        <a href="#" class="list-group-item">3. Poseer Documento Nacional de Identidad argentino (Disponer de los documentos de identidad de cada integrante del grupo familiar (DNI; LC; LE). En el caso de los/as extranjeros/as deberán contar con Documento de Identidad Argentino, para ciudadano/a extranjero/a).</a>
+                        <a href="#" class="list-group-item">4. No haber sido adjudicatario/a, ninguno/a de los/as integrantes del grupo familiar a registrarse, de Viviendas financiadas por el Estado Nacional, Provincial o Municipal y/o Préstamos otorgados por entidades oficiales destinadas a tal efecto.</a>
+                        <a href="#" class="list-group-item">5. No ser beneficiario/a, ninguno/a de los/as integrantes del grupo familiar a registrarse, de Terrenos Fiscales o Inmuebles en el marco del programa “Jujuy Hábitat. Sistema de Transparencia para la adjudicación de lotes fiscales y vivienda sociales”; plan de emergencia “Un lote para cada familia que lo necesite”; con escritura, decreto, acta o autorización de ocupación emitida por autoridad competente; u otros programas similares que sean implementados por los gobiernos Nacional, Provincial o Municipal</a>
+                        <a href="#" class="list-group-item">6. No estar ocupando viviendas y/o terrenos fiscales oficiales o privados en situación de intrusos/as.</a>
+                        <a href="#" class="list-group-item">7. No estar registrado en más de una solicitud de inscripción, ninguno/a de los/las integrantes del grupo familiar a inscribirse.</a>
+
+                    </div>
+               <p class="text-justify"><strong>NOTA IMPORTANTE: El registro de la inscripción no implica el cumplimiento por usted/es de los requisitos antes mencionados, ya que los mismos estarán sujetos a la verificación correspondiente por el IVUJ u otros organismos oficiales que correspondan</strong></p>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="declaracionClic" type="submit" class="btn btn-primary">Aceptar</button>
+                    <button type="button" id="btnHideModalDeclaracion" class="btn btn-outline-info">
+                        Rechazar
+                    </button>
+                </div>
+            
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="recuperarModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Recuperar contraseña</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-controller="Login" asp-action="Recuperar">
+                <div class="modal-body card">
+
+                    <div class="form-group ">
+                        <input class="form-control" type="email"
+                               placeholder="Correo" id="inputRecuperarUserName" name="inputRecuperarUserName" />
+                    </div>
+                    <div class="form-group ">
+                        <input class="form-control" placeholder="D.N.I."
+                               type="number" id="inputRecuperarDni" name="inputRecuperarDni" />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="recuperarClic" type="submit" class="btn btn-primary">Recuperar</button>
+                    <button type="button" id="btnHideModalRecuperar" class="btn btn-outline-info">
+                        Cerrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+@section scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <style type="text/css">
+        .span3 {
+            position: relative;
+            height: 200px;
+            overflow: auto;
+        }
+
+        .card-body {
+            padding-bottom: 0rem;
+        }
+    </style>
+
+    <script src="~/js/Insc.js"></script>
+    
+}

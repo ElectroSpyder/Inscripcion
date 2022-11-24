@@ -1,0 +1,446 @@
+﻿@model ADJInsc.Models.ViewModels.UsuarioTitularViewModel
+    
+<p>
+    <h2>Sistema de Inscripción / Actualización de Datos del IVUJ</h2>
+</p>
+
+<p style="background-color: lightgray;color: black;font-weight: bold;">
+    @if (Model.MensajeModel != string.Empty)
+    {
+        @Model.MensajeModel
+    }
+</p>
+
+<div id="formTitular">
+    <div class="form-group card border-info">
+        <h3 class="card-header text-light bg-info"> Titular</h3>
+        <p class=" text-light bg-info">Cargar los datos del Titular</p>
+        <div class="form-row card-body">
+            <div class="form-group col-md-6">
+                <label>DNI Nº (*)</label>
+                <input type="text" class="form-control" id="inputDni" placeholder="D.N.I." value="@Model.InsNumdoc" disabled>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Apellido/s y Nombre/s (completos) (*)</label>
+                <input type="text" class="form-control" id="inputNombre" placeholder=" Apellido y Nombre " value="@Model.InsNombre">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Teléfono (anteponiendo código de área) (*)</label>
+                <input type="text" class="form-control" id="inputTel" placeholder=" Teléfono" value="@Model.InsTelef" >
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Estado Civil (seleccionar) (*)</label>
+                @Html.DropDownListFor(x => Model.InsTipflia, Model.TipoFamiliaList ?? new List<SelectListItem>(), "----Selecciona Estado Civil----", htmlAttributes: new { @class = "form-control", id = "ddTipoFamiliaId" })
+            </div>
+
+            <div class="form-inline col-md-6" style="width:auto; margin-bottom:10px;">
+                Cuit / Cuil
+                <input id="inputCuitUno" type="number" class="form-control" style="width:16%; margin-left:4px;" value="@Model.CuitCuilUno"> -
+                <input type="text" class="form-control" id="inputCuitDos" placeholder="D.N.I." value="@Model.InsNumdoc" disabled style="width:40%"> -
+
+                <input id="inputCuitTres" type="number" class="form-control" style="width:16%" value="@Model.CuitCuilDos">
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group card border-info">
+        <h5 class="card-header text-light bg-info"> Registro de Usuario</h5>
+        
+        <div class="form-row card-body">
+            <h6 class="card-title">
+                Debe crear un usuario con una cuenta de correo electrónico vigente.
+                A su e-mail le enviaremos un correo a través del cual deberá validar su registro. Una vez hecho eso,
+                podrá continuar la inscripción o actualización (Consulte en la carpeta de “Recibidos”, “Spam” o “Correo no deseado”).
+            </h6>
+            <div class="form-group col-md-6">
+                <label>Correo electrónico </label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Correo" value="@Model.InsEmail">
+            </div>
+            <div class="form-group col-md-6">
+                <label>Repetir correo electrónico</label>
+                @Html.EditorFor(model => model.Usuario, new { htmlAttributes = new { @class = "form-control", @id = "inputRepEmail", placeholder = "Repetir Correo electrónico", onpaste = "return false" } })
+                <!-- <input type="email" class="form-control" id="inputRepEmail" placeholder="Repetir Correo" value="@Model.Usuario">-->
+            </div>
+            <div class="form-group col-md-6">
+                <label>Contraseña</label>
+                <input type="password" class="form-control" id="inputContraseña" placeholder="Contraseña" value="@Model.Clave">
+                <span class="fa fa-eye-slash icon" id="mostrar"> <span id="pwdtxt" style="cursor:pointer;">Mostrar contraseña</span></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Repetir contraseña</label>
+                <input type="password" class="form-control" id="inputRepetirContraseña" placeholder="Repetir Contraseña">
+                <span class="fa fa-eye-slash icon" id="mostrarRe"> <span id="pwdtxtRe" style="cursor:pointer;">Mostrar contraseña</span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
+                <input id="btnCreate" type="submit" value="Guardar y enviar correo electrónico" class="btn btn-outline-primary" />
+            </div>
+            <div class="form-group col-md-6" style="float:right;">
+                <form asp-controller="Inscripcion" asp-action="GoHome">
+                    <button class="btn btn-outline-danger float-sm-right" id="btnLogin">Cerrar y volver</button>
+                </form>
+            </div>
+        </div>       
+    </div>
+    
+</div>
+
+
+
+<div id="modalSuccess" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">INSCRIPCIÓN/ ACTUALIZACIÓN</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-controller="Inscripcion" asp-action="Inscripcion">
+
+
+                <div class="modal-body card">
+                    <p>Se ha registrado con éxito como usuario/a del <strong>Sistema de Inscripción / Actualización de Datos del IVUJ</strong>. En la casilla que declaró recibirá un correo para validación puede demorar hasta 24hs. y luego podrá empezar a cargar datos.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="aceptarSuccess" class="btn btn-danger btnModal">Aceptar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-controller="Bandeja" asp-action="Login">
+                <div class="modal-body card">
+
+                    <div class="form-group ">
+                        <input class="form-control" type="email"
+                               placeholder="Correo" id="inputUserName" name="inputUserName" />
+                    </div>
+                    <div class="form-group ">
+                        <input class="form-control" placeholder="Contraseña"
+                               type="password" id="inputPassword" name="inputPassword" />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button id="loginClic" type="submit" class="btn btn-primary">Iniciar</button>
+                    <button type="button" id="btnHideModal" class="btn btn-outline-info">
+                        Cerrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@section scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <style type="text/css">
+        .span3 {
+            position: relative;
+            height: 200px;
+            overflow: auto;
+        }
+
+        .card-body {
+            padding-bottom: 0rem;
+        }
+    </style>
+
+    <script type="text/javascript">
+       
+        $(function () {
+           /* $("#btnLogin").click(function () {
+                $("#AjaxLoaderLogin").show("fast");
+                //$("#loginModal").modal('show');
+            });*/
+
+            $("#btnHideModal").click(function () {
+                $("#loginModal").modal('hide');
+            });
+        });
+
+        function validarForm() {
+            var dniId = $("#inputDni").val();
+            var nombreId = $("#inputNombre").val();
+
+            var tipoFamilia = $("#ddTipoFamiliaId").val();
+
+            var usuario = $("#inputRepEmail").val();
+            var emailId = $("#inputEmail").val();
+            var clave = $("#inputContraseña").val();
+            var repClave = $("#inputRepetirContraseña").val();
+
+            var cuitUno = $("#inputCuitUno").val();
+            var cuitTres = $("#inputCuitTres").val();
+
+            var telefono = $("#inputTel").val();
+            var cont = 0;
+
+            
+
+            if (!telefono) {
+                $("#inputTel").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputTel").css("border-color", "green");
+            }
+
+            if (!cuitUno) {
+                $("#inputCuitUno").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputCuitUno").css("border-color", "green");
+            }
+
+            if (!cuitTres) {
+                $("#inputCuitTres").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputCuitTres").css("border-color", "green");
+            }
+
+            if (!dniId) {
+                $("#inputDni").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputDni").css("border-color", "green");
+            }
+
+            if (!nombreId) {
+                $("#inputNombre").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputNombre").css("border-color", "green");
+            }
+
+            if (!usuario) {
+                $("#inputRepEmail").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputRepEmail").css("border-color", "green");
+            }
+
+            if (!clave) {
+                $("#inputContraseña").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputContraseña").css("border-color", "green");
+            }
+
+            if (!repClave) {
+                $("#inputRepetirContraseña").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputRepetirContraseña").css("border-color", "green");
+            }
+
+            if (!emailId) {
+                $("#inputEmail").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputEmail").css("border-color", "green");
+            }
+            return cont;
+        };
+
+         $(function () {
+            $("#btnCreate").click(function (e) {
+
+                var dniId = $("#inputDni").val();
+                var nombreId = $("#inputNombre").val();
+
+                var tipoFamilia = $("#ddTipoFamiliaId").val();
+                var usuario = $("#inputRepEmail").val();
+                var emailId = $("#inputEmail").val();
+                var clave = $("#inputContraseña").val();
+                var repClave = $("#inputRepetirContraseña").val();
+
+                var cuitUno = $("#inputCuitUno").val();
+                var cuitTres = $("#inputCuitTres").val();
+                var telefono = $("#inputTel").val();
+
+                var cont = validarForm();
+                $("#AjaxLoader").show("fast");
+
+                if (cont == 0) {
+
+                    if (clave === repClave && clave.length == repClave.length && emailId == usuario) {
+
+                        if ( emailId.length > 0 && usuario.length > 0 && clave.length >= 6 
+                        && dniId.length > 6 && nombreId.length > 0 && telefono.length > 0
+                        ) {
+                            $("#btnCreate").attr("disabled", true);
+
+                            var modeloCarga = {
+
+                                clave: clave,
+                                dni: dniId,
+                                email: emailId,
+                                nombre: nombreId,
+                                tipoFamilia: tipoFamilia,
+                                usuario: usuario,
+                                cuitUno: cuitUno,
+                                cuitTres: cuitTres,
+                                telefono: telefono
+                            };
+                            $.ajax({
+                             url: '@Url.Action("CargarDatos", "Inscripcion")', //"/Solicitar/CreateAjax",
+                             data: JSON.stringify(modeloCarga),
+                             type: "post",
+                             contentType: "application/json",
+
+                             success: function (response) {
+                                 //console.log(response);
+
+                                 $("#AjaxLoader").delay(2000).hide("slow");
+
+                                 if (response === 'OK') {
+                                    
+                                    $("#modalSuccess").modal("show");
+                                } else {
+                                    $("#btnCreate").attr("disabled", false);
+                                    e.preventDefault();
+                                    bootbox.alert({
+                                        size: "small",
+                                        title: "I.V.U.J.",
+                                        message: response,
+                                        callback: function () {
+                                            //location.reload(true);
+                                        }
+                                    });
+                                }
+
+                             },
+                            error: function (response) {
+                               // console.log(response);
+                                if (response === 'OK') {
+                                    $("#modalSuccess").modal("show");
+                                } else {
+                                    e.preventDefault();
+                                    bootbox.alert({
+                                        size: "small",
+                                        title: "I.V.U.J.",
+                                        message: response,
+                                        callback: function () {
+                                            //location.reload(true);
+                                        }
+                                    });
+                                }
+
+                            }
+                        });
+                        } else {
+                            e.preventDefault();
+
+                        bootbox.alert({
+                            size: "small",
+                            title: "I.V.U.J.",
+                            message: "Datos ingresados de forma incorrecta",
+                            callback: function () { }
+                        });
+                        }
+
+                    }
+
+                    else {
+                        e.preventDefault();
+                        bootbox.alert({
+                            size: "small",
+                            title: "I.V.U.J.",
+                            message: "El correo o la clave no Coinciden.",
+                            callback: function () { }
+                        });
+                    }
+
+                } else {
+
+                    e.preventDefault();
+                    bootbox.alert({
+                        size: "small",
+                        title: "I.V.U.J.",
+                        message: "El formulario debe estar completo.",
+                        callback: function () { }
+                    });
+                }
+
+
+            });
+
+         });
+
+
+
+
+        //Funciones para mostrar contraseña
+
+        $(function () {
+            $('#mostrar').click(function () {
+                //Comprobamos que la cadena NO esté vacía.
+                if ($(this).hasClass('fa-eye-slash') && ($("#inputContraseña").val() != "")) {
+                    $('#inputContraseña').removeAttr('type');
+                    $('#mostrar').addClass('fa-eye').removeClass('fa-eye-slash');
+                    $('#pwdtxt').html("Ocultar contraseña");
+                }
+                else {
+                    $('#inputContraseña').attr('type', 'password');
+                    $('#mostrar').addClass('fa-eye-slash').removeClass('fa-eye');
+                    $('#pwdtxt').html("Mostrar contraseña");
+                }
+            });
+
+        });
+
+        $(function () {
+            $('#mostrarRe').click(function () {
+                //Comprobamos que la cadena NO esté vacía.
+                if ($(this).hasClass('fa-eye-slash') && ($("#inputRepetirContraseña").val() != "")) {
+                    $('#inputRepetirContraseña').removeAttr('type');
+                    $('#mostrarRe').addClass('fa-eye').removeClass('fa-eye-slash');
+                    $('#pwdtxtRe').html("Ocultar contraseña");
+                }
+                else {
+                    $('#inputRepetirContraseña').attr('type', 'password');
+                    $('#mostrarRe').addClass('fa-eye-slash').removeClass('fa-eye');
+                    $('#pwdtxtRe').html("Mostrar contraseña");
+                }
+            });
+
+        });
+
+        $(function () {
+            $("#aceptarSuccess").submit(function (e) {
+                e.preventDefault();
+                $('#modalSuccess').modal('toggle');
+                $.ajax({
+                    url: '@Url.Action("Inscripcion", "Inscripcion")'
+                });
+            });
+        });
+
+    </script>
+
+}

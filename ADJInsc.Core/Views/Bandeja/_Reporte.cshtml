@@ -1,0 +1,259 @@
+﻿@model ADJInsc.Models.ViewModels.InscViewModel
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    
+</head>
+<body>
+    <div style="        display: block;
+        background-position: left top;
+        padding-top: 20px;
+        margin-bottom: 50px;
+">
+        <img style="        width: 150px;
+        height: 120px;
+        float: left;
+
+" src="~/image/Logo ivuj-izq.png" />
+        <img style="        width: 150px;
+        height: 120px;
+        float: right;
+
+" src="~/image/Logo Ivuj-der.jpg" />
+    </div>
+    <div style="background-position: left top; padding-top: 68px;">
+        
+        
+
+        <br />
+        <h2 class=" text-light bg-info">
+            Sistema de Inscripción / Actualización de Datos del IVUJ
+        </h2>
+        <div class="col-xs-12">
+            <h5><strong>Nº de Inscripción  @Model.InsId.ToString("D8") </strong></h5>
+            @if (Model.InsFicha != 0)
+            {
+                <h5>
+                    (Usted se había registrado anteriormente con el número <strong> @Model.InsFicha?.ToString("D8")</strong>
+                    El cual ahora queda sin efecto y se establece como vigente el que generó el sistema actualmente).
+                </h5>
+            }
+        </div>
+        <br />
+
+        <div class="flexrow">
+
+            <main role="main" class="pb-3">
+
+                <form>
+                    <div class="form-group card border-info">
+                        <div class="form-group card-body">
+
+                            <div class="col-xs-6 col-md-6">
+                                <label for="inputNombre" class="form-label"></label>
+                                <strong>Titular </strong><input type="text" class="form-control" id="inputNombre" placeholder="Nombre" value="@Model.InsNombre">
+                            </div>
+                            
+
+                                <div class="col-xs-6 col-md-6">
+                                   
+                                        <strong>D.N.I.</strong>
+                                        <input type="text" class="form-control" id="inputCuil" placeholder="D.N.I." value="@Model.InsNumdoc">
+                                   
+                                </div>
+                                <div class="col-xs-6 col-md-6">
+                                    
+                                        <strong>CUIT/CUIL</strong>
+                                        <input type="text" class="form-control" id="inputCuil" placeholder="D.N.I." value="@Model.CuitCuil">
+                                   
+                                </div>
+                           
+                           
+                           
+                            <div class="col-xs-6 col-md-6">
+                                <strong>Fecha de alta</strong>
+                                <input type="text" class="form-control" id="inputFecAlt" value="@Model.FechaAltaViewModel">
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <strong>Teléfono</strong>
+                                <input type="text" class="form-control" id="inputTel" placeholder=" Teléfono " value="@Model.InsTelef">
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <strong>Departamento</strong>
+                                <input type="text" class="form-control" id="inputEstadoCivil" placeholder="D.N.I." value="@Model.DepartamentoDesc">
+                            </div>
+                            <div class="col-xs-6 col-md-6">
+                                <strong>Localidad</strong>
+                                <input type="text" class="form-control" id="inputEstadoCivil" placeholder="D.N.I." value="@Model.LocalidadDesc">
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+
+                        <h5 class=" text-light bg-info">Datos del Grupo Familiar</h5>
+                        <div>
+
+                            <div></div>
+                            <table id="tablaFamilia" class="table table-striped table-responsive" cellspacing="0" width="100%">
+                                <!--table table-sm table-striped table-hover border-bottom table table-bordered mb-0-->
+                                <thead>
+                                    <tr>
+
+                                        <th>
+                                            Nombre y Apellido
+                                        </th>
+                                        <th>
+                                            Documento
+                                        </th>
+                                        <th>
+                                            Nacimiento
+                                        </th>
+                                        <th>
+                                            Discapacidad ?
+                                        </th>
+                                        <th>
+                                            Veterano Mal. ?
+                                        </th>
+                                        <th>
+                                            Minero ?
+                                        </th>
+                                        <th>
+                                            Parentesco
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.GrupoFamiliar.Count() > 0)
+                                    {
+                                        foreach (var item in Model.GrupoFamiliar)
+                                        {
+                                            if (item.InsfEstado == "B")
+                                            {
+
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    @Html.HiddenFor(modelItem => item.InsfNumdoc, new { id = "idEscondido" })
+
+                                                    <td id="valorNombre">
+                                                        @Html.DisplayFor(modelItem => item.InsfNombre)
+                                                    </td>
+                                                    <td id="valorDoc">
+                                                        @Html.DisplayFor(modelItem => item.InsfNumdoc)
+                                                    </td>
+                                                    <td id="valorFec">
+                                                        @Html.DisplayFor(modelItem => item.FechaShow)
+                                                    </td>
+
+                                                    <td>
+                                                        @if (item.InsfDiscapacitado == 1)
+                                                        {
+                                                            <p>Si</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>No</p>
+                                                        }
+
+                                                    </td>
+                                                    <td>
+                                                        @if (item.InsfVeterano == 1)
+                                                        {
+                                                            <p>Si</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>No</p>
+                                                        }
+
+                                                    </td>
+                                                    <td>
+                                                        @if (item.InsfMinero == 1)
+                                                        {
+                                                            <p>Si</p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>No</p>
+                                                        }
+
+                                                    </td>
+                                                    <td id="valorP">
+                                                        @Html.DisplayFor(modelItem => item.ParentescoDesc, new { id = "idSoloParentesco" })
+                                                    </td>
+
+                                                </tr>
+                                            }
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>
+                                                Sin Datos
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                    </div>
+                    <br />
+                    
+                    <div class="form-group">
+                        <h6 class="text-center"><strong> INFORMACIÓN IMPORTANTE PARA EL/LA INSCRIPTO/A.</strong></h6>
+                        <p class="justify">
+                            El formulario que completó reviste carácter de <strong>DECLARACIÓN JURADA</strong> por lo tanto <strong>DECLARÓ CONOCER Y ACEPTAR</strong>
+                            que el ocultamiento y/o falsedad de la información que aquí brindó, o las que a posterior aportará,
+                            o el no contar con la documentación respaldatoria, dará lugar a su Exclusión para el/los Programa/s de viviendas de referencia.
+                        </p>
+                        <p class="justify">
+                            Se deja expresamente aclarado que la presente Inscripción/Actualización no genera un derecho adquirido a la adjudicación de una
+                            vivienda por parte de este Organismo y que el/la Inscripto/a. declara conocer y cumplir los requisitos.
+                        </p>
+
+                        <p class="justify">
+                            El correo electrónico que declaró, y el número de teléfono celular/fijo serán las vías de contacto del IVUJ con usted.
+                        </p>
+
+                        <p class="justify">
+                            ¿Cómo participa de los Sorteos Públicos de Viviendas para Demanda Libre?
+                            Para participar de los Sorteo Públicos de Viviendas para Demanda Libre, además de estar inscripto/a
+                            en el IVUJ tendrá que manifestar su interés en participar de los sorteos públicos, para eso deberá registrar
+                            la ADHESIÓN ONLINE cuando se anuncien sorteos para localidad donde reside.
+                            Los anuncios de sorteos públicos para demanda libre se hacen a través del sitio web oficial ivuj.gob.ar
+                        </p>
+
+
+
+                    </div>
+                </form>
+
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; I.V.U.J.- @DateTime.Now.Year <a asp-area="" asp-controller="Home" asp-action="Privacy"></a>
+            </div>
+        </footer>
+    </div>
+   
+</body>
+</html>

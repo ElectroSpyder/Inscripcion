@@ -1,0 +1,74 @@
+﻿@model ADJInsc.Models.ViewModels.UsuarioTitularViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Advertencia</title>
+</head>
+<body>
+
+
+    <div class="modal fade in" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">                    
+                </div>
+                <div class="modal-body card">                   
+                            <div>
+                                <div class="modal-body card">
+                                    <h4>@Model.MensajeModel</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <form asp-controller="Inscripcion" asp-action="GoHome">
+                                        <button type="button" id="btnIrAlta" class="btn btn-outline-primary">Aceptar</button>
+                                        </form>
+                                       
+                                </div>
+                            </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+
+</html>
+
+@section scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <style type="text/css">
+        .span3 {
+            position: relative;
+            height: 200px;
+            overflow: auto;
+        }
+
+        .card-body {
+            padding-bottom: 0rem;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#loginModal").modal();
+        });
+
+        $(function () {
+
+            $("#btnIrAlta").click(function () {
+                $("#loginModal").modal('hide');
+                history.go(-2);
+
+            });
+        });
+
+
+
+    </script>
+}
