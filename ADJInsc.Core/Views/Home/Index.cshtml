@@ -9,12 +9,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-row align-items-center">
-        <input type="number" 
-            class="form-control mb-2 mr-sm-2" 
-            id="dniInput" 
-            placeholder="Ingrese D.N.I."  
-            maxlength="8"                               
-            keypress="return valideKey(event);">
+        <input type="number" class="form-control mb-2 mr-sm-2" id="dniInput" placeholder="Ingrese D.N.I.">
 
         <div class="form-group mb-2 mr-sm-2 ">
             <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
@@ -735,36 +730,6 @@
                 }
 
             });
-        });
-
-        $(function () {
-            $("#dniInput").keypress(function (evt) {
-
-                console.log('Hola Mundo');
-                // code is the decimal ASCII representation of the pressed key.
-                var code = (evt.which) ? evt.which : evt.keyCode;
-
-                if (code == 8) { // backspace.
-                    return true;
-                } else if (code >= 48 && code <= 57) { // is a number.
-                    return true;
-                } else { // other keys.
-                    return false;
-                }
-            })
-        });
-
-        $(function valideKey(evt) {
-
-            var code = (evt.which) ? evt.which : evt.keyCode;
-
-            if (code == 8) { // backspace.
-                return true;
-            } else if (code >= 48 && code <= 57) { // is a number.
-                return true;
-            } else { // other keys.
-                return false;
-            }
         });
 
     </script>
