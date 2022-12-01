@@ -21,11 +21,21 @@
                     <form class="form-group" asp-controller="Inscripcion" asp-action="BuscarPersona">
                         <div class="form-row ">
                             <label class=" mb-2 mr-sm-2">D.N.I.</label>
-                            <input type="number" class="form-control mb-2 mr-sm-2" id="dniInput" placeholder="D.N.I." name="numDni" maxlength="8">
+                            <input type="text"
+                                   placeholder="D.N.I." 
+                                   id="dniInput" 
+                                   maxlength="8"
+                                   pattern="[0-9]+"
+                                   name="numDni" 
+                                   class="form-control mb-2 mr-sm-2"
+                                   onkeypress="return valideKey(event);">
 
                             <div class="form-group mb-2 mr-sm-2 ">
                                 <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
-                                <button id="btnBuscar" class="btn btn-info" disabled>
+                                <button 
+                                        id="btnBuscar" 
+                                        class="btn btn-info" 
+                                 >
                                     Buscar
                                 </button>
 

@@ -51,32 +51,48 @@ $(function () {
 });
 
 
+function valideKey(evt)
+{
+    var x = event.which;
+    //console.log(x);
 
-$(function () {
-    $("#btnBuscar").click(function (e) {
+    if (x >= 48 && x <= 57) {
+        //console.log('El caracter ingresado es un numero')
+        return true;
+    }
+    else {
+        //console.log('El caracter ingresado es un texto')
+        return false;
+    }
+    
+}
+//$(function () {
+//    $("#btnBuscar").click(function (e) {
 
-        var numeroDni = $("#dniInput").val();
-        $("#AjaxLoader").show("fast");
+//        var numeroDni = $("#dniInput").val();
+        
+//        $("#AjaxLoader").show("fast");
 
-        if (numeroDni.length > 6 && numeroDni.length < 9) {
+//        if (numeroDni.length > 6 && numeroDni.length < 9) {
 
-            $("#AjaxLoader").delay(2000).hide("slow");
+//            $("#AjaxLoader").delay(2000).hide("slow");
 
 
-        } else {
+//        } else {
 
-            e.preventDefault();
-            e.stopPropagation();
+//            e.preventDefault();
+//            e.stopPropagation();
 
-            bootbox.alert({
-                size: "small",
-                title: "I.V.U.J.",
-                message: "Debes ingresar un Dni correcto",
-                callback: function () {
-                    $("#AjaxLoader").hide("slow");
-                }
-            });
+//            bootbox.alert({
+//                size: "small",
+//                title: "I.V.U.J.",
+//                message: "Debes ingresar un Dni correcto",
+//                callback: function () {
+//                    $("#AjaxLoader").hide("slow");
+//                }
+//            });
 
-        }
-    });
-});
+//        }
+//    });
+//});
+

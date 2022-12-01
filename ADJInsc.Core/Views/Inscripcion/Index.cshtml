@@ -42,10 +42,32 @@
 
                     <div class="form-inline col-md-6" style="width:auto; margin-bottom:10px;">
                         Cuit / Cuil
-                        <input id="inputCuitUno" type="number" class="form-control" style="width:16%; margin-left:4px;" asp-for="@Model.CuitCuilUno"> -
+                        <input
+                               type="text"
+                               id="inputCuitUno" 
+                               maxlength="2"
+                               pattern="[0-9]+"
+                               size="2"
+                               class="form-control" 
+                               style="width:16%;
+                               margin-left:4px;" 
+                               asp-for="@Model.CuitCuilUno"
+                               onkeypress="return valideKeyCuit(event);"
+                         > -
                         <input type="text" class="form-control" id="inputCuitDos" placeholder="D.N.I." value="@Model.InsNumdoc" disabled style="width:40%"> -
                         
-                        <input id="inputCuitTres" type="number" class="form-control" style="width:16%" asp-for="@Model.CuitCuilDos">
+                        <input 
+                               id="inputCuitTres" 
+                               type="text" 
+                               maxlength="1"
+                               pattern="[0-9]+"
+                               size="1"
+                               class="form-control" 
+                               style="width:16%" 
+                               asp-for="@Model.CuitCuilDos"
+                               onkeypress="return valideKeyCuit(event);"
+                               >
+
                         <span asp-validation-for="@Model.CuitCuilUno" class="text-danger"></span>
                         <span asp-validation-for="@Model.CuitCuilDos" class="text-danger"></span>
                     </div>
@@ -131,6 +153,18 @@
             });
 
         });
+
+        function valideKeyCuit(event) {
+
+            var x = event.which;
+            
+            if (x >= 48 && x <= 57) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
 
     </script>
 }
