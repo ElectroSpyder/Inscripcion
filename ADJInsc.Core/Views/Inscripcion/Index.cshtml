@@ -27,7 +27,14 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label>Apellido/s y Nombre/s (completos) (*)</label>
-                        <input type="text" class="form-control" id="inputNombre" placeholder=" Apellido y Nombre " asp-for="@Model.InsNombre">
+                        <input 
+                               type="text"  
+                               class="form-control" 
+                               id="inputNombre" 
+                               placeholder=" Apellido y Nombre " 
+                               onkeypress="return upperCase(event);"
+                               asp-for="@Model.InsNombre">
+
                         <span asp-validation-for="@Model.InsNombre" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-6">
@@ -158,7 +165,7 @@
 
             var x = event.which;
             
-            if (x >= 48 && x <= 57) {
+            if (x >= 97 && x <= 122) {
                 return true;
             }
             else {
@@ -166,5 +173,21 @@
             }
         }
 
+        /*VALIDAR CARACTER MINUSCULA*/
+        function upperCase(event) {
+
+            var x = event.which;
+            console.log(x);
+
+            if (x >= 97 && x <= 122) {
+                //return true;
+                x = x.toUppercase();
+                console.log(x);
+            }
+            else {
+                return false;
+                console.log("IS FALSE")
+            }
+        }
     </script>
 }
