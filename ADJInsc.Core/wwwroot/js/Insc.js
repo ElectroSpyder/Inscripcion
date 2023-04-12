@@ -54,8 +54,7 @@ $(function () {
 function valideKey(evt)
 {
     var x = event.which;
-    //console.log(x);
-
+    
     if (x >= 48 && x <= 57) {
         //console.log('El caracter ingresado es un numero')
         return true;
