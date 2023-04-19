@@ -32,14 +32,21 @@
                                class="form-control" 
                                id="inputNombre" 
                                placeholder=" Apellido y Nombre " 
-                               onkeypress="return upperCase(event);"
+                               onkeyup="upperCase(this);"                            
                                asp-for="@Model.InsNombre">
+                       
 
                         <span asp-validation-for="@Model.InsNombre" class="text-danger"></span>
                     </div>
                     <div class="form-group col-md-6">
                         <label>Teléfono (anteponiendo código de área) (*)</label>
-                        <input type="text" class="form-control" id="inputTel" placeholder=" Teléfono" asp-for="@Model.InsTelef">
+                        <input 
+                              type="text" 
+                              class="form-control" 
+                              id="inputTel" 
+                              placeholder="Teléfono"
+                              onkeypress="return valideKeyNros(event);"
+                              asp-for="@Model.InsTelef">
                     </div>
 
                     <div class="form-group col-md-6">
@@ -59,8 +66,8 @@
                                style="width:16%;
                                margin-left:4px;" 
                                asp-for="@Model.CuitCuilUno"
-                               onkeypress="return valideKeyCuit(event);"
-                         > -
+                               onkeypress="return valideKeyNros(event);"
+                         > 
                         <input type="text" class="form-control" id="inputCuitDos" placeholder="D.N.I." value="@Model.InsNumdoc" disabled style="width:40%"> -
                         
                         <input 
@@ -72,7 +79,7 @@
                                class="form-control" 
                                style="width:16%" 
                                asp-for="@Model.CuitCuilDos"
-                               onkeypress="return valideKeyCuit(event);"
+                               onkeypress="return valideKeyNros(event);"
                                >
 
                         <span asp-validation-for="@Model.CuitCuilUno" class="text-danger"></span>
@@ -161,11 +168,11 @@
 
         });
 
-        function valideKeyCuit(event) {
+        function valideKeyNros(event) {
 
             var x = event.which;
             
-            if (x >= 97 && x <= 122) {
+            if (x >= 48 && x <= 57) {
                 return true;
             }
             else {
@@ -174,20 +181,8 @@
         }
 
         /*VALIDAR CARACTER MINUSCULA*/
-        function upperCase(event) {
-
-            var x = event.which;
-            console.log(x);
-
-            if (x >= 97 && x <= 122) {
-                //return true;
-                x = x.toUppercase();
-                console.log(x);
-            }
-            else {
-                return false;
-                console.log("IS FALSE")
-            }
+        function upperCase(e) {
+            e.value = e.value.toUpperCase();
         }
     </script>
 }
