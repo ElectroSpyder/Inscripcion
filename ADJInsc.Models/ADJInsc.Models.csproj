@@ -500,6 +500,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\20230519194004_Inicial.cs" />
+    <Compile Include="Migrations\20230519194004_Inicial.designer.cs">
+      <DependentUpon>20230519194004_Inicial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\dbActuContextModelSnapshot.cs" />
     <Compile Include="Models\DBInsc\Barrios.cs" />
     <Compile Include="Models\DBInsc\dbActuContext.cs" />
     <Compile Include="Models\DBInsc\Departamento.cs" />

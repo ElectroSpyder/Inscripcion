@@ -36,7 +36,12 @@
             </div>
             <div class="form-group col-md-12">
                 Teléfono (anteponiendo código de área) (*)
-                <input type="text" class="form-control" id="inputTel" placeholder=" Teléfono " value="@Model.InsTelef">
+                <input type="text" 
+                       class="form-control" 
+                       id="inputTel" 
+                       placeholder="Teléfono"
+                       onkeypress="return valideKeyNros(event);"
+                       value="@Model.InsTelef">
             </div>
             <div class="form-group col-md-12">
                 Estado Civil (seleccionar) (*)
@@ -65,10 +70,26 @@
 
 
                 CUIL-CUIT (*)
-                <input id="inputCuitUno" type="text" class="form-control" style="width:16%; margin-left:4px;" value="@Model.CuitCuilUno.Trim()"> -
+                <input 
+                    id="inputCuitUno"
+                    maxlength="2"
+                    pattern="[0-9]+"
+                    size="2"
+                    type="text" 
+                    class="form-control" 
+                    style="width:16%; margin-left:4px;" 
+                    value="@Model.CuitCuilUno.Trim()"> -
                 <input type="text" class="form-control" id="inputCuitDos" placeholder="D.N.I." value="@Model.InsNumdoc" disabled style="width:40%"> -
 
-                <input id="inputCuitTres" type="text" class="form-control" style="width:16%" value="@Model.CuitCuilDos.Trim()">
+                <input 
+                      id="inputCuitTres" 
+                      maxlength="1"
+                      pattern="[0-9]+"
+                      size="1"
+                      type="text" 
+                      class="form-control" 
+                      style="width:16%" 
+                      value="@Model.CuitCuilDos.Trim()">
 
 
 
@@ -81,7 +102,13 @@
         <div class="form-row card-body">
             <div class="form-group col-md-12">
                 Dirección (Detalle: Calle, Número, Piso, Lote, Manzana, Barrio, Código Postal) (*)
-                <input type="text" multiple class="form-control" id="inputAddress" placeholder="Dirección" value="@Model.Direccion">
+                <input 
+                     type="text"
+                     multiple class="form-control" 
+                     id="inputAddress" 
+                     placeholder="Dirección"
+                     onkeyup="upperCase(this);"
+                     value="@Model.Direccion">
             </div>
 
             <div class="form-group col-md-4">
@@ -101,7 +128,13 @@
         <div class="form-row card-body">
             <div class="form-group col-md-12">
                 <label for="inputLugar">Lugar de empleo del/la Titular (*):</label>
-                <input type="text" multiple class="form-control" id="inputLugar" placeholder="Lugar donde trabaja" value="@Model.NombreEmpleo">
+                <input 
+                      type="text" 
+                      multiple class="form-control" 
+                      id="inputLugar" 
+                      placeholder="Lugar donde trabaja"
+                      onkeyup="upperCase(this);"
+                      value="@Model.NombreEmpleo">
             </div>
 
             <div class="form-group col-md-4">
@@ -203,12 +236,22 @@
                     
                     <div class="form-group col-md-12 has-success">
                         Apellido/s y Nombre/s (completos) (*)
-                        <input type="text" class="form-control" id="inputNombreInicial" placeholder="Apellido y Nombre">
+                        <input 
+                              type="text" 
+                              class="form-control" 
+                              id="inputNombreInicial"
+                               onkeyup="upperCase(this);"
+                              placeholder="Apellido y Nombre">
                     </div>
 
                     <div class="form-group col-md-12 has-success">
                         DNI Nº (*)
-                        <input type="number" class="form-control" id="inputDniInicial" placeholder="D.N.I.">
+                        <input 
+                              type="number" 
+                              class="form-control" 
+                              id="inputDniInicial" 
+                              maxlength="8"
+                              placeholder="D.N.I.">
                     </div>
                     <div class="form-group col-md-12 has-success">
                         <label>Fecha Nacimiento (*)</label>
@@ -912,5 +955,27 @@
             });
         });
     })
+
+    function valideKeyNros(event) {
+
+            var cardnumber = $("#inputTel").val();
+            
+            if (cardnumber.length > 12) {
+                return false;
+            }
+
+            var x = event.which;
+            
+            if (x >= 48 && x <= 57) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    
+    function upperCase(e) {
+            e.value = e.value.toUpperCase();
+        }
 </script>
 }
