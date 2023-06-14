@@ -240,7 +240,7 @@
                               type="text" 
                               class="form-control" 
                               id="inputNombreInicial"
-                               onkeyup="upperCase(this);"
+                              onkeyup="upperCase(this);"
                               placeholder="Apellido y Nombre">
                     </div>
 
@@ -279,7 +279,8 @@
                     <br />
                     <div class="form-group col-md-12 has-success">
                         <label>Parentesco (seleccionar) (*)</label>
-                        @Html.DropDownListFor(x => Model.ParentescoKey, Model.ParentescoList ?? new List<SelectListItem>(), htmlAttributes: new { @class = "form-control", id = "ddParentescoInicialId" })
+                        @Html.DropDownListFor(x => Model.ParentescoKey, Model.ParentescoList ?? new List<SelectListItem>(),
+                            htmlAttributes: new { @class = "form-control", id = "ddParentescoInicialId",onchange="elementoSeleccionado(this)"})
                     </div>
                 </div>
 
@@ -488,7 +489,7 @@
                                 html += '<td>' + item.discapacidad + '</td>';
                                 html += '<td>' + item.veterano + '</td>';
                                 html += '<td>' + item.minero + '</td>';
-                                html += '<td>' + item.parentescoDesc + '</td>';
+                                html += '<td class = "parentescoKey">' + item.parentescoDesc + '</td>';
                                 html += '<td><a href="#" onclick="return getbyID(' + item.insfNumdoc + ')">Editar</a>  <a href="#" onclick="Delete(' + item.insfNumdoc + ')">Borrar</a></td>';
                                 html += '</tr>';
 
@@ -503,8 +504,26 @@
                 }
             });
         };
+      
+      //INICIO ELEMENTO SELECCIONADO
+      function elementoSeleccionado(elemento)
+      {
+            var select = document.getElementById('ddParentescoInicialId');
+            var text = select.options[select.selectedIndex].text;
+            
 
-
+            if(text == "ESPOSO/A")
+            {
+                console.log("Por favor seleccione otra opción")
+            }
+            else
+            {
+                console.log(text);
+            }
+            
+      }
+      //FIN ELEMENTO SELECCIONADO
+       
      $(function () {
          $("#addPersonaInicialModal").click(function (e) {
 
@@ -512,6 +531,11 @@
 
              var dniVM = $("#inputDniInicial").val();
              var parentescoKey = $("#ddParentescoInicialId").val();
+
+                alert("Id de Parentesco:");
+                console.log("Hola Mundo");
+             
+
              var fechaNac = $("#inputFecNacInicial").val();
 
              var disc = 0;
