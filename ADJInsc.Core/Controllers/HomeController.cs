@@ -30,13 +30,9 @@
 
         public IActionResult Index()
         {
-
             InscViewModel model = TempData["data"] as InscViewModel;
-            return View(model);
-
-
+            return View(model ?? new InscViewModel());
         }
-
         public IActionResult Existe()
         {
             var modelo = HttpContext.Session.GetObjectFromJson<UsuarioTitularViewModel>("viewModelo");
@@ -46,7 +42,7 @@
         public IActionResult IndexPanel()
         {
             InscViewModel model = TempData["data"] as InscViewModel;
-            return View(model);
+            return View(model ?? new InscViewModel());
         }
 
         [HttpPost]

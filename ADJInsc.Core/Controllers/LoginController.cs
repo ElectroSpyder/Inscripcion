@@ -86,8 +86,8 @@
             return RedirectToAction("Respuesta", "Home");
         }
 
-        [HttpPost()]
-        public IActionResult Recuperar(string inputRecuperarUserName, int inputRecuperarDni)
+        [HttpPost]
+        public ActionResult Recuperar(string inputRecuperarUserName, int inputRecuperarDni)
         {
             var modelOut = new ModeloCarga
             {
@@ -103,18 +103,19 @@
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
            
-              var service = _apiService.PostAsync<ResponseViewModel>("/Insc.Api/login/", "Recuperar", modelOut, null, token).Result;
+            var service = _apiService.PostAsync<ResponseViewModel>("/Insc.Api/login/", "Recuperar", modelOut, null, token).Result;
 
             if (service.IsSuccess)
             {
-                var modelo = service.Result.ToString();
+                var modelo = (ResponseViewModel)service.Result;
+                if (!modelo.Existe)
+                    return RedirectToAction("Index", "Home");
+
                 var model = new LoginViewModel
                 {
                     Email = inputRecuperarUserName.Trim(),
-                    Password = "2"
+                    Password = "1"
                 };
-
-                if (modelo == "Ok") model.Password = "1";               
 
                 return View("Index", model);  //mostrar mensaje y volver a inicio
 

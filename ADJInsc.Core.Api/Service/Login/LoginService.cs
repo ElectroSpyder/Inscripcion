@@ -13,14 +13,14 @@
     {
         public string _connectionString { get; set; }
         private SqlConnection con;
-        private LogicHelper helper;
+        private LogicHelper _helper;
         //private readonly IMailService _mailService;
 
         public LoginService(string connectionString)
         {
             _connectionString = connectionString;
            // _mailService = mailService;
-            helper = new LogicHelper(_connectionString);
+            _helper = new LogicHelper(_connectionString);
         }
         private void Connection()
         {
@@ -121,7 +121,7 @@
 
         public async Task<InscViewModel> GetLogin(string usuario, string pasword)
         {
-            var result = await helper.GetLogin(usuario,pasword);
+            var result = await _helper.GetLogin(usuario,pasword);
             return result;
         }
 
@@ -129,12 +129,12 @@
         {
             try
             {
-                var claveUsuario = await helper.Recuperar(email.Trim(), dni);
+                var claveUsuario = await _helper.Recuperar(email.Trim(), dni);
                 if (string.IsNullOrEmpty(claveUsuario)) return "NoSend";
 
-                var Helper = new Helper.EmailSender(claveUsuario, email);
+                var helperSendEmail = new Helper.EmailSender(claveUsuario, email);
 
-                var result = await Helper.Recuperar();
+                var result = await helperSendEmail.Recuperar();
                 if (result) return "Ok";
                 return "NoSend";
             }

@@ -1,6 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Net.Mail;
+﻿using MailKit.Net.Smtp;
+using MimeKit;
+
+using System;
 using System.Threading.Tasks;
 
 namespace ADJInsc.Helper
@@ -17,8 +18,8 @@ namespace ADJInsc.Helper
             codigo = CodigoVerificador;
             Email = email;
         }
-              
 
+        [Obsolete]
         public Task<bool> SendEmail()
         {
             try
@@ -41,11 +42,21 @@ namespace ADJInsc.Helper
                     //Attachments = null
                 };
 
-                MailMessage message = new MailMessage("info_inscripcion@ivuj.gob.ar", Email, request.Subject, request.Body)
+                MimeMessage mensaje = new MimeMessage();
+                mensaje.From.Add(new MailboxAddress("info_inscripcion@ivuj.gob.ar"));
+                mensaje.To.Add(new MailboxAddress(Email));
+                mensaje.Subject = request.Subject;
+                mensaje.Body = new TextPart("html")
                 {
-                    IsBodyHtml = true
+                    Text = request.Body
                 };
-                var result = SendEmailAsync(message);
+
+
+                //MimeMessage message = new MimeMessage("info_inscripcion@ivuj.gob.ar", Email, request.Subject, request.Body)
+                //{
+                //    IsBodyHtml = true
+                //};
+                var result = SendEmailAsync(mensaje);
                 return result;
             }
             catch (Exception ex)
@@ -54,7 +65,7 @@ namespace ADJInsc.Helper
             }
 
         }
-
+        
         public async Task<bool> Recuperar()
         {
             try
@@ -68,13 +79,21 @@ namespace ADJInsc.Helper
                     Body = string.Format("Según nuestros registros, usted creó un usuario en el Sistema de Inscripción/Actualización de Datos del IVUJ <br /> Usuario: {0} <br /> Contraseña: {1}  <br /> <br /> <strong>NO RESPONDA ESTE CORREO, EL MISMO NO ESTÁ HABILITADO PARA RECIBIR MENSAJES.</strong> ", Email, codigo)//,
                     //Attachments = null
                 };
-
-                MailMessage message = new MailMessage("info_inscripcion@ivuj.gob.ar", Email, request.Subject, request.Body)
+                MimeMessage mensaje = new MimeMessage();
+                mensaje.From.Add(new MailboxAddress("info_inscripcion@ivuj.gob.ar"));
+                mensaje.To.Add(new MailboxAddress(Email));
+                mensaje.Subject = request.Subject;
+                mensaje.Body = new TextPart("html")
                 {
-                    IsBodyHtml = true
+                    Text = request.Body
                 };
-                return await SendEmailAsync(message);
-                
+
+                //MailMessage message = new MailMessage("info_inscripcion@ivuj.gob.ar", Email, request.Subject, request.Body)
+                //{
+                //    IsBodyHtml = true
+                //};
+                return await SendEmailAsync(mensaje);
+
             }
             catch (Exception)
             {
@@ -82,18 +101,23 @@ namespace ADJInsc.Helper
                 throw;
             }
         }
-        private async Task<bool> SendEmailAsync(MailMessage mailRequest)
+        private async Task<bool> SendEmailAsync(MimeMessage mailRequest)
         {
             try
             {
-                using(SmtpClient smtp = new SmtpClient("mail.ivuj.gob.ar"))
-                {
-                    smtp.UseDefaultCredentials = true;
-                    smtp.Credentials = new NetworkCredential("info_inscripcion@ivuj.gob.ar", "iYd_HF@7zKuc");
-                    smtp.EnableSsl = false;
-                    smtp.Port = 587;
 
-                    await smtp.SendMailAsync(mailRequest);
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect("vps-3513664-x.dattaweb.com", 465, true);
+                    smtp.Authenticate("info_inscripcion@ivuj.gob.ar", "sldXm/B7sJ");
+
+                    await smtp.SendAsync(mailRequest);
+                    //smtp.UseDefaultCredentials = true;                   
+
+                    ////smtp.Port = 995; // antes este puerto 587;
+                    //smtp.Credentials = new NetworkCredential("info_inscripcion@ivuj.gob.ar", "sldXm/B7sJ");
+                    //smtp.EnableSsl = true;  //antes false
+                    //await smtp.SendMailAsync(mailRequest);
                 }
 
                 return true;
@@ -101,7 +125,7 @@ namespace ADJInsc.Helper
             catch (Exception ex)
             {
 
-                throw;
+                throw new Exception(ex.Message);
             }
         }
     }

@@ -92,7 +92,7 @@
         [HttpPost("/login/Recuperar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<string>> Recuperar(ModeloCarga modeloCarga)
+        public async Task<ActionResult<ResponseViewModel>> Recuperar(ModeloCarga modeloCarga)
         {
             try
             {
@@ -101,9 +101,28 @@
                 if (string.IsNullOrEmpty(modeloCarga.usuario)) return NotFound("Email vacío");
 
                 var result = await loginService.Recuperar(modeloCarga.usuario.Trim(), dni);
-                //await Task.Delay(500).ConfigureAwait(false);
+                await Task.Delay(100).ConfigureAwait(false);
 
-                return Ok(result);
+                if (!result.Equals(Guid.Empty))
+                {
+                    return new ResponseViewModel()
+                    {
+                        CodigoVerificador = Guid.Empty,
+                        Existe = true,
+                        InscriptoId = 0,
+                        UsuarioId = 0
+                    };
+                }
+                else
+                {
+                    return new ResponseViewModel()
+                    {
+                        CodigoVerificador = Guid.Empty,
+                        Existe = false,
+                        InscriptoId = 0,
+                        UsuarioId = 0
+                    };
+                }
             }
             catch (Exception ex)
             {
