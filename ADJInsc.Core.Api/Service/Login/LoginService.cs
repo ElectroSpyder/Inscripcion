@@ -35,6 +35,8 @@
             using TransactionScope ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             try
             {
+                // E : es parte de un estado,en este caso significa Validado(se valido el token)
+                // A : es parte de un estado,en esta caso significa que estoy registrado
 
                 var query = "UPDATE Inscriptos  SET ins_estado = 'E' where CodigoVerificador = @codigo and ins_estado = 'A' ;" +
                     " Select ins_id from Inscriptos where CodigoVerificador = @codigo and ins_estado = 'E'";
