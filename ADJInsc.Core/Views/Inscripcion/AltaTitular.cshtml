@@ -308,20 +308,18 @@
                                 telefono: telefono
                             };
                             $.ajax({
-                             url: '@Url.Action("CargarDatos", "Inscripcion")', //"/Solicitar/CreateAjax",
-                             data: JSON.stringify(modeloCarga),
-                             type: "post",
-                             contentType: "application/json",
+                                url: '@Url.Action("GuardarModelo", "Inscripcion")', //"/Solicitar/CreateAjax",
+                                data: JSON.stringify(modeloCarga),
+                                type: "post",
+                                contentType: "application/json",
 
-                             success: function (response) {
-                                 //console.log(response);
+                                success: function (response) { 
 
                                  $("#AjaxLoader").delay(2000).hide("slow");
 
-                                 if (response === 'OK') {
-                                    
+                                 if (response === 'OK') {                                    
                                     $("#modalSuccess").modal("show");
-                                } else {
+                                 } else {
                                     $("#btnCreate").attr("disabled", false);
                                     e.preventDefault();
                                     bootbox.alert({
@@ -332,7 +330,7 @@
                                             //location.reload(true);
                                         }
                                     });
-                                }
+                                 }
 
                              },
                             error: function (response) {

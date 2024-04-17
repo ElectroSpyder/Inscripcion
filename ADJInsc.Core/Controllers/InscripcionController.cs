@@ -272,7 +272,7 @@
 
         //[HttpPost]   para probar nueva pagina
         [HttpPost]       
-        public IActionResult CargarDatos(AltaTitularViewModel model)
+        public IActionResult GuardarModelo(AltaTitularViewModel model)
         {
             var modelo = HttpContext.Session.GetObjectFromJson<AltaTitularViewModel>("altaTitular");
 
