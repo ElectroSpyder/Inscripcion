@@ -109,7 +109,7 @@ namespace ADJInsc.Helper
                 using (var smtp = new SmtpClient())
                 {
                     smtp.Connect("vps-3513664-x.dattaweb.com", 465, true);
-                    smtp.Authenticate("info_inscripcion@ivuj.gob.ar", "sldXm/B7sJ");
+                    smtp.Authenticate("info_inscripcion@ivuj.gob.ar", "Q5mUB**5uQ");
 
                     await smtp.SendAsync(mailRequest);
                     //smtp.UseDefaultCredentials = true;                   

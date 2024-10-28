@@ -81,7 +81,7 @@ namespace ADJInsc.Core.Api
 
             app.UseSession();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

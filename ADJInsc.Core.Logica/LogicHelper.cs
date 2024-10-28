@@ -288,10 +288,14 @@
 
                         var query = "sp_update_Titular";
                         // actualizar el Titular
+                        // 1_ Actualizar el SP agregando ins_fecins
+                        // Debo cargar la fecha de inscripción en ins_fecins con fecha de hoy
+                        // var fechaInscripcion = DateTime.Now();
+                        // cmd.Parameters.Add(new SqlParameter("@ins_fecins", fechaInscripcion));  // agregar al final
                         using (SqlCommand cmd = new SqlCommand(query, con))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
-                            
+
                             cmd.CommandText = query;
                             cmd.Parameters.Add(new SqlParameter("@ins_ficha", inscViewModel.InsFicha));
                             cmd.Parameters.Add(new SqlParameter("@ins_tipflia", inscViewModel.InsTipflia));   //descripcion de tipo familia 
@@ -308,7 +312,7 @@
                             cmd.Parameters.Add(new SqlParameter("@ins_discapacitado", inscViewModel.InsDiscapacitado));
                             cmd.Parameters.Add(new SqlParameter("@ins_minero", inscViewModel.InsMinero));
                             cmd.Parameters.Add(new SqlParameter("@ins_veterano", inscViewModel.InsVeterano));
-
+                            //Aqui agregar
                             if (con.State == ConnectionState.Closed)
                                 await con.OpenAsync();
 
@@ -329,7 +333,7 @@
                             modeloResponse.Existe = true;
                         }
 
-                    }
+                }
 
                 }
                 catch (Exception ex)
