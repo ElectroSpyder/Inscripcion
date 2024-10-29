@@ -37,8 +37,8 @@
             {
                 // E : es parte de un estado,en este caso significa Validado(se valido el token)
                 // A : es parte de un estado,en esta caso significa que estoy registrado
-
-                var query = "UPDATE Inscriptos  SET ins_estado = 'E' where CodigoVerificador = @codigo and ins_estado = 'A' ;" +
+                var fechaActual = DateTime.Now.ToShortDateString();
+                var query = "UPDATE Inscriptos  SET ins_estado = 'E', ins_fecins = @fechaActual where CodigoVerificador = @codigo and ins_estado = 'A' ;" +
                     " Select ins_id from Inscriptos where CodigoVerificador = @codigo and ins_estado = 'E'";
 
                 using var cmd1 = new SqlCommand(query, con)
@@ -48,6 +48,7 @@
 
                 //cmd1.Parameters.Add(new SqlParameter("@estado", "E"));
                 cmd1.Parameters.Add(new SqlParameter("@codigo", guid));
+                cmd1.Parameters.Add(new SqlParameter("@fechaActual", fechaActual));
 
                 if (con.State == ConnectionState.Closed)
                     await con.OpenAsync();
