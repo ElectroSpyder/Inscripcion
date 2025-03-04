@@ -31,7 +31,7 @@
             var result = await helper.PostServerModelo(model);
             var Helper = new Helper.EmailSender(result.CodigoVerificador.ToString(), model.email);
 
-            await Helper.SendEmail();
+            //await Helper.SendEmail();
             return result;
         }
 

@@ -10,18 +10,21 @@ namespace xa.App.Services
     using ADJInsc.Core.Service.Interface;
     using ADJInsc.Models.Basic;
     using ADJInsc.Models.ViewModels;
+    using ADJInsc.Models.ViewModels.UpLoad;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using System;
     using System.IO;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
     public class ApiServices : IApiService
     {
         private readonly UrlBase _urlBase;
+
         public ApiServices(IOptions<UrlBase> urlBase)
         {
             _urlBase = urlBase.Value;
@@ -33,7 +36,7 @@ namespace xa.App.Services
             {
                 var url = string.Empty;
                 var answer = string.Empty;
-                
+
                 url = $"{_urlBase.UrlServer}{prefix}{controller}";
 
                 using var client = new HttpClient();
@@ -53,11 +56,7 @@ namespace xa.App.Services
                         IsSuccess = false,
                         Result = StreamToStringAsync(stream)
                     };
-                    /*throw new ApiException
-                    {
-                        StatusCode = (int)response.StatusCode,
-                        Content = await StreamToStringAsync(stream)  //deserializa para obtener el error
-                };*/
+
                 }
 
                 return new Response
@@ -78,8 +77,8 @@ namespace xa.App.Services
         }
 
         public async Task<Response> PostAsync<T>(string prefix, string controller, ModeloCarga titularModel, InscViewModel inscViewModel, CancellationToken cancellationToken)
-        {            
-           
+        {
+
             string url = $"{_urlBase.UrlServer}{prefix}{controller}";
             try
             {
@@ -110,9 +109,9 @@ namespace xa.App.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    
+
                     //if (titularModel.dni == "0")
-                    if(titularModel == null)
+                    if (titularModel == null)
                     {
                         return new Response
                         {
@@ -141,7 +140,7 @@ namespace xa.App.Services
                                 Message = "Ok"
                             };
                         }
-                       
+
                     }
 
                 }
@@ -151,7 +150,7 @@ namespace xa.App.Services
                     IsSuccess = false,
                     Message = response.ReasonPhrase
                 };
-                
+
             }
             catch (Exception ex)
             {
@@ -162,12 +161,64 @@ namespace xa.App.Services
 
                 };
             }
-    
+
 
         }
 
-    
+        public async Task<Response> PostAdhesionAsync<T>(string prefix, string controller, InscViewModel inscViewModel, CancellationToken cancellationToken)
+        {
 
+            string url = $"{_urlBase.UrlServer}{prefix}{controller}";
+            try
+            {
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using var request = new HttpRequestMessage(HttpMethod.Post, url);
+
+                var json = string.Empty;
+                json = JsonConvert.SerializeObject(inscViewModel);
+
+
+                request.Content = new StringContent(json);
+                request.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+
+                using var response = await client
+                     .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+                     .ConfigureAwait(false);
+
+                response.EnsureSuccessStatusCode();
+                var stream = await response.Content.ReadAsStreamAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = true,
+                        Result = DeserializeJsonFromStream<InscViewModel>(stream),
+                        Message = "Ok"
+                    };
+
+                }
+                else
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = response.ReasonPhrase
+                    };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = "Excepcion  --> " + ex.Message
+
+                };
+            }
+        }
 
         private static T DeserializeJsonFromStream<T>(Stream stream)
         {
@@ -194,7 +245,7 @@ namespace xa.App.Services
             return content;
         }
 
-       
+
     }
 }
 

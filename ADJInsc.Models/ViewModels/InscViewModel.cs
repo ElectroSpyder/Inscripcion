@@ -1,6 +1,8 @@
 ﻿namespace ADJInsc.Models.ViewModels
 {
     using ADJInsc.Models.Models.DBInsc;
+    using ADJInsc.Models.ViewModels.AdhesionVM;
+    using ADJInsc.Models.ViewModels.UpLoad;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using System.Collections.Generic;
 
@@ -24,13 +26,10 @@
         public IList<GrupoFamiliarViewModel> GrupoFamiliar { get; set; }
 
         public string FechaAltaViewModel {
-
             get
             {
                 return string.Format("{0:dd-MM-yyyy}", InsFecalt);
             } 
-             
-        
         }
 
         public string Usuario { get; set; }
@@ -77,5 +76,8 @@
 
         public IEnumerable<SelectListItem> TipoRevistaList { get; set; }
         
+        public AdhesionViewModel AdhesionViewModel { get; set; } = new AdhesionViewModel();
+        public AdherirViewModel AdherirViewModel { get; set; } = new AdherirViewModel();
+        public List<FileUploadViewModel> FileUploadViewModel { get; set; } = new List<FileUploadViewModel>();
     }
 }

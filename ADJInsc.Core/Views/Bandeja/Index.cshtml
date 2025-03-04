@@ -3,16 +3,35 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    .highlighted {
+    font-weight: bold;
+    }
+</style>
 <div style="float:right;">
-    <form asp-controller="Inscripcion" asp-action="GoHome">
-        <img id="AjaxLoaderLogin" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
-        <button class="btn btn-outline-danger float-sm-right" id="btnLogin">Cerrar sesion</button>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
+            <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
+            @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)
+            {
+                @*  <input id="btnAdhesion" type="submit" value="Cerrar y Adherir" class="btn btn-outline-success" /> *@
+                <button id="btnAdhesion" type="button" class="btn btn-outline-success" float-right" data-toggle="modal" data-target="#modalAdhesion">
+                    <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
+                    <i class="fas fa-plus-circle"></i>
+                </button>
+            }
 
-    </form>
-    <!--
-    <button type="submit" class="btn btn-outline-info float-sm-right aceptarSuccess">Descargar Declaración Jurada</button>
-        -->
+            <form asp-controller="Inscripcion" asp-action="GoHome">
+                <img id="AjaxLoaderLogin" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
+                <button class="btn btn-outline-danger " id="btnLogin">Cerrar sesion</button>
+
+            </form>
+        <button type="submit" class="btn btn-outline-info aceptarSuccess">Descargar Declaración Jurada</button>
+    
+       
+        
+        </div>
+    </div>
 </div>
 <p>
     <h2>Sistema de Inscripción / Actualización de Datos del IVUJ</h2>
@@ -211,10 +230,22 @@
 
     <div class="form-group">
 
-        <div class="col-md-offset-2 col-md-10">
-            <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
-            <input id="btnCreate" type="submit" value="Cerrar y enviar solicitud" class="btn btn-primary" />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
+                <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
+                <input id="btnCreate" type="submit" value="Cerrar y enviar solicitud" class="btn btn-primary" />
+              @*   @if (string.Equals(Model.InsEstado, "I"))
+                {
+                   @*  <input id="btnAdhesion" type="submit" value="Cerrar y Adherir" class="btn btn-outline-success" /> 
+                   @*  <button id="btnAdhesion" type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#modalAdhesion">
+                        Adherir
+                        <i class="fas fa-plus-circle"></i>
+                    </button> 
+                } *@
+            </div>
         </div>
+
+
     </div>
 
 
@@ -294,6 +325,171 @@
     </div>
 </div>
 
+<div id="modalAdhesion" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adhesión</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#inicio" role="tab" aria-controls="inicio" aria-selected="true">Inicio</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled" href="#programas" id="programas-link" role="tab" aria-controls="programas" aria-selected="false">Tipología</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled" href="#ingresos" id="ingresos-link" role="tab" aria-controls="ingresos" aria-selected="false">Ingresos</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled" href="#finadhesion" id="finadhesion-link" role="tab" aria-controls="finadhesion" aria-selected="false">Declaración Jurada</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title"></h4>
+                               @*  <h6 class="card-subtitle mb-2">Carácter de declaración Jurada</h6> *@
+
+                                <div class="tab-content mt-3">
+                                    @*Panel de declaración jurada*@
+                                    <div class="tab-pane active" id="inicio" role="tabpanel">
+                                        <h3 class="card-subtitle mb-2" >Inicio</h3>
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label for="confirmation-checkbox" id="confirmation-label">
+                                                    <input type="checkbox" id="confirmation-checkbox" name="confirmation-checkbox" aria-labelledby="confirmation-label">
+                                                    Se deja expresamente aclarado, que la “tipología” a seleccionar dentro del programa, corresponderá a los “ingresos” 
+                                                    a declarar de mi grupo familiar. Siendo la misma, mi única opción de adhesión para este Programa.
+                                                    @* Confirmo que el ingreso de todo mi grupo familiar supera los $ @string.Format("{0:N0}", Model.AdhesionViewModel.ProgramaVM.MontoAdhesion) *@
+                                                </label>
+                                            </div>
+                                        </div>                                            
+                                    </div>
+                                    @*Panel de modulos de programas*@
+                                    <div class="tab-pane" id="programas" role="tabpanel" aria-labelledby="programas-tab">
+                                        <h3 class="card-subtitle mb-2">Tipologías</h3>
+
+                                        <div class="dropdown">                                            
+                                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Adherir a 
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
+                                                {
+                                                    <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-detalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)">@opcion.Titulo</a></li>
+                                                }
+                                            </ul>
+                                        </div>
+
+                                        <p id="selected-option" style="margin-top: 20px; font-weight: bold;">Ninguna opción seleccionada</p>
+                                        <div id="cajamonto" class="display" style="display:none;">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    Costo aproximado de la unidad habitacional
+                                                    <strong><span id="costo">-</span></strong>
+                                                </li>
+                                                <li class="list-group-item">
+                                                   Monto aproximado del ahorro previo <strong><span id="ingresominimo">-</span></strong> </br>
+                                                    <span id="descripcioncosto">-</span>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <strong>Ingreso mínimo del grupo familiar:</strong>
+                                                    <ul>
+                                                        <li>Sin entrega o anticipo a cancelar el Ahorro previo: <strong id="costosinentrega"></strong></li>
+                                                        <li>Con entregas o anticipo a cancelar el total del Ahorro previo: <strong id="costoconentrega"></strong></li>
+                                                    </ul>
+                                                    <small class="text-muted">
+                                                        Aclaración: en caso de entregas o anticipos, aproximadamente el 10% del valor que se planifica entregar representa
+                                                        el monto que puede disminuir al ingreso mínimo requerido del grupo familiar de <strong id="costosinentrega1"></strong> hasta el límite de <strong id="costoconentrega1">-</strong>.
+                                                    </small>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                   
+                                    </div>
+                                    @*Panel tab de carga de archivos*@
+                                    <div class="tab-pane" id="ingresos" role="tabpanel" aria-labelledby="inresos-tab">
+                                        
+                                        <div>
+                                            <h5 class="card-subtitle mb-2">Ingresos</h5>
+                                            <ul class="list-group">
+                                                <li class="list-group-item">Relación de dependencia (último recibo de sueldo)</li>
+                                                <li class="list-group-item">Independiente / Autónomo (Constancia de inscripción al día en ARCA (ex AFIP))</li>
+                                                <li class="list-group-item">Ambos</li>
+                                            </ul>
+                                        </div>
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                        <div>
+                                            <h5 class="card-subtitle mb-2">Archivo</h5>
+                                           @*  <form id="uploadForm" enctype="multipart/form-data">
+                                                <input type="file" id="fileInput" multiple accept="image/*" />
+                                                <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+                                                                                              
+                                                <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                                <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en el momento oportuno.</p>
+                                                <button disabled type="submit" class="btn btn-danger btnModal subirArchivo">Subir</button>
+                                            </form> *@
+                                            <!-- Formulario 1: Subir archivos -->
+                                            <form id="uploadForm" enctype="multipart/form-data" data-upload-url="@Url.Action("UploadImages", "Upload")">
+                                                <input type="file" id="fileInput" multiple accept="image/*" />
+                                                <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+                                                <button type="submit" disabled>Subir Todos</button>
+                                            </form>
+
+                                            <div id="AjaxLoader" style="display: none;">Cargando...</div>
+
+                                            @if (ViewBag.Message != null)
+                                            {
+                                                <div class="alert alert-success" style="margin-top:20px">
+                                                    @ViewBag.Message
+                                                </div>
+                                            }
+                                            <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                            <div id="result"></div>
+                                        </div> 
+                                       
+                                    </div>
+                                    
+                                    <div class="tab-pane" id="finadhesion" role="tabpanel" aria-labelledby="inresos-tab">
+                                        <h3 class="card-subtitle mb-2">Carácter de declaración Jurada</h3>
+                                        <div class="form-group">
+                                            <div class="checkbox">
+                                                <label id="fin-label">
+                                                    <input type="checkbox" id="fin-checkbox">
+                                                    El presente formulario reviste carácter de declaración jurada y declaro  conocer que la falsificación de datos es punible por el art. 172 del código penal, por lo tanto acepto que el ocultamiento y/o falsedad de datos de la información  que brindo, o las que a posterior aportara, o el no contar con la documentación respaldatoria dará lugar a mi exclusión para dicho programa. Aclarando específicamente que el no contar con los ingresos mínimos declarados, será causal de exclusión de forma directa.
+                                                    Se deja expresa conformidad, que el correo electrónico declarado  reviste carácter de Domicilio Electrónico, donde serán válidas todas las notificaciones electrónicas que en el futuro se me efectúe. Asumiendo la responsabilidad, en caso de proceder a cambiar el correo electrónico antes declarado, de informar a sí mismo a este organismo.
+                                                    La presente adhesión no genera un derecho adquirido a la adjudicación de un departamento por parte de este organismo.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" >
+                                            <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
+                                                <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
+                                                <input id="btnCreateAdhesion" data-inscripto="@Model.InsId" data-programaid="@Model.AdhesionViewModel.ProgramaVM.ProgramaId" type="submit" value="Cerrar y enviar solicitud" class="btn btn-primary" disabled />                                               
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+           
+        </div>
+    </div>
+</div>
+
 
 
 <div id="modalBorrar" class="modal" tabindex="-1" role="dialog">
@@ -343,19 +539,39 @@
                     <button type="submit" id="cerrarSuccess" class="btn btn-danger btnModal">Salir y Cerrar</button>
                 </form>
             </div>
+        </div>
+        </div>
+</div>
 
-            <!--    1_ rotativa_ Cambiar el boton para que use net.core
-     <div class="modal-footer">
-         <input hidden id="hrefsuces" />
-         <button type="submit" class="btn btn-danger btnModal aceptarSuccess">Descargar PDF</button>
-         <form asp-controller="Inscripcion" asp-action="GoHome">
-             <button type="submit" id="cerrarSuccess" class="btn btn-danger btnModal">Salir y Cerrar</button>
-         </form>
-     </div>
-    -->
+<div id="modalSuccessAdhesion" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">SOLICITUD DE ADHESION - DECLARACIÓN JURADA</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div></div>
+
+
+            <div class="modal-body card">
+                <p></p>
+            </div>
+
+            <div class="modal-footer">
+                <form asp-controller="Adhesion" asp-action="GetPdfAdhesion" target="_blank">
+                    <input hidden id="hrefsuces" />
+                    <button type="submit" class="btn btn-danger btnModal aceptarSuccessAdhesion">Descargar PDF</button>
+                </form>
+
+                <form asp-controller="Inscripcion" asp-action="GoHome">
+                    <button type="submit" id="cerrarSuccess" class="btn btn-danger btnModal">Salir y Cerrar</button>
+                </form>
+            </div>
         </div>
         </div>
-    </div>
+</div>
 
 <div id="modalError" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -390,12 +606,9 @@
 @section scripts {
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
+    <script src="~/js/uploadHandler3.js"></script>
 
 <script type="text/javascript">
-
-    
-
         $(function () {
             $(document).ready(function () {
 
@@ -410,6 +623,16 @@
             /*var url = $('#hrefsuces').val();
             window.open(url, '_blank');*/
             $("#modalError").modal('hide');
+        })
+    })
+
+    $(function () {
+            $('.aceptarSuccessAdhesion').click(function () {
+
+            /*  2_ rotativa_ Comentar ya que habre desde el boton
+            var url = $('#hrefsuces').val();
+            window.open(url, '_blank');*/
+                $("#modalSuccessAdhesion").modal('hide');
         })
     })
 
@@ -531,11 +754,6 @@
 
              var dniVM = $("#inputDniInicial").val();
              var parentescoKey = $("#ddParentescoInicialId").val();
-
-                alert("Id de Parentesco:");
-                console.log("Hola Mundo");
-             
-
              var fechaNac = $("#inputFecNacInicial").val();
 
              var disc = 0;
@@ -620,7 +838,7 @@
                             bootbox.alert({
                                 size: "small",
                                 title: "I.V.U.J.",
-                                message: "Acaba de ocurrir un problema, lamento los inconvenientes. " + result,
+                                message: "Acaba de ocurrir un problema, lamento los inconvenientes. ",
                                 callback: function () {
                                     location.reload();
                                 }
@@ -845,7 +1063,14 @@
                         },
                         error: function (errormessage) {
                             $("#AjaxLoader").delay(2000).hide("slow");
-                            alert(errormessage.responseText);
+                                e.preventDefault();
+
+                                bootbox.alert({
+                                    size: "small",
+                                    title: "I.V.U.J.",
+                                    message: "Datos ingresados de forma incorrecta",
+                                    callback: function () { }
+                                });
                         }
                     }).done(function (result) {
                         $("#AjaxLoader").delay(2000).hide("slow");
@@ -980,26 +1205,222 @@
         });
     })
 
-    function valideKeyNros(event) {
+    $(function valideKeyNros(event) {
 
-            var cardnumber = $("#inputTel").val();
-            
-            if (cardnumber.length > 12) {
-                return false;
-            }
+        var cardnumber = $("#inputTel").val();
 
-            var x = event.which;
-            
-            if (x >= 48 && x <= 57) {
-                return true;
-            }
-            else {
-                return false;
-            }
+        if (cardnumber.length > 12) {
+            return false;
         }
-    
-    function upperCase(e) {
-            e.value = e.value.toUpperCase();
+
+        var x = event.which;
+
+        if (x >= 48 && x <= 57) {
+            return true;
         }
+        else {
+            return false;
+        }
+    });
+        
+    $(function upperCase(inputElement) {
+            if (inputElement && inputElement.value) {
+                inputElement.value = inputElement.value.toUpperCase();
+            }
+     });
+
+
+    /*Adhesion*/
+    $(function () {
+            $("#btnAdhesion").click(function (e) {
+                //levantar un popup con info
+                e.preventDefault();
+               // alert("Debe mostrar popup? con que data? ")
+        })
+     });
+
+    $('#bologna-list a').on('click', function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    });
+
+    $(function () {
+            $('#confirmation-checkbox').on('change', function () {
+                if ($(this).prop('checked')) {
+                    // Checkbox marcado: agregar clase
+                    $('#confirmation-label').addClass('highlighted');
+                    $('#programas-link').removeClass('disabled');
+                } else {
+                    // Checkbox desmarcado: quitar clase
+                    $('#confirmation-label').removeClass('highlighted');
+                    $('#programas-link').addClass('disabled');
+                }
+            });
+    });
+
+    $(function () {
+            $('#fin-checkbox').on('change', function () {
+                if ($(this).prop('checked')) {
+                    // Checkbox marcado: agregar clase
+                    $('#fin-label').addClass('highlighted');
+                    $('#btnCreateAdhesion').prop('disabled', false); // Para habilitar
+                    
+                } else {
+                    // Checkbox desmarcado: quitar clase
+                    $('#fin-label').removeClass('highlighted');
+                    $('#btnCreateAdhesion').prop('disabled', true);  // Para deshabilitar
+                }
+            });
+    });
+
+    $(function () {
+            // Mostrar por defecto la primera opción al cargar la página
+                var firstOption = $('.mod01').first().attr('data-moduloid');
+            $('#selected-option').text('Opción seleccionada: ' + firstOption);
+        $('#cajamonto').hide();
+            $('.mod01').on('click', function (e) {
+                e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+                var selectedText = $(this).data('detalle'); // Obtiene el texto desde el atributo `data-value`
+                var ingresominimo = $(this).data("ingresominimo");
+                var costo = $(this).data("costo");
+                var plazo = $(this).data("plazo");
+                var descripcionCosto = $(this).data("descripcioncosto");
+                var costoConEntrega = $(this).data("costoconentrega");
+                var costoSinEntrega = $(this).data("costosinentrega");
+
+                // Actualizar los valores en el div
+                    $("#ingresominimo").text("$" + ingresominimo.toLocaleString());
+                    $("#costo").text("$" + costo.toLocaleString());
+                    $("#plazo").text(plazo.toLocaleString());
+                    $("#descripcioncosto").text(descripcionCosto.toLocaleString());
+                    $("#costoconentrega").text("$" + costoConEntrega.toLocaleString());
+                    $("#costosinentrega").text("$" + costoSinEntrega.toLocaleString());
+                    $("#costoconentrega1").text("$" + costoConEntrega.toLocaleString());
+                    $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());
+
+                if (selectedText != 'Sin Seleccionar') {
+                    $('#selected-option').text('Está por adherir a: ' + selectedText); // Actualiza el texto del párrafo
+                    $('#cajamonto').show();
+                    $('#ingresos-link').removeClass('disabled');
+                } else {
+                    $('#selected-option').text('Se debe adherir para pasar a la siguiente pestaña'); // Actualiza el texto del párrafo
+                    $('#cajamonto').hide();
+                    $('#ingresos-link').addClass('disabled');
+                }
+            });
+    });
+
+        $(function () {
+            // Mostrar por defecto la primera opción al cargar la página
+                var firstOption = $('.mod02').first().attr('data-moduloid');
+            $('#selected-option-ingreso').text('Opción seleccionada: ' + firstOption);
+            $('#cajaarchivos').hide();
+            $('.mod02').on('click', function (e) {
+                e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+                var selectedText = $(this).data('detalle'); // Obtiene el texto desde el atributo `data-value`
+                if (selectedText != 'Sin Seleccionar') {
+                    if (selectedText != '3.000.000') {
+                        $('#selected-option-ingreso').text('Mis ingresos están comprendidas entre ' + selectedText); // Actualiza el texto del párrafo
+                    }
+                    else {
+                        $('#selected-option-ingreso').text('Mis ingresos son superiores a ' + selectedText);
+                    }
+                    $('#cajaarchivos').show();
+                    $('#finadhesion-link').removeClass('disabled');
+                } else {
+                    $('#selected-option-ingreso').text('Debe seleccionar el rango para pasar a la siguiente pestaña'); // Actualiza el texto del párrafo
+                    $('#cajaarchivos').hide();
+                    $('#finadhesion-link').addClass('disabled');
+                }
+
+            });
+        });
+
+        $(function() {
+            $("#btnCreateAdhesion").click(function (e) {
+                e.preventDefault();
+                var selectedLink = $('.mod01');  // O puedes usar un selector más específico si es necesario
+                // Acceder al data-moduloid del enlace
+                var moduloId = selectedLink.data("moduloid");
+                var idInscripto = $(this).data("inscripto");
+                var programaId = $(this).data("programaid");
+                    console.log(idInscripto)
+                        console.log(moduloId)
+                            console.log(programaId)
+                    $("#AjaxLoader").show("fast");
+
+                 $.ajax({
+                                url: '@Url.Action("Adherir", "Adhesion")',
+                            data: {
+                                programaId: programaId,
+                                moduloId : moduloId,
+                                insId: idInscripto                                
+                            },
+                            type: "get",
+                            success: function (result) {
+                                //console.log(result);
+                                $("#AjaxLoader").delay(2000).hide("slow");
+                                if (result.isRedirect) {
+
+                                    //3_rotativa_ ya no uso el escribir sobre un tag el url
+                                   // $('#hrefsuces').val(result.redirectUrl);
+                                    $("#modalSuccessAdhesion").modal('show');
+                                } else {
+
+                                }
+                            },
+                            error: function (errormessage) {
+                                $("#AjaxLoader").delay(2000).hide("slow");
+                                    e.preventDefault();
+
+                                    bootbox.alert({
+                                        size: "small",
+                                        title: "I.V.U.J.",
+                                        message: "Datos ingresados de forma incorrecta",
+                                        callback: function () { }
+                                    });
+                            }
+                        }).done(function (result) {
+                            $("#AjaxLoader").delay(2000).hide("slow");
+
+                 });
+            });
+        });
+
+        //  $(function () {
+        //     $("#uploadButton").on("click", function (e) {
+        //         e.preventDefault();  // Evitar el comportamiento predeterminado
+
+        //         let fileInput = $("#fileInput")[0];  // Obtener el input de archivo
+        //         let formData = new FormData();  // Crear un nuevo objeto FormData
+
+        //         // Comprobar si se ha seleccionado algún archivo
+        //         if (fileInput.files.length === 0) {
+        //             alert("Debe seleccionar un archivo.");
+        //             return;
+        //         }
+
+        //         // Agregar los archivos al FormData
+        //         for (let i = 0; i < fileInput.files.length; i++) {
+        //             formData.append("files[]", fileInput.files[i]);
+        //         }
+
+        //         // Enviar los archivos al servidor mediante AJAX
+        //         $.ajax({
+        //             url: '/Upload/UploadImages',  // Ruta del controlador en el servidor
+        //             type: 'POST',
+        //             data: formData,
+        //             contentType: false,
+        //             processData: false,
+        //             success: function (response) {
+        //                 alert(response);
+        //             },
+        //             error: function (response) {
+        //                 alert("response");
+        //             }
+        //         });
+        //     });
+        // });
+
 </script>
 }

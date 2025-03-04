@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ADJInsc.Models.Models.DBAdhesion;
+using ADJInsc.Models.ViewModels.UpLoad;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ADJInsc.Models.Models.DBInsc
 {
@@ -34,6 +34,14 @@ namespace ADJInsc.Models.Models.DBInsc
         public virtual DbSet<TitularAs> TitularAs { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
 
+
+        //agregar las clases para conectar con la base
+
+        public virtual DbSet<Adhesion> Adhesion { get; set; }
+        public virtual DbSet<DepartamentoPrograma> DepartamentoPrograma { get; set; }
+        public virtual DbSet<ProgramaAdhesion> Programas { get; set; }
+        public virtual DbSet<Modulo> Modulos { get; set; }
+        public virtual DbSet<FileUploadViewModel> FileUpload { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
            /* if (!optionsBuilder.IsConfigured)

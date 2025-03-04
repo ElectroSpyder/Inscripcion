@@ -1,17 +1,21 @@
 ﻿namespace ADJInsc.Core.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading;
     using ADJInsc.Core.Helper;
    
     using ADJInsc.Core.Service.Interface;
     using ADJInsc.Models.ViewModels;
+    using ADJInsc.Models.ViewModels.AdhesionVM;
+    using iText.IO.Util;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.EntityFrameworkCore.Query.Internal;
     using Microsoft.Extensions.Configuration;
     using Rotativa.AspNetCore;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
     using Wkhtmltopdf.NetCore;
 
     public class BandejaController : Controller
@@ -84,6 +88,16 @@
                             Password = "2"
                         };
                         return View("Login", model1);
+                    }
+
+                    //Aqui si Estado es Inscripto entonces obtener los datos del programa
+                    //el modelo adhesion agregar el viewModel de inscripto
+                    
+                    if (modelo.InsEstado == "I"  )
+                    {                        
+                        modelo.AdhesionViewModel = GetAdhesionModel();
+                        if (Verificado(modelo))
+                            modelo.AdhesionViewModel.Habilitar = true;
                     }
 
                     HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modelo);
@@ -420,7 +434,9 @@
             modelo.InsTipflia = tipoFamiliaDesc;
             modelo.IdTipoFamilia = int.Parse(tipoFamilia);
 
-            modelo.InsNumdoc = dni;
+            if (!int.TryParse(dni, out int _dni)) return Json(modelo);
+
+            modelo.InsNumdoc = _dni.ToString().Trim();
             modelo.InsTipdoc = "0";
             modelo.InsNombre = nombre;
 
@@ -428,7 +444,7 @@
             modelo.InsMinero = minero;
             modelo.InsVeterano = veterano;
 
-            modelo.CuitCuil = cuitUno + "-" + dni + '-' + cuitTres;
+            modelo.CuitCuil = cuitUno + "-" + _dni.ToString().Trim() + '-' + cuitTres;
             modelo.CuitCuilUno = cuitUno.Trim();
             modelo.CuitCuilDos = cuitTres.Trim();
 
@@ -561,6 +577,111 @@
             }
 
 
+        }
+                
+        public AdhesionViewModel GetAdhesionModel()
+        {
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
+
+            var modelOut = new AdhesionViewModel();
+           
+            var service = _apiService.GetAsync<AdhesionViewModel>("/Test.Insc.Api/adhesion/", "GetAdhesionModel", token).Result;
+            var result = (AdhesionViewModel)service.Result;
+
+            if (result.Success)
+                modelOut = result;                
+
+            return modelOut;
+        }
+
+        public bool Verificado(InscViewModel model)
+        {
+            if (!DateTime.TryParse(model.InsFecins, out DateTime fechaInscripcion))
+                return false; // Retorna false si la fecha no es válida
+
+            bool verificado = fechaInscripcion <= model.AdhesionViewModel.ProgramaVM.FechaInicio;// &&;
+                              //fechaInscripcion <= model.AdhesionViewModel.ProgramaVM.FechaLimite;
+
+            if (!verificado)
+                return false; // Retorna false si la fecha no está en el rango permitido
+
+            return model.AdhesionViewModel.DepartamentoProgramas.Any(x =>
+                x.DepartamentoId == model.DepartamentoKey &&
+                (x.LocalidadId <= 0 || x.LocalidadId == model.LocalidadKey));
+
+        }
+
+        public JsonResult Adherir(int ProgramaId, int moduloId)
+        {
+            // public int InsId { get; set; }
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
+
+            var modeloVM = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
+
+            var modeloAdherir = new AdherirViewModel
+            {
+                InscriptoId = modeloVM.InsId,
+                ModuloId = moduloId,
+                ProgramaId = ProgramaId,
+                FechaAdhesion = DateTime.Now
+            };
+
+            var modelo = new InscViewModel
+            {
+                AdherirViewModel = modeloAdherir
+            };
+
+            var service = this._apiService.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostAdherir", null, modelo, token).Result;
+            if (service.IsSuccess)
+            {
+                var respuesta = (ResponseViewModel)service.Result;
+
+                if (respuesta.Existe)
+                {
+
+                    var modeloNuevo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
+                    var grupoNuevo = new List<GrupoFamiliarViewModel>();
+                    foreach (var item in modeloNuevo.GrupoFamiliar)
+                    {
+                        if (item.InsfEstado != "B")
+                        {
+                            grupoNuevo.Add(item);
+                        }
+                    }
+                    modeloNuevo.GrupoFamiliar = grupoNuevo;
+                    HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modeloNuevo);
+
+                    //4_ rotativa_ retorno el json pero sin valor
+                    var redirectUrl1 = Url.Action("GetPdfHome", "Bandeja");
+                    return Json(new
+                    {
+                        redirectUrl = redirectUrl1,
+                        isRedirect = true,
+                        ob = respuesta.Observacion
+                    });
+
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        redirectUrl = "",
+                        isRedirect = false,
+                        ob = respuesta.Observacion
+                    });
+                }
+            }
+            else
+            {
+                return Json(new
+                {
+                    redirectUrl = "",
+                    isRedirect = false,
+                    ob = "no llego respuesta"
+                });
+            }
         }
     }
 }
