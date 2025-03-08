@@ -28,6 +28,12 @@
             con = new SqlConnection(_connectionString);
         }
 
+        /// <summary>
+        /// Metodo que cambia el estado a "E" porque validó su correo, solamente, al completar
+        /// la carga de datos recien va a cambiar el estado a "I".
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
         public async Task<bool> VerificarGuid(Guid guid)
         {
             Connection();

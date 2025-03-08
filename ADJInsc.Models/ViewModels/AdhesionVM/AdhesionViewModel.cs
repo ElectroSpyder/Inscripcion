@@ -1,5 +1,6 @@
 ﻿namespace ADJInsc.Models.ViewModels.AdhesionVM
 {
+    using System;
     using System.Collections.Generic;
     public class AdhesionViewModel
     {

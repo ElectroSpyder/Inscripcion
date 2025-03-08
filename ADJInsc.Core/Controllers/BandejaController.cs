@@ -5,11 +5,9 @@
     using ADJInsc.Core.Service.Interface;
     using ADJInsc.Models.ViewModels;
     using ADJInsc.Models.ViewModels.AdhesionVM;
-    using iText.IO.Util;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore.Query.Internal;
     using Microsoft.Extensions.Configuration;
     using Rotativa.AspNetCore;
     using System;
@@ -24,7 +22,7 @@
         public string _connectionString { get; set; }
         private readonly IApiService _apiService;
         //readonly IGeneratePdf _generatePdf;
-
+        private DateTime Fecha => DateTime.Now;
         public BandejaController(IConfiguration configuration, IApiService apiService, IGeneratePdf generatePdf)
         {
             Configuration = configuration;
@@ -605,17 +603,19 @@
         }
 
         public bool Verificado(InscViewModel model)
-        {
-            if (model.AdhesionViewModel.AdhesionId != 0)
-                return false;
+        {            
             if (!DateTime.TryParse(model.InsFecins, out DateTime fechaInscripcion))
                 return false; // Retorna false si la fecha no es válida
-
-            bool verificado = fechaInscripcion <= model.AdhesionViewModel.ProgramaVM.FechaInicio;// &&;
+            if (!DateTime.TryParse(model.AdhesionViewModel.ProgramaVM.FechaInicio, out DateTime fechaInicio))
+                return false;
+            bool verificado = fechaInscripcion <= fechaInicio;// &&;
                               //fechaInscripcion <= model.AdhesionViewModel.ProgramaVM.FechaLimite;
 
             if (!verificado)
                 return false; // Retorna false si la fecha no está en el rango permitido
+
+            //if (model.AdhesionViewModel.AdhesionId != 0)
+            //    return false;
 
             return model.AdhesionViewModel.DepartamentoProgramas.Any(x =>
                 x.DepartamentoId == model.DepartamentoKey &&
@@ -636,7 +636,7 @@
                 InscriptoId = modeloVM.InsId,
                 ModuloId = moduloId,
                 ProgramaId = ProgramaId,
-                FechaAdhesion = DateTime.Now
+                FechaAdhesion = Fecha.ToString()
             };
 
             var modelo = new InscViewModel

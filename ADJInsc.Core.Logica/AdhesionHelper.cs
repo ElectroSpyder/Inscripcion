@@ -318,10 +318,10 @@
                         {
                             ProgramaId = programaId,
                             Descripcion = ConvertFromReader<string>(item["Descripcion"]),
-                            FechaInicio = item["FechaInicio"] is DBNull ? DateTime.MinValue : (DateTime)item["FechaInicio"],
-                            FechaLimite = item["FechaLimite"] is DBNull ? DateTime.MinValue : (DateTime)item["FechaLimite"],
+                            FechaInicio = ConvertFromReader<string>(item["FechaInicio"]), // is DBNull ? DateTime.MinValue : (DateTime)item["FechaInicio"],
+                            FechaLimite = ConvertFromReader<string>(item["FechaLimite"]), // is DBNull ? DateTime.MinValue : (DateTime)item["FechaLimite"],
                             Estado = ConvertFromReader<int>(item["Estado"]),
-                            FechaCortePrograma = item["FechaCortePrograma"] is DBNull ? DateTime.MinValue : (DateTime)item["FechaCortePrograma"],
+                            FechaCortePrograma = ConvertFromReader<string>(item["FechaCortePrograma"]), // is DBNull ? DateTime.MinValue : (DateTime)item["FechaCortePrograma"],
                             MontoAdhesion = ConvertFromReader<decimal>(item["MontoAdhesion"])
                         };
                     }
@@ -408,7 +408,7 @@
                     foreach (DataRow item in dt.Rows)
                     {
                         model.AdhesionId = ConvertFromReader<int>(item["AdhesionId"]);
-                        model.FechaAdhesion = item["FechaAdhesion"] is DBNull ? null : ((DateTime)item["FechaAdhesion"]).ToString();
+                        model.FechaAdhesion = ConvertFromReader<string>(item["FechaAdhesion"]); //item["FechaAdhesion"] is DBNull ? null : ((DateTime)item["FechaAdhesion"]).ToString();
                         model.DescripcionModulo = ConvertFromReader<string>(item["Titulo"]);
                         break;
                     }

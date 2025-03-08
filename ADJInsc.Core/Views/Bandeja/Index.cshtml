@@ -13,31 +13,26 @@
         <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">            
             @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)
             {
-                <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
+                    <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
                 @*  <input id="btnAdhesion" type="submit" value="Cerrar y Adherir" class="btn btn-outline-success" /> *@
-                <button id="btnAdhesion" type="button" class="btn btn-outline-success" float-right" data-toggle="modal" data-target="#modalAdhesion">
-                    <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
-                    <i class="fas fa-plus-circle"></i>
-                </button>
+                    <button id="btnAdhesion" type="button" class="btn btn-outline-success" float-right" data-toggle="modal" data-target="#modalAdhesion">
+                        <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
+                        <i class="fas fa-plus-circle"></i>
+                    </button>
             }
             <form asp-controller="Inscripcion" asp-action="GoHome">
                 <img id="AjaxLoaderLogin" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
                 <button class="btn btn-outline-danger " id="btnLogin">Cerrar sesion</button>
-
             </form>
-        <button type="submit" class="btn btn-outline-info aceptarSuccess">Descargar Declaración Jurada</button>
-    
-       
-        
+            <button type="submit" class="btn btn-outline-info aceptarSuccess">Descargar Declaración Jurada</button>
         </div>
     </div>
 </div>
-<div>
+
 <p>
     <h2>Sistema de Inscripción / Actualización de Datos del IVUJ</h2>
     <h4>Panel de Control</h4>
 </p>
-</div>
 
 
 <form id="formFamilia" asp-controller="Bandeja" asp-action="GuardarData">
@@ -163,7 +158,7 @@
                 @Html.DropDownListFor(x => Model.TipoRevistaKey, Model.TipoRevistaList ?? new List<SelectListItem>(), htmlAttributes: new { @class = "form-control", id = "ddTipoRevistaId" })
 
             </div>
-            
+
             <div class="form-group col-md-8">
 
                 <label for="inputIngresoNeto">Ingreso total del GRUPO FAMILIAR (*) (**) - Sueldo Neto (sin puntos):</label>
@@ -214,11 +209,11 @@
                     </tr>
                 </thead>
                 <tbody class="tbody">
-                   
-                       
+
+
                 </tbody>
             </table>
-            
+
         </div>
         <div class="card-footer">
             <h6 class="card-title">
@@ -255,7 +250,7 @@
             </div>
             <div class="modal-body card">
                 <div class="card-body">
-                    
+
                     <div class="form-group col-md-12 has-success">
                         Apellido/s y Nombre/s (completos) (*)
                         <input 
@@ -302,13 +297,13 @@
                     <div class="form-group col-md-12 has-success">
                         <label>Parentesco (seleccionar) (*)</label>
                         @Html.DropDownListFor(x => Model.ParentescoKey, Model.ParentescoList ?? new List<SelectListItem>(),
-                            htmlAttributes: new { @class = "form-control", id = "ddParentescoInicialId",onchange="elementoSeleccionado(this)"})
+                                     htmlAttributes: new { @class = "form-control", id = "ddParentescoInicialId", onchange = "elementoSeleccionado(this)" })
                     </div>
                 </div>
 
             </div>
             <div class="modal-footer">
-               
+
                 <a id="addPersonaInicialModal" class="btn btn-info btnModal" href="#">Cargar y Cerrar</a>
 
             </div>
@@ -347,7 +342,7 @@
                             </div>
                             <div class="card-body">
                                 <h4 class="card-title"></h4>
-                               @*  <h6 class="card-subtitle mb-2">Carácter de declaración Jurada</h6> *@
+                                @*  <h6 class="card-subtitle mb-2">Carácter de declaración Jurada</h6> *@
 
                                 <div class="tab-content mt-3">
                                     @*Panel de declaración jurada*@
@@ -375,7 +370,7 @@
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                                 {
-                                                    <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)">@opcion.Titulo</a></li>
+                                                        <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)">@opcion.Titulo</a></li>
                                                 }
                                             </ul>
                                         </div>
@@ -397,15 +392,15 @@
                                                         <li>Sin entrega o anticipo a cancelar el Ahorro previo: <strong id="costosinentrega"></strong></li>
                                                         <li>Con entregas o anticipo a cancelar el total del Ahorro previo: <strong id="costoconentrega"></strong></li>
                                                     </ul>
-                                                    
+
                                                 </li>
                                             </ul>
                                         </div>
-                                   
+
                                     </div>
                                     @*Panel tab de carga de archivos*@
                                     <div class="tab-pane" id="ingresos" role="tabpanel" aria-labelledby="inresos-tab">
-                                        
+
                                         <div>
                                             <h5 class="card-subtitle mb-2">Ingresos</h5>
                                             <ul class="list-group">
@@ -417,10 +412,10 @@
                                         <div class="mb-3"></div> <!-- Espacio entre divs -->
                                         <div>
                                             <h5 class="card-subtitle mb-2">Archivo</h5>
-                                           @*  <form id="uploadForm" enctype="multipart/form-data">
+                                            @*  <form id="uploadForm" enctype="multipart/form-data">
                                                 <input type="file" id="fileInput" multiple accept="image/*" />
                                                 <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
-                                                                                              
+
                                                 <div class="mb-3"></div> <!-- Espacio entre divs -->
                                                 <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en el momento oportuno.</p>
                                                 <button disabled type="submit" class="btn btn-danger btnModal subirArchivo">Subir</button>
@@ -438,16 +433,16 @@
 
                                             @if (ViewBag.Message != null)
                                             {
-                                                <div class="alert alert-success" style="margin-top:20px">
+                                                    <div class="alert alert-success" style="margin-top:20px">
                                                     @ViewBag.Message
-                                                </div>
+                                                    </div>
                                             }
                                             <div class="mb-3"></div> <!-- Espacio entre divs -->
                                             <div id="result"></div>
                                         </div> 
-                                       
+
                                     </div>
-                                    
+
                                     <div class="tab-pane" id="finadhesion" role="tabpanel" aria-labelledby="inresos-tab">
                                         <h3 class="card-subtitle mb-2">Carácter de declaración Jurada</h3>
                                         <div class="form-group">
@@ -474,8 +469,8 @@
                     </div>
                 </div>
             </div>
-          
-           
+
+
         </div>
     </div>
 </div>
@@ -524,7 +519,7 @@
                     <input hidden id="hrefsuces" />
                     <button type="submit" class="btn btn-danger btnModal aceptarSuccess">Descargar PDF</button>
                 </form>
-                
+
                 <form asp-controller="Inscripcion" asp-action="GoHome">
                     <button type="submit" id="cerrarSuccess" class="btn btn-danger btnModal">Salir y Cerrar</button>
                 </form>
@@ -592,787 +587,534 @@
     </div>
 </div>
  <!-- Modal -->
-                    <div class="modal fade" id="modalExisteAdhesion" tabindex="-1" role="dialog" aria-labelledby="modalAdhesionLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header bg-primary text-white">
-                                    <h5 class="modal-title" id="modalAdhesionLabel">Información de Adhesión</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <p> Sr. @Model.InsNombre, usted esta adherido al programa <strong>@Model.AdhesionViewModel.DescripcionModulo</strong></p>
-                                    <p> Numero Adhesion @Model.AdhesionViewModel.AdhesionId con fecha @Model.AdhesionViewModel.FechaAdhesion</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div style="float:right;">
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
+            <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
 
-@section scripts {
-
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/uploadHandler3.js"></script>
-
-<script type="text/javascript">
-        $(function () {
-            $(document).ready(function () {
-
-                loadData();
-
-
-            })
-        });
-        $(function(){
-                 $(document).ready(function () {
-            var adhesionId = @Model.AdhesionViewModel.AdhesionId;
-            if (adhesionId !== 0) {
-                         $("#modalExisteAdhesion").modal("show"); // Muestra el modal automáticamente
-                    }
-                });
-        });
-
-    $(function () {
-        $('#aceptarBadSuccess').click(function () {
-            /*var url = $('#hrefsuces').val();
-            window.open(url, '_blank');*/
-            $("#modalError").modal('hide');
-        })
-    })
-
-    $(function () {
-            $('.aceptarSuccessAdhesion').click(function () {
-
-            /*  2_ rotativa_ Comentar ya que habre desde el boton
-            var url = $('#hrefsuces').val();
-            window.open(url, '_blank');*/
-                $("#modalSuccessAdhesion").modal('hide');
-        })
-    })
-
-    $(function () {
-        $('.aceptarSuccess').click(function () {
-
-            /*  2_ rotativa_ Comentar ya que habre desde el boton
-            var url = $('#hrefsuces').val();
-            window.open(url, '_blank');*/
-            $("#modalSuccess").modal('hide');
-        })
-    })
-    $(function () {
-        $("#ddDepartamentoId").on("change", function () {
-
-            CargarDeptoLocalidad();
-        })
-    });
-
-    function CargarDeptoLocalidad() {
-
-        var depto = $("#ddDepartamentoId").val();
-        $.ajax({
-            url: '@Url.Action("GetLocalidadesList", "Bandeja")',
-            data: {
-                // Datos / Parámetros
-                departamentoKey: depto
-            },
-            type: "get",
-            timeout: 1500
-
-        }).done(function (result) {
-
-            $("#ddLocalidadId").empty();
-            $("#ddLocalidadId").append("<option value> -- Seleccionar Localidad de " + $("#ddDepartamentoId option:selected").text() + " --</option>")
-            // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
-            $.each(result, function (key, row) {
-                $("#ddLocalidadId").append('<option value="' + row.value + '">' + row.text + '</option>');
-            });
-        });
-    }
-
-        function loadData() {
-            $.ajax({
-                url: '@Url.Action("List", "Bandeja")',
-                type: "GET",
-                success: function (result) {
-                    var html = '';
-                    if (result == null) {
-
-                    } else {
-                        console.log(result.insDiscapacitado);
-
-                        if (result.insDiscapacitado == 1) {
-                            $("#idDis").prop('checked', true);
-                        } else {
-                            $("#idDis").prop('checked', false);
-                        }
-                        if (result.insMinero == 1) {
-                            $("#idMin").prop('checked', true);
-                        } else {
-                            $("#idMin").prop('checked', false);
-                        }
-                        if (result.insVeterano == 1) {
-                            $("#idVet").prop('checked', true);
-                        } else {
-                            $("#idVet").prop('checked', false);
-                        }
-                        $.each(result.grupoFamiliar, function (key, item) {
-
-                            if (item.insfEstado != "B") {
-                                var miFecha = Date.parse(item.fechaNacimiento);
-                                html += '<tr>';
-                                html += '<td>' + item.insfNombre + '</td>';
-                                html += '<td>' + item.insfNumdoc + '</td>';
-                                html += '<td>' + item.fechaShow + '</td>';
-                                html += '<td>' + item.discapacidad + '</td>';
-                                html += '<td>' + item.veterano + '</td>';
-                                html += '<td>' + item.minero + '</td>';
-                                html += '<td class = "parentescoKey">' + item.parentescoDesc + '</td>';
-                                html += '<td><a href="#" onclick="return getbyID(' + item.insfNumdoc + ')">Editar</a>  <a href="#" onclick="Delete(' + item.insfNumdoc + ')">Borrar</a></td>';
-                                html += '</tr>';
-
-                            }
-                        });
-                    }
-
-                    $('.tbody').html(html);
-                },
-                error: function (errormessage) {
-                    alert(errormessage.responseText);
-                }
-            });
-        };
-      
-      //INICIO ELEMENTO SELECCIONADO
-      function elementoSeleccionado(elemento)
-      {
-            var select = document.getElementById('ddParentescoInicialId');
-            var text = select.options[select.selectedIndex].text;
-            
-
-            if(text == "ESPOSO/A")
+            @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)
             {
-                console.log("Por favor seleccione otra opción")
+                        <button id="btnAdhesion" type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalAdhesion">
+                            <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
+                            <i class="fas fa-plus-circle"></i>
+                        </button>
             }
             else
             {
-                console.log(text);
+                if (Model.AdhesionViewModel.AdhesionId != 0)
+                {
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modalExisteAdhesion" tabindex="-1" role="dialog" aria-labelledby="modalAdhesionLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <!-- Encabezado -->
+                                                <div class="modal-header bg-primary text-white">
+                                                    <h5 class="modal-title" id="modalAdhesionLabel">Información de Adhesión</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Cuerpo del modal -->
+                                                <div class="modal-body">
+                                                    <p><strong>Sr./Sra. @Model.InsNombre,</strong></p>
+                                                    <p>Usted está adherido al programa <strong>@Model.AdhesionViewModel.DescripcionModulo</strong>.</p>
+                                                    <p><strong>Número de Adhesión:</strong> <span class="h4 font-weight-bold text-primary">@Model.AdhesionViewModel.AdhesionId</span></p>
+                                                    <p><strong>Fecha de Adhesión:</strong> <span class="text-primary">@Model.AdhesionViewModel.FechaAdhesion</span></p>
+                                                </div>
+
+                                                <!-- Pie del modal -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                }
             }
-            
-      }
-      //FIN ELEMENTO SELECCIONADO
-       
-     $(function () {
-         $("#addPersonaInicialModal").click(function (e) {
 
-             var nombreVM = $("#inputNombreInicial").val();
+            <!-- Formulario de cierre de sesión -->
+            <form asp-controller="Inscripcion" asp-action="GoHome">
+                <img id="AjaxLoaderLogin" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
+                <button class="btn btn-outline-danger" id="btnLogin">Cerrar sesión</button>
+            </form>
 
-             var dniVM = $("#inputDniInicial").val();
-             var parentescoKey = $("#ddParentescoInicialId").val();
-             var fechaNac = $("#inputFecNacInicial").val();
-
-             var disc = 0;
-             var minero = 0;
-             var veterano = 0;
+            <!-- Botón de descargar declaración jurada -->
+            <button type="submit" class="btn btn-outline-info aceptarSuccess">Descargar Declaración Jurada</button>
+        </div> <!-- Cierra col-md-offset-2 col-md-10 -->
+    </div> <!-- Cierra form-group -->
+</div> <!-- Cierra div con float:right -->
 
 
-             if ($("#idDisInicial").is(':checked')) {
-                    disc = 1;
-                }
+@section scripts {
 
-             if ($("#idMinInicial").is(':checked')) {
-                    minero = 1;
-                }
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+        <script src="~/js/uploadHandler3.js"></script>
 
-             if ($("#idVetInicial").is(':checked')) {
-                    veterano = 1;
-                }
+    <script type="text/javascript">
+            $(function () {
+                $(document).ready(function () {
 
-                if (!fechaNac) {
-                    $("#inputFecNacInicial").css("border-color", "red");
-                    e.preventDefault();
-                } else {
-                    $("#inputFecNacInicial").css("border-color", "green");
-                }
-
-                if (!nombreVM) {
-                    $("#inputNombreInicial").css("border-color", "red");
-                    e.preventDefault();
-                } else {
-                    $("#inputNombreInicial").css("border-color", "green");
-                }
-
-
-                if (dniVM.length > 6) {
-                    $("#inputDniInicial").css("border-color", "green");
-
-                } else {
-                    $("#inputDniInicial").css("border-color", "red");
-                    e.preventDefault();
-                }
-
-             if (nombreVM && dniVM.length > 6 && fechaNac != null) {
-                 $('#inputDniInicial').prop('disabled', false);
-                    $.ajax({
-                        url: '@Url.Action("AgregarPersona", "Bandeja")',
-                        data: {
-                            // Datos / Parámetros
-                            nombre: nombreVM,
-                            dni: dniVM,
-                            parentescoKey: parentescoKey,
-                            fechaNac: fechaNac,
-                            disc: disc, //$("#inputCheck").val(),
-                            minero: minero,
-                            veterano: veterano
-                        },
-                        type: "post",
-                        timeout: 1500
-
-                    })
-                        .done(function (r) {
-
-                            loadData();
-                            $("#inputNombreInicial").val("");
-                            $("#inputDniInicial").val("");
-                            $("#ddParentescoInicialId").val(0);
-                            $('#idDisInicial').prop('checked', false);
-                            $('#idVetInicial').prop('checked', false);
-                            $('#idMinInicial').prop('checked', false);
-
-                            $('#inputNombreInicial').css('border-color', 'lightgrey');
-                            $('#inputDniInicial').css('border-color', 'lightgrey');
-                            $('#inputFecNacInicial').css('border-color', 'lightgrey');
-                            //$("#inputTel").css('border-color', 'lightgrey');   // var telefono = $("#inputTel").val();
-                            $('#idDisInicial').css('border-color', 'lightgrey');
-                            $('#idMinInicial').css('border-color', 'lightgrey');
-                            $('#idVetInicial').css('border-color', 'lightgrey');
-                            $('#ddParentescoInicialId').css('border-color', 'lightgrey');
-
-                        })
-                        .fail(function (result) {
-                            bootbox.alert({
-                                size: "small",
-                                title: "I.V.U.J.",
-                                message: "Acaba de ocurrir un problema, lamento los inconvenientes. ",
-                                callback: function () {
-                                    location.reload();
-                                }
-                            });
-                        });
-                    $("#modalInicialFamilia").modal('hide');
-
-                }
-
-            });
-     });
-
-        function Delete(numerodni) {
-            $("#numeroDocId").val(numerodni);
-            $("#modalBorrar").modal('show');
-        };
-
-    $(function () {
-        $('#btnModalInicial').click(function () {
-            limpiarModal();
-        })
-    });
-
-         $(function () {
-            $("#delPersonaModal").click(function (e) {
-                e.preventDefault();
-                var idMod = $("#numeroDocId").val();
-                $.ajax({
-                    url: '@Url.Action("DeletePersona", "Bandeja")',
-                    data: {
-                        id: idMod
-                    },
-                    type: "post"
-                }).done(function (result) {
-                    //$("#idFormFamilia").show();
-                    //$("#tablaFamilia").html(result);
                     loadData();
-                    /*$("#inputNombreInicial").val("");
-                    $("#inputDniInicial").val("");
-                    $("#ddParentescoInicialId").val(0);
-                    $('#idDisInicial').prop('checked', false);
-                    $('#idVetInicial').prop('checked', false);
-                    $('#idMinInicial').prop('checked', false);
 
-                    $('#inputNombreInicial').css('border-color', 'lightgrey');
-                    $('#inputDniInicial').css('border-color', 'lightgrey');
-                    $('#inputFecNacInicial').css('border-color', 'lightgrey');
-                    $('#idDisInicial').css('border-color', 'lightgrey');
-                    $('#idMinInicial').css('border-color', 'lightgrey');
-                    $('#idVetInicial').css('border-color', 'lightgrey');
-                    $('#ddParentescoInicialId').css('border-color', 'lightgrey');*/
-                    limpiarModal();
-                }).fail(function (data) {
-                    bootbox.alert({
-                        size: "small",
-                        title: "I.V.U.J.",
-                        message: "Acaba de ocurrir un problema, lamento los inconvenientes. " + data,
-                        callback: function () {
-                            //location.reload();
+
+                })
+            });
+            $(function(){
+                     $(document).ready(function () {
+                        var adhesionId = @Model.AdhesionViewModel.AdhesionId;
+                        if (adhesionId !== 0) {
+                             $("#modalExisteAdhesion").modal("show"); // Muestra el modal automáticamente
+                                     $("#btnAdhesion").prop('disabled', true);
                         }
                     });
-                });
-                $("#modalBorrar").modal('hide');
+            });
+
+        $(function () {
+            $('#aceptarBadSuccess').click(function () {
+                /*var url = $('#hrefsuces').val();
+                window.open(url, '_blank');*/
+                $("#modalError").modal('hide');
             })
+        })
+
+        $(function () {
+                $('.aceptarSuccessAdhesion').click(function () {
+
+                /*  2_ rotativa_ Comentar ya que habre desde el boton
+                var url = $('#hrefsuces').val();
+                window.open(url, '_blank');*/
+                    $("#modalSuccessAdhesion").modal('hide');
+            })
+        })
+
+        $(function () {
+            $('.aceptarSuccess').click(function () {
+
+                /*  2_ rotativa_ Comentar ya que habre desde el boton
+                var url = $('#hrefsuces').val();
+                window.open(url, '_blank');*/
+                $("#modalSuccess").modal('hide');
+            })
+        })
+        $(function () {
+            $("#ddDepartamentoId").on("change", function () {
+
+                CargarDeptoLocalidad();
+            })
+        });
+
+        function CargarDeptoLocalidad() {
+
+            var depto = $("#ddDepartamentoId").val();
+            $.ajax({
+                url: '@Url.Action("GetLocalidadesList", "Bandeja")',
+                data: {
+                    // Datos / Parámetros
+                    departamentoKey: depto
+                },
+                type: "get",
+                timeout: 1500
+
+            }).done(function (result) {
+
+                $("#ddLocalidadId").empty();
+                $("#ddLocalidadId").append("<option value> -- Seleccionar Localidad de " + $("#ddDepartamentoId option:selected").text() + " --</option>")
+                // CONSTRUIMOS EL DropDownList A PARTIR DEL RESULTADO Json (data)
+                $.each(result, function (key, row) {
+                    $("#ddLocalidadId").append('<option value="' + row.value + '">' + row.text + '</option>');
+                });
+            });
+        }
+
+            function loadData() {
+                $.ajax({
+                    url: '@Url.Action("List", "Bandeja")',
+                    type: "GET",
+                    success: function (result) {
+                        var html = '';
+                        if (result == null) {
+
+                        } else {
+                            console.log(result.insDiscapacitado);
+
+                            if (result.insDiscapacitado == 1) {
+                                $("#idDis").prop('checked', true);
+                            } else {
+                                $("#idDis").prop('checked', false);
+                            }
+                            if (result.insMinero == 1) {
+                                $("#idMin").prop('checked', true);
+                            } else {
+                                $("#idMin").prop('checked', false);
+                            }
+                            if (result.insVeterano == 1) {
+                                $("#idVet").prop('checked', true);
+                            } else {
+                                $("#idVet").prop('checked', false);
+                            }
+                            $.each(result.grupoFamiliar, function (key, item) {
+
+                                if (item.insfEstado != "B") {
+                                    var miFecha = Date.parse(item.fechaNacimiento);
+                                    html += '<tr>';
+                                    html += '<td>' + item.insfNombre + '</td>';
+                                    html += '<td>' + item.insfNumdoc + '</td>';
+                                    html += '<td>' + item.fechaShow + '</td>';
+                                    html += '<td>' + item.discapacidad + '</td>';
+                                    html += '<td>' + item.veterano + '</td>';
+                                    html += '<td>' + item.minero + '</td>';
+                                    html += '<td class = "parentescoKey">' + item.parentescoDesc + '</td>';
+                                    html += '<td><a href="#" onclick="return getbyID(' + item.insfNumdoc + ')">Editar</a>  <a href="#" onclick="Delete(' + item.insfNumdoc + ')">Borrar</a></td>';
+                                    html += '</tr>';
+
+                                }
+                            });
+                        }
+
+                        $('.tbody').html(html);
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            };
+
+          //INICIO ELEMENTO SELECCIONADO
+          function elementoSeleccionado(elemento)
+          {
+                var select = document.getElementById('ddParentescoInicialId');
+                var text = select.options[select.selectedIndex].text;
+
+
+                if(text == "ESPOSO/A")
+                {
+                    console.log("Por favor seleccione otra opción")
+                }
+                else
+                {
+                    console.log(text);
+                }
+
+          }
+          //FIN ELEMENTO SELECCIONADO
+
+         $(function () {
+             $("#addPersonaInicialModal").click(function (e) {
+
+                 var nombreVM = $("#inputNombreInicial").val();
+
+                 var dniVM = $("#inputDniInicial").val();
+                 var parentescoKey = $("#ddParentescoInicialId").val();
+                 var fechaNac = $("#inputFecNacInicial").val();
+
+                 var disc = 0;
+                 var minero = 0;
+                 var veterano = 0;
+
+
+                 if ($("#idDisInicial").is(':checked')) {
+                        disc = 1;
+                    }
+
+                 if ($("#idMinInicial").is(':checked')) {
+                        minero = 1;
+                    }
+
+                 if ($("#idVetInicial").is(':checked')) {
+                        veterano = 1;
+                    }
+
+                    if (!fechaNac) {
+                        $("#inputFecNacInicial").css("border-color", "red");
+                        e.preventDefault();
+                    } else {
+                        $("#inputFecNacInicial").css("border-color", "green");
+                    }
+
+                    if (!nombreVM) {
+                        $("#inputNombreInicial").css("border-color", "red");
+                        e.preventDefault();
+                    } else {
+                        $("#inputNombreInicial").css("border-color", "green");
+                    }
+
+
+                    if (dniVM.length > 6) {
+                        $("#inputDniInicial").css("border-color", "green");
+
+                    } else {
+                        $("#inputDniInicial").css("border-color", "red");
+                        e.preventDefault();
+                    }
+
+                 if (nombreVM && dniVM.length > 6 && fechaNac != null) {
+                     $('#inputDniInicial').prop('disabled', false);
+                        $.ajax({
+                            url: '@Url.Action("AgregarPersona", "Bandeja")',
+                            data: {
+                                // Datos / Parámetros
+                                nombre: nombreVM,
+                                dni: dniVM,
+                                parentescoKey: parentescoKey,
+                                fechaNac: fechaNac,
+                                disc: disc, //$("#inputCheck").val(),
+                                minero: minero,
+                                veterano: veterano
+                            },
+                            type: "post",
+                            timeout: 1500
+
+                        })
+                            .done(function (r) {
+
+                                loadData();
+                                $("#inputNombreInicial").val("");
+                                $("#inputDniInicial").val("");
+                                $("#ddParentescoInicialId").val(0);
+                                $('#idDisInicial').prop('checked', false);
+                                $('#idVetInicial').prop('checked', false);
+                                $('#idMinInicial').prop('checked', false);
+
+                                $('#inputNombreInicial').css('border-color', 'lightgrey');
+                                $('#inputDniInicial').css('border-color', 'lightgrey');
+                                $('#inputFecNacInicial').css('border-color', 'lightgrey');
+                                //$("#inputTel").css('border-color', 'lightgrey');   // var telefono = $("#inputTel").val();
+                                $('#idDisInicial').css('border-color', 'lightgrey');
+                                $('#idMinInicial').css('border-color', 'lightgrey');
+                                $('#idVetInicial').css('border-color', 'lightgrey');
+                                $('#ddParentescoInicialId').css('border-color', 'lightgrey');
+
+                            })
+                            .fail(function (result) {
+                                bootbox.alert({
+                                    size: "small",
+                                    title: "I.V.U.J.",
+                                    message: "Acaba de ocurrir un problema, lamento los inconvenientes. ",
+                                    callback: function () {
+                                        location.reload();
+                                    }
+                                });
+                            });
+                        $("#modalInicialFamilia").modal('hide');
+
+                    }
+
+                });
          });
 
-    function limpiarModal() {
-        $("#inputNombreInicial").val("");
-        $("#inputDniInicial").val("");
-        $('#inputDniInicial').prop('disabled', false);
-        $("#ddParentescoInicialId").val(0);
-        $('#idDisInicial').prop('checked', false);
-        $('#idVetInicial').prop('checked', false);
-        $('#idMinInicial').prop('checked', false);
+            function Delete(numerodni) {
+                $("#numeroDocId").val(numerodni);
+                $("#modalBorrar").modal('show');
+            };
 
-        $('#inputNombreInicial').css('border-color', 'lightgrey');
-        $('#inputDniInicial').css('border-color', 'lightgrey');
-        $('#inputFecNacInicial').css('border-color', 'lightgrey');
-        $('#idDisInicial').css('border-color', 'lightgrey');
-        $('#idMinInicial').css('border-color', 'lightgrey');
-        $('#idVetInicial').css('border-color', 'lightgrey');
-        $('#ddParentescoInicialId').css('border-color', 'lightgrey');
-    }
+        $(function () {
+            $('#btnModalInicial').click(function () {
+                limpiarModal();
+            })
+        });
 
+             $(function () {
+                $("#delPersonaModal").click(function (e) {
+                    e.preventDefault();
+                    var idMod = $("#numeroDocId").val();
+                    $.ajax({
+                        url: '@Url.Action("DeletePersona", "Bandeja")',
+                        data: {
+                            id: idMod
+                        },
+                        type: "post"
+                    }).done(function (result) {
+                        //$("#idFormFamilia").show();
+                        //$("#tablaFamilia").html(result);
+                        loadData();
+                        /*$("#inputNombreInicial").val("");
+                        $("#inputDniInicial").val("");
+                        $("#ddParentescoInicialId").val(0);
+                        $('#idDisInicial').prop('checked', false);
+                        $('#idVetInicial').prop('checked', false);
+                        $('#idMinInicial').prop('checked', false);
 
-    //este metodo solo recupera los datos del individuo
-        function getbyID(numeroDni) {
+                        $('#inputNombreInicial').css('border-color', 'lightgrey');
+                        $('#inputDniInicial').css('border-color', 'lightgrey');
+                        $('#inputFecNacInicial').css('border-color', 'lightgrey');
+                        $('#idDisInicial').css('border-color', 'lightgrey');
+                        $('#idMinInicial').css('border-color', 'lightgrey');
+                        $('#idVetInicial').css('border-color', 'lightgrey');
+                        $('#ddParentescoInicialId').css('border-color', 'lightgrey');*/
+                        limpiarModal();
+                    }).fail(function (data) {
+                        bootbox.alert({
+                            size: "small",
+                            title: "I.V.U.J.",
+                            message: "Acaba de ocurrir un problema, lamento los inconvenientes. " + data,
+                            callback: function () {
+                                //location.reload();
+                            }
+                        });
+                    });
+                    $("#modalBorrar").modal('hide');
+                })
+             });
+
+        function limpiarModal() {
+            $("#inputNombreInicial").val("");
+            $("#inputDniInicial").val("");
+            $('#inputDniInicial').prop('disabled', false);
+            $("#ddParentescoInicialId").val(0);
+            $('#idDisInicial').prop('checked', false);
+            $('#idVetInicial').prop('checked', false);
+            $('#idMinInicial').prop('checked', false);
+
             $('#inputNombreInicial').css('border-color', 'lightgrey');
             $('#inputDniInicial').css('border-color', 'lightgrey');
-
             $('#inputFecNacInicial').css('border-color', 'lightgrey');
             $('#idDisInicial').css('border-color', 'lightgrey');
             $('#idMinInicial').css('border-color', 'lightgrey');
             $('#idVetInicial').css('border-color', 'lightgrey');
             $('#ddParentescoInicialId').css('border-color', 'lightgrey');
-            $.ajax({              
-                url: '@Url.Action("UpdatePersona", "Bandeja")',
-                    data: {
-                        id: numeroDni
-                    },
-                //url: "/Bandeja/UpdatePersona/" + numeroDni,
-                type: "post",
-                success: function (result) {
-                    $('#inputNombreInicial').val(result.insfNombre);
-                    $('#inputDniInicial').val(result.insfNumdoc);
-                    $('#inputDniInicial').prop('disabled', true);
-                    var idFecha = result.fechaNacimiento;
-
-                    if (idFecha != null) {
-                        var dt = idFecha.split('/');
-                        var date1 = dt[2] + "-" + dt[1] + "-" + dt[0];
-                        $('#inputFecNacInicial').val(date1);
-                    }
-
-                    if (result.insfDiscapacitado == 1) {
-                        $('#idDisInicial').prop('checked', true);
-                    } else {
-                        $('#idDisInicial').prop('checked', false);
-                    }
-
-                    if (result.insfVeterano == 1) {
-                        $('#idVetInicial').prop('checked', true);
-                    } else {
-                        $('#idVetInicial').prop('checked', false);
-                    }
-
-                    if (result.insfMinero == 1) {
-                        $('#idMinInicial').prop('checked', true);
-                    } else {
-                        $('#idMinInicial').prop('checked', false);
-                    }
-
-                    $('#ddParentescoInicialId').val(result.parentescoKey);
-
-                    $('#modalInicialFamilia').modal('show');
-                    $('#btnUpdate').show();
-                    $('#btnAdd').hide();
-                },
-                error: function (errormessage) {
-                    alert(errormessage.responseText);
-                }
-            });
-            return false;
         }
 
-    $(function () {
-        $("#btnCreate").click(function (e) {
-            e.preventDefault();
-            var nombreT = $('#inputNombre').val();
-            var dniT = $('#inputDni').val();
-            var tipoFamiliaT = $('#ddTipoFamiliaId').val();
 
-            var discT = 0;
-            var mineroT = 0;
-            var veteranoT = 0;
+        //este metodo solo recupera los datos del individuo
+            function getbyID(numeroDni) {
+                $('#inputNombreInicial').css('border-color', 'lightgrey');
+                $('#inputDniInicial').css('border-color', 'lightgrey');
 
-            var telefono = $("#inputTel").val();
-
-            if ($("#idDis").is(':checked')) {
-                discT = 1;
-            }
-
-            if ($("#idMin").is(':checked')) {
-                mineroT = 1;
-            }
-
-            if ($("#idVet").is(':checked')) {
-                veteranoT = 1;
-            }
-
-            var cuitUno = $('#inputCuitUno').val();
-            var cuitTres = $('#inputCuitTres').val();
-
-            var direccionT = $('#inputAddress').val();
-            var departamentoT = $('#ddDepartamentoId').val();
-            var localidadT = $('#ddLocalidadId').val();
-
-            var lugarTrabajo = $('#inputLugar').val();
-
-            var revistaT = $('#ddTipoRevistaId').val();
-
-            var neto = $('#inputIngresoNeto').val();
-
-            var cont = validarForm();
-            $("#AjaxLoader").show("fast");
-
-            if (cont === 0) {
-                if (cuitUno.length > 0 && cuitTres.length > 0 && nombreT.length > 0 && direccionT.length > 0) {
-
-
-                    $.ajax({
-                        url: '@Url.Action("GuardarData", "Bandeja")',
+                $('#inputFecNacInicial').css('border-color', 'lightgrey');
+                $('#idDisInicial').css('border-color', 'lightgrey');
+                $('#idMinInicial').css('border-color', 'lightgrey');
+                $('#idVetInicial').css('border-color', 'lightgrey');
+                $('#ddParentescoInicialId').css('border-color', 'lightgrey');
+                $.ajax({              
+                    url: '@Url.Action("UpdatePersona", "Bandeja")',
                         data: {
-                            dni: dniT,
-                            nombre: nombreT,
-                            tipoFamilia: tipoFamiliaT,
-                            disc: discT,
-                            minero: mineroT,
-                            veterano: veteranoT,
-                            cuitUno: cuitUno,
-                            cuitTres: cuitTres,
-                            direccion: direccionT,
-                            departamento: departamentoT,
-                            localidad: localidadT,
-                            lugarTrabajo: lugarTrabajo,
-                            revista: revistaT,
-                            neto: neto,
-                            telefono: telefono
+                            id: numeroDni
                         },
-                        type: "get",
-                        success: function (result) {
-                            //console.log(result);
-                            $("#AjaxLoader").delay(2000).hide("slow");
-                            if (result.isRedirect) {
+                    //url: "/Bandeja/UpdatePersona/" + numeroDni,
+                    type: "post",
+                    success: function (result) {
+                        $('#inputNombreInicial').val(result.insfNombre);
+                        $('#inputDniInicial').val(result.insfNumdoc);
+                        $('#inputDniInicial').prop('disabled', true);
+                        var idFecha = result.fechaNacimiento;
 
-                                //3_rotativa_ ya no uso el escribir sobre un tag el url
-                               // $('#hrefsuces').val(result.redirectUrl);
-                                $("#modalSuccess").modal('show');
-                            } else {
-
-                            }
-                        },
-                        error: function (errormessage) {
-                            $("#AjaxLoader").delay(2000).hide("slow");
-                                e.preventDefault();
-
-                                bootbox.alert({
-                                    size: "small",
-                                    title: "I.V.U.J.",
-                                    message: "Datos ingresados de forma incorrecta",
-                                    callback: function () { }
-                                });
+                        if (idFecha != null) {
+                            var dt = idFecha.split('/');
+                            var date1 = dt[2] + "-" + dt[1] + "-" + dt[0];
+                            $('#inputFecNacInicial').val(date1);
                         }
-                    }).done(function (result) {
-                        $("#AjaxLoader").delay(2000).hide("slow");
 
-                    });
-                } else {
-                    e.preventDefault();
+                        if (result.insfDiscapacitado == 1) {
+                            $('#idDisInicial').prop('checked', true);
+                        } else {
+                            $('#idDisInicial').prop('checked', false);
+                        }
 
-                    bootbox.alert({
-                        size: "small",
-                        title: "I.V.U.J.",
-                        message: "Datos ingresados de forma incorrecta",
-                        callback: function () { }
-                    });
+                        if (result.insfVeterano == 1) {
+                            $('#idVetInicial').prop('checked', true);
+                        } else {
+                            $('#idVetInicial').prop('checked', false);
+                        }
 
-                }
-            } else {
-                e.preventDefault();
-                $("#AjaxLoader").delay(2000).hide("slow");
-                bootbox.alert({
-                    size: "small",
-                    title: "I.V.U.J.",
-                    message: "Debe completar los datos marcados con rojo.",
-                    callback: function () { }
+                        if (result.insfMinero == 1) {
+                            $('#idMinInicial').prop('checked', true);
+                        } else {
+                            $('#idMinInicial').prop('checked', false);
+                        }
+
+                        $('#ddParentescoInicialId').val(result.parentescoKey);
+
+                        $('#modalInicialFamilia').modal('show');
+                        $('#btnUpdate').show();
+                        $('#btnAdd').hide();
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
                 });
+                return false;
             }
 
-
-
-
-
-        });
-        return false;
-
-    });
-
-    function validarForm() {
-        var cont = 0;
-
-        var nombre = $('#inputNombre').val();
-
-        var cuitUno = $('#inputCuitUno').val();
-        var cuitTres = $('#inputCuitTres').val();
-
-        var direccion = $('#inputAddress').val();
-
-
-        if (!nombre) {
-            $("#inputNombre").css("border-color", "red");
-            cont++;
-        } else {
-            $("#inputNombre").css("border-color", "green");
-        }
-
-        if (!cuitUno) {
-            $("#inputCuitUno").css("border-color", "red");
-            cont++;
-        } else {
-            $("#inputCuitUno").css("border-color", "green");
-        }
-
-        if (!cuitTres) {
-            $("#inputCuitTres").css("border-color", "red");
-            cont++;
-        } else {
-            $("#inputCuitTres").css("border-color", "green");
-        }
-
-        if (!direccion) {
-            $("#inputAddress").css("border-color", "red");
-            cont++;
-        } else {
-            $("#inputAddress").css("border-color", "green");
-        }
-
-        return cont;
-    }
-
-    $(function () {
-        $("#idDis").change(function () {
-            var disc = 0;
-            if ($("#idDis").is(':checked')) {
-                disc = 1;
-            } else {
-                disc = 0;
-            }
-            $.ajax({
-                url: '@Url.Action("ActualizarCheck", "Bandeja")',
-                data: {
-                    id: disc,
-                    palabra: "disc"
-                }, type: "get",
-                success: function (result) {
-                }
-            });
-        });
-
-        $("#idMin").change(function () {
-            var disc = 0;
-            if ($("#idMin").is(':checked')) {
-                disc = 1;
-            } else {
-                disc = 0;
-            }
-            $.ajax({
-                url: '@Url.Action("ActualizarCheck", "Bandeja")',
-                data: {
-                    id: disc,
-                    palabra: "min"
-                }, type: "get",
-                success: function (result) {
-                }
-            });
-        });
-
-        $("#idVet").change(function () {
-            var disc = 0;
-            if ($("#idVet").is(':checked')) {
-                disc = 1;
-            } else {
-                disc = 0;
-            }
-            $.ajax({
-                url: '@Url.Action("ActualizarCheck", "Bandeja")',
-                data: {
-                    id: disc,
-                    palabra: "vet"
-                }, type: "get",
-                success: function (result) {
-                }
-            });
-        });
-    })
-
-    $(function valideKeyNros(event) {
-
-        var cardnumber = $("#inputTel").val();
-
-        if (cardnumber.length > 12) {
-            return false;
-        }
-
-        var x = event.which;
-
-        if (x >= 48 && x <= 57) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    });
-        
-    $(function upperCase(inputElement) {
-            if (inputElement && inputElement.value) {
-                inputElement.value = inputElement.value.toUpperCase();
-            }
-     });
-
-
-    /*Adhesion*/
-    $(function () {
-            $("#btnAdhesion").click(function (e) {
-                //levantar un popup con info
+        $(function () {
+            $("#btnCreate").click(function (e) {
                 e.preventDefault();
-               // alert("Debe mostrar popup? con que data? ")
-        })
-     });
+                var nombreT = $('#inputNombre').val();
+                var dniT = $('#inputDni').val();
+                var tipoFamiliaT = $('#ddTipoFamiliaId').val();
 
-    $('#bologna-list a').on('click', function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-    });
+                var discT = 0;
+                var mineroT = 0;
+                var veteranoT = 0;
 
-    $(function () {
-            $('#confirmation-checkbox').on('change', function () {
-                if ($(this).prop('checked')) {
-                    // Checkbox marcado: agregar clase
-                    $('#confirmation-label').addClass('highlighted');
-                    $('#programas-link').removeClass('disabled');
-                } else {
-                    // Checkbox desmarcado: quitar clase
-                    $('#confirmation-label').removeClass('highlighted');
-                    $('#programas-link').addClass('disabled');
+                var telefono = $("#inputTel").val();
+
+                if ($("#idDis").is(':checked')) {
+                    discT = 1;
                 }
-            });
-    });
 
-    $(function () {
-            $('#fin-checkbox').on('change', function () {
-                if ($(this).prop('checked')) {
-                    // Checkbox marcado: agregar clase
-                    $('#fin-label').addClass('highlighted');
-                    $('#btnCreateAdhesion').prop('disabled', false); // Para habilitar
-                    
-                } else {
-                    // Checkbox desmarcado: quitar clase
-                    $('#fin-label').removeClass('highlighted');
-                    $('#btnCreateAdhesion').prop('disabled', true);  // Para deshabilitar
+                if ($("#idMin").is(':checked')) {
+                    mineroT = 1;
                 }
-            });
-    });
 
-    $(function () {
-            // Mostrar por defecto la primera opción al cargar la página
-                var firstOption = $('.mod01').first().attr('data-moduloid');
-            $('#selected-option').text('Opción seleccionada: ' + firstOption);
-        $('#cajamonto').hide();
-            $('.mod01').on('click', function (e) {
-                e.preventDefault(); // Evita el comportamiento predeterminado del enlace
-                    var selectedText = $(this).data('modelodetalle'); // Obtiene el texto desde el atributo `data-value`
-                var ingresominimo = $(this).data("ingresominimo");
-                var costo = $(this).data("costo");
-                var plazo = $(this).data("plazo");
-                var descripcionCosto = $(this).data("descripcioncosto");
-                var costoConEntrega = $(this).data("costoconentrega");
-                var costoSinEntrega = $(this).data("costosinentrega");                      
-
-                // Actualizar los valores en el div
-                    $("#ingresominimo").text("$" + ingresominimo.toLocaleString());
-                    $("#costo").text("$" + costo.toLocaleString());
-                    $("#plazo").text(plazo.toLocaleString());
-                    $("#descripcioncosto").text(descripcionCosto.toLocaleString());
-                    $("#costoconentrega").text("$" + costoConEntrega.toLocaleString());
-                    $("#costosinentrega").text("$" + costoSinEntrega.toLocaleString());
-                    $("#costoconentrega1").text("$" + costoConEntrega.toLocaleString());
-                    $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());                        
-
-                if (selectedText != 'Sin Seleccionar') {
-                    $('#selected-option').text('Está por adherir a: ' + selectedText); // Actualiza el texto del párrafo
-                    $('#cajamonto').show();
-                    $('#ingresos-link').removeClass('disabled');
-                } else {
-                    $('#selected-option').text('Se debe adherir para pasar a la siguiente pestaña'); // Actualiza el texto del párrafo
-                    $('#cajamonto').hide();
-                    $('#ingresos-link').addClass('disabled');
+                if ($("#idVet").is(':checked')) {
+                    veteranoT = 1;
                 }
-            });
-    });
+
+                var cuitUno = $('#inputCuitUno').val();
+                var cuitTres = $('#inputCuitTres').val();
+
+                var direccionT = $('#inputAddress').val();
+                var departamentoT = $('#ddDepartamentoId').val();
+                var localidadT = $('#ddLocalidadId').val();
+
+                var lugarTrabajo = $('#inputLugar').val();
+
+                var revistaT = $('#ddTipoRevistaId').val();
+
+                var neto = $('#inputIngresoNeto').val();
+
+                var cont = validarForm();
+                $("#AjaxLoader").show("fast");
+
+                if (cont === 0) {
+                    if (cuitUno.length > 0 && cuitTres.length > 0 && nombreT.length > 0 && direccionT.length > 0) {
 
 
-        $(function() {
-            $("#btnCreateAdhesion").click(function (e) {
-                e.preventDefault();
-                var selectedLink = $('.mod01');  // O puedes usar un selector más específico si es necesario
-                // Acceder al data-moduloid del enlace
-                var moduloId = selectedLink.data("moduloid");
-                    var idInscripto =$(this).data("inscripto");
-                        var programaId = $(this).data("programaid");
-                            var modeloDetalles = selectedLink.data("modelodetalle");
-                    console.log(idInscripto)
-                        console.log(moduloId)
-                            console.log(programaId)
-                            console.log(modeloDetalles)
-                    $("#AjaxLoader").show("fast");
-
-                 $.ajax({
-                         url: '@Url.Action("Adherir", "Adhesion")',
-                         data: {
-                                programaId: programaId,
-                                moduloId : moduloId,
-                                insId: idInscripto,
-                                modeloDetalle : modeloDetalles
-                         },
-                         type: "get",
-                         success: function (result) {
+                        $.ajax({
+                            url: '@Url.Action("GuardarData", "Bandeja")',
+                            data: {
+                                dni: dniT,
+                                nombre: nombreT,
+                                tipoFamilia: tipoFamiliaT,
+                                disc: discT,
+                                minero: mineroT,
+                                veterano: veteranoT,
+                                cuitUno: cuitUno,
+                                cuitTres: cuitTres,
+                                direccion: direccionT,
+                                departamento: departamentoT,
+                                localidad: localidadT,
+                                lugarTrabajo: lugarTrabajo,
+                                revista: revistaT,
+                                neto: neto,
+                                telefono: telefono
+                            },
+                            type: "get",
+                            success: function (result) {
                                 //console.log(result);
                                 $("#AjaxLoader").delay(2000).hide("slow");
                                 if (result.isRedirect) {
 
                                     //3_rotativa_ ya no uso el escribir sobre un tag el url
                                    // $('#hrefsuces').val(result.redirectUrl);
-                                    $("#modalAdhesion").modal('hide');
-                                    $("#modalSuccessAdhesion").modal('show');
-                                    $("#btnAdhesion").prop('disabled', true);
+                                    $("#modalSuccess").modal('show');
                                 } else {
-                                         e.preventDefault();
-                                             $("#modalAdhesion").modal('hide');
-                                        bootbox.alert({
-                                            size: "small",
-                                            title: "I.V.U.J.",
-                                                message: result.ob,
-                                            callback: function () { }
-                                        });
+                                    console.log(result.ob)
                                 }
-                         },
+                            },
                             error: function (errormessage) {
                                 $("#AjaxLoader").delay(2000).hide("slow");
                                     e.preventDefault();
@@ -1388,10 +1130,305 @@
                             $("#AjaxLoader").delay(2000).hide("slow");
 
                         });
+                    } else {
+                        e.preventDefault();
+
+                        bootbox.alert({
+                            size: "small",
+                            title: "I.V.U.J.",
+                            message: "Datos ingresados de forma incorrecta",
+                            callback: function () { }
+                        });
+
+                    }
+                } else {
+                    e.preventDefault();
+                    $("#AjaxLoader").delay(2000).hide("slow");
+                    bootbox.alert({
+                        size: "small",
+                        title: "I.V.U.J.",
+                        message: "Debe completar los datos marcados con rojo.",
+                        callback: function () { }
+                    });
+                }
+
+
+
+
+
             });
+            return false;
+
         });
 
-       
+        function validarForm() {
+            var cont = 0;
 
-</script>
+            var nombre = $('#inputNombre').val();
+
+            var cuitUno = $('#inputCuitUno').val();
+            var cuitTres = $('#inputCuitTres').val();
+
+            var direccion = $('#inputAddress').val();
+
+
+            if (!nombre) {
+                $("#inputNombre").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputNombre").css("border-color", "green");
+            }
+
+            if (!cuitUno) {
+                $("#inputCuitUno").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputCuitUno").css("border-color", "green");
+            }
+
+            if (!cuitTres) {
+                $("#inputCuitTres").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputCuitTres").css("border-color", "green");
+            }
+
+            if (!direccion) {
+                $("#inputAddress").css("border-color", "red");
+                cont++;
+            } else {
+                $("#inputAddress").css("border-color", "green");
+            }
+
+            return cont;
+        }
+
+        $(function () {
+            $("#idDis").change(function () {
+                var disc = 0;
+                if ($("#idDis").is(':checked')) {
+                    disc = 1;
+                } else {
+                    disc = 0;
+                }
+                $.ajax({
+                    url: '@Url.Action("ActualizarCheck", "Bandeja")',
+                    data: {
+                        id: disc,
+                        palabra: "disc"
+                    }, type: "get",
+                    success: function (result) {
+                    }
+                });
+            });
+
+            $("#idMin").change(function () {
+                var disc = 0;
+                if ($("#idMin").is(':checked')) {
+                    disc = 1;
+                } else {
+                    disc = 0;
+                }
+                $.ajax({
+                    url: '@Url.Action("ActualizarCheck", "Bandeja")',
+                    data: {
+                        id: disc,
+                        palabra: "min"
+                    }, type: "get",
+                    success: function (result) {
+                    }
+                });
+            });
+
+            $("#idVet").change(function () {
+                var disc = 0;
+                if ($("#idVet").is(':checked')) {
+                    disc = 1;
+                } else {
+                    disc = 0;
+                }
+                $.ajax({
+                    url: '@Url.Action("ActualizarCheck", "Bandeja")',
+                    data: {
+                        id: disc,
+                        palabra: "vet"
+                    }, type: "get",
+                    success: function (result) {
+                    }
+                });
+            });
+        })
+
+        $(function valideKeyNros(event) {
+
+            var cardnumber = $("#inputTel").val();
+
+            if (cardnumber.length > 12) {
+                return false;
+            }
+
+            var x = event.which;
+
+            if (x >= 48 && x <= 57) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+
+        $(function upperCase(inputElement) {
+                if (inputElement && inputElement.value) {
+                    inputElement.value = inputElement.value.toUpperCase();
+                }
+         });
+
+
+        /*Adhesion*/
+        $(function () {
+                $("#btnAdhesion").click(function (e) {
+                    //levantar un popup con info
+                    e.preventDefault();
+                   // alert("Debe mostrar popup? con que data? ")
+            })
+         });
+
+        $('#bologna-list a').on('click', function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+
+        $(function () {
+                $('#confirmation-checkbox').on('change', function () {
+                    if ($(this).prop('checked')) {
+                        // Checkbox marcado: agregar clase
+                        $('#confirmation-label').addClass('highlighted');
+                        $('#programas-link').removeClass('disabled');
+                    } else {
+                        // Checkbox desmarcado: quitar clase
+                        $('#confirmation-label').removeClass('highlighted');
+                        $('#programas-link').addClass('disabled');
+                    }
+                });
+        });
+
+        $(function () {
+                $('#fin-checkbox').on('change', function () {
+                    if ($(this).prop('checked')) {
+                        // Checkbox marcado: agregar clase
+                        $('#fin-label').addClass('highlighted');
+                        $('#btnCreateAdhesion').prop('disabled', false); // Para habilitar
+
+                    } else {
+                        // Checkbox desmarcado: quitar clase
+                        $('#fin-label').removeClass('highlighted');
+                        $('#btnCreateAdhesion').prop('disabled', true);  // Para deshabilitar
+                    }
+                });
+        });
+
+        $(function () {
+                // Mostrar por defecto la primera opción al cargar la página
+                    var firstOption = $('.mod01').first().attr('data-moduloid');
+                $('#selected-option').text('Opción seleccionada: ' + firstOption);
+            $('#cajamonto').hide();
+                $('.mod01').on('click', function (e) {
+                    e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+                        var selectedText = $(this).data('modelodetalle'); // Obtiene el texto desde el atributo `data-value`
+                    var ingresominimo = $(this).data("ingresominimo");
+                    var costo = $(this).data("costo");
+                    var plazo = $(this).data("plazo");
+                    var descripcionCosto = $(this).data("descripcioncosto");
+                    var costoConEntrega = $(this).data("costoconentrega");
+                    var costoSinEntrega = $(this).data("costosinentrega");                      
+
+                    // Actualizar los valores en el div
+                        $("#ingresominimo").text("$" + ingresominimo.toLocaleString());
+                        $("#costo").text("$" + costo.toLocaleString());
+                        $("#plazo").text(plazo.toLocaleString());
+                        $("#descripcioncosto").text(descripcionCosto.toLocaleString());
+                        $("#costoconentrega").text("$" + costoConEntrega.toLocaleString());
+                        $("#costosinentrega").text("$" + costoSinEntrega.toLocaleString());
+                        $("#costoconentrega1").text("$" + costoConEntrega.toLocaleString());
+                        $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());                        
+
+                    if (selectedText != 'Sin Seleccionar') {
+                        $('#selected-option').text('Está por adherir a: ' + selectedText); // Actualiza el texto del párrafo
+                        $('#cajamonto').show();
+                        $('#ingresos-link').removeClass('disabled');
+                    } else {
+                        $('#selected-option').text('Se debe adherir para pasar a la siguiente pestaña'); // Actualiza el texto del párrafo
+                        $('#cajamonto').hide();
+                        $('#ingresos-link').addClass('disabled');
+                    }
+                });
+        });
+
+
+            $(function() {
+                $("#btnCreateAdhesion").click(function (e) {
+                    e.preventDefault();
+                    var selectedLink = $('.mod01');  // O puedes usar un selector más específico si es necesario
+                    // Acceder al data-moduloid del enlace
+                    var moduloId = selectedLink.data("moduloid");
+                        var idInscripto =$(this).data("inscripto");
+                            var programaId = $(this).data("programaid");
+                                var modeloDetalles = selectedLink.data("modelodetalle");
+                        console.log(idInscripto)
+                            console.log(moduloId)
+                                console.log(programaId)
+                                console.log(modeloDetalles)
+                        $("#AjaxLoader").show("fast");
+
+                     $.ajax({
+                             url: '@Url.Action("Adherir", "Adhesion")',
+                             data: {
+                                    programaId: programaId,
+                                    moduloId : moduloId,
+                                    insId: idInscripto,
+                                    modeloDetalle : modeloDetalles
+                             },
+                             type: "get",
+                             success: function (result) {
+                                    //console.log(result);
+                                    $("#AjaxLoader").delay(2000).hide("slow");
+                                    if (result.isRedirect) {
+
+                                        //3_rotativa_ ya no uso el escribir sobre un tag el url
+                                       // $('#hrefsuces').val(result.redirectUrl);
+                                        $("#modalAdhesion").modal('hide');
+                                        $("#modalSuccessAdhesion").modal('show');
+                                        $("#btnAdhesion").prop('disabled', true);
+                                    } else {
+                                             e.preventDefault();
+                                                 $("#modalAdhesion").modal('hide');
+                                            bootbox.alert({
+                                                size: "small",
+                                                title: "I.V.U.J.",
+                                                    message: result.ob,
+                                                callback: function () { }
+                                            });
+                                    }
+                             },
+                                error: function (errormessage) {
+                                    $("#AjaxLoader").delay(2000).hide("slow");
+                                        e.preventDefault();
+
+                                        bootbox.alert({
+                                            size: "small",
+                                            title: "I.V.U.J.",
+                                            message: "Datos ingresados de forma incorrecta",
+                                            callback: function () { }
+                                        });
+                                }
+                            }).done(function (result) {
+                                $("#AjaxLoader").delay(2000).hide("slow");
+
+                            });
+                });
+            });
+
+
+
+    </script>
 }

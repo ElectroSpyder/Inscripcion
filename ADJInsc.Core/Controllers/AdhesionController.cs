@@ -20,7 +20,7 @@
         public string _connectionString { get; set; }
         //private readonly IMailService mailService;
         private readonly IApiService _apiService;
-        // GET: AdhesionController
+        private DateTime Fecha => DateTime.Now;
 
         public AdhesionController(IConfiguration configuration, IApiService apiService)
         {
@@ -45,7 +45,7 @@
                 ModuloId = moduloId,
                 ModuloDescripcion = modeloDetalle == null ? " " : modeloDetalle.Trim(),
                 ProgramaId = programaId,
-                FechaAdhesion = DateTime.Now                
+                FechaAdhesion = Fecha.ToString()                
             };
 
             modeloVM.AdherirViewModel = modeloAdherir;
