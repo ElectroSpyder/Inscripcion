@@ -29,19 +29,21 @@
             // this.mailService = mailService;
             this._apiService = apiService;
         }
-        public JsonResult Adherir(int programaId, int moduloId, int insId)
+        public JsonResult Adherir(int programaId, int moduloId, int insId, string modeloDetalle)
         {
             // public int InsId { get; set; }
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
-
-            var modeloVM = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
-            var _memoryArchivoVM = HttpContext.Session.GetObjectFromJson<List<FileUploadViewModel>>("_filesInMemory");
+            var modeloVM = new InscViewModel();
+            var _memoryArchivoVM = new List<FileUploadViewModel>();
+            modeloVM = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
+            _memoryArchivoVM = HttpContext.Session.GetObjectFromJson<List<FileUploadViewModel>>("_filesInMemory");
 
             var modeloAdherir = new AdherirViewModel
             {
                 InscriptoId = insId,
                 ModuloId = moduloId,
+                ModuloDescripcion = modeloDetalle == null ? " " : modeloDetalle.Trim(),
                 ProgramaId = programaId,
                 FechaAdhesion = DateTime.Now                
             };
@@ -62,15 +64,25 @@
                 });
             }
 
-                HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modeloVM);
+            HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modeloVM);
 
-            var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM, token).Result;
+            var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
             if (service.IsSuccess)
             {
                 var respuesta = (InscViewModel)service.Result;
 
                 if (respuesta.AdhesionViewModel.Success)
                 {
+                    if (respuesta.AdherirViewModel.AdhesionId > 0 &&
+                       (respuesta.FileUploadViewModel == null || !respuesta.FileUploadViewModel.Any()))
+                    {
+                        return Json(new
+                        {
+                            redirectUrl = "",
+                            isRedirect = false,
+                            ob = respuesta.InsNombre.Trim() + " esta adherido con número " + respuesta.AdherirViewModel.AdhesionId.ToString()
+                        });
+                    }
 
                     var modeloNuevo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
                     modeloNuevo.AdherirViewModel = respuesta.AdherirViewModel;  //idAdhesion  -> probar

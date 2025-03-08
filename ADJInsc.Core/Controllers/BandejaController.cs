@@ -95,9 +95,16 @@
                     
                     if (modelo.InsEstado == "I"  )
                     {                        
-                        modelo.AdhesionViewModel = GetAdhesionModel();
+                        modelo.AdhesionViewModel = GetAdhesionModel(modelo.InsId);
                         if (Verificado(modelo))
+                        {
                             modelo.AdhesionViewModel.Habilitar = true;
+                        }
+                        else
+                        {
+                            modelo.AdhesionViewModel.Habilitar = false;
+                        }
+                            
                     }
 
                     HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modelo);
@@ -579,24 +586,28 @@
 
         }
                 
-        public AdhesionViewModel GetAdhesionModel()
+        public AdhesionViewModel GetAdhesionModel(int insId)
         {
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
 
-            var modelOut = new AdhesionViewModel();
-           
-            var service = _apiService.GetAsync<AdhesionViewModel>("/Test.Insc.Api/adhesion/", "GetAdhesionModel", token).Result;
-            var result = (AdhesionViewModel)service.Result;
+            var modelOut = new AdhesionViewModel
+            {
+                InscriptoId = insId
+            };
+            var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "GetAdhesionModel",null, modelOut, token).Result;
+            var result = (AdhesionViewModel)service?.Result;
 
             if (result.Success)
-                modelOut = result;                
-
+                   modelOut = result;
+            
             return modelOut;
         }
 
         public bool Verificado(InscViewModel model)
         {
+            if (model.AdhesionViewModel.AdhesionId != 0)
+                return false;
             if (!DateTime.TryParse(model.InsFecins, out DateTime fechaInscripcion))
                 return false; // Retorna false si la fecha no es válida
 

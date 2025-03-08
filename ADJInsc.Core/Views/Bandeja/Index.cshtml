@@ -10,17 +10,16 @@
 </style>
 <div style="float:right;">
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
-            <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
+        <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">            
             @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)
             {
+                <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
                 @*  <input id="btnAdhesion" type="submit" value="Cerrar y Adherir" class="btn btn-outline-success" /> *@
                 <button id="btnAdhesion" type="button" class="btn btn-outline-success" float-right" data-toggle="modal" data-target="#modalAdhesion">
                     <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
                     <i class="fas fa-plus-circle"></i>
                 </button>
             }
-
             <form asp-controller="Inscripcion" asp-action="GoHome">
                 <img id="AjaxLoaderLogin" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
                 <button class="btn btn-outline-danger " id="btnLogin">Cerrar sesion</button>
@@ -33,10 +32,13 @@
         </div>
     </div>
 </div>
+<div>
 <p>
     <h2>Sistema de Inscripción / Actualización de Datos del IVUJ</h2>
     <h4>Panel de Control</h4>
 </p>
+</div>
+
 
 <form id="formFamilia" asp-controller="Bandeja" asp-action="GuardarData">
     <div class="form-group card border-info">
@@ -229,23 +231,12 @@
 
 
     <div class="form-group">
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
                 <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
-                <input id="btnCreate" type="submit" value="Cerrar y enviar solicitud" class="btn btn-primary" />
-              @*   @if (string.Equals(Model.InsEstado, "I"))
-                {
-                   @*  <input id="btnAdhesion" type="submit" value="Cerrar y Adherir" class="btn btn-outline-success" /> 
-                   @*  <button id="btnAdhesion" type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#modalAdhesion">
-                        Adherir
-                        <i class="fas fa-plus-circle"></i>
-                    </button> 
-                } *@
+                <input id="btnCreate" type="submit" value="Cerrar y enviar solicitud" class="btn btn-primary" />              
             </div>
         </div>
-
-
     </div>
 
 
@@ -329,7 +320,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Adhesión</h5>
+                <h5 class="modal-title">@Model.AdhesionViewModel.ProgramaVM.Descripcion</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -347,7 +338,7 @@
                                         <a class="nav-link disabled" href="#programas" id="programas-link" role="tab" aria-controls="programas" aria-selected="false">Tipología</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link disabled" href="#ingresos" id="ingresos-link" role="tab" aria-controls="ingresos" aria-selected="false">Ingresos</a>
+                                        <a class="nav-link disabled" href="#ingresos" id="ingresos-link" role="tab" aria-controls="ingresos" aria-selected="false">Documentación de Ingresos</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link disabled" href="#finadhesion" id="finadhesion-link" role="tab" aria-controls="finadhesion" aria-selected="false">Declaración Jurada</a>
@@ -384,7 +375,7 @@
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                                 {
-                                                    <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-detalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)">@opcion.Titulo</a></li>
+                                                    <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)">@opcion.Titulo</a></li>
                                                 }
                                             </ul>
                                         </div>
@@ -406,10 +397,7 @@
                                                         <li>Sin entrega o anticipo a cancelar el Ahorro previo: <strong id="costosinentrega"></strong></li>
                                                         <li>Con entregas o anticipo a cancelar el total del Ahorro previo: <strong id="costoconentrega"></strong></li>
                                                     </ul>
-                                                    <small class="text-muted">
-                                                        Aclaración: en caso de entregas o anticipos, aproximadamente el 10% del valor que se planifica entregar representa
-                                                        el monto que puede disminuir al ingreso mínimo requerido del grupo familiar de <strong id="costosinentrega1"></strong> hasta el límite de <strong id="costoconentrega1">-</strong>.
-                                                    </small>
+                                                    
                                                 </li>
                                             </ul>
                                         </div>
@@ -441,6 +429,8 @@
                                             <form id="uploadForm" enctype="multipart/form-data" data-upload-url="@Url.Action("UploadImages", "Upload")">
                                                 <input type="file" id="fileInput" multiple accept="image/*" />
                                                 <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+                                                <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                                <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en momento oportuno.</p>
                                                 <button type="submit" disabled>Subir Todos</button>
                                             </form>
 
@@ -601,7 +591,26 @@
         </div>
     </div>
 </div>
-
+ <!-- Modal -->
+                    <div class="modal fade" id="modalExisteAdhesion" tabindex="-1" role="dialog" aria-labelledby="modalAdhesionLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="modalAdhesionLabel">Información de Adhesión</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p> Sr. @Model.InsNombre, usted esta adherido al programa <strong>@Model.AdhesionViewModel.DescripcionModulo</strong></p>
+                                    <p> Numero Adhesion @Model.AdhesionViewModel.AdhesionId con fecha @Model.AdhesionViewModel.FechaAdhesion</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 @section scripts {
 
@@ -616,6 +625,14 @@
 
 
             })
+        });
+        $(function(){
+                 $(document).ready(function () {
+            var adhesionId = @Model.AdhesionViewModel.AdhesionId;
+            if (adhesionId !== 0) {
+                         $("#modalExisteAdhesion").modal("show"); // Muestra el modal automáticamente
+                    }
+                });
         });
 
     $(function () {
@@ -1280,13 +1297,13 @@
         $('#cajamonto').hide();
             $('.mod01').on('click', function (e) {
                 e.preventDefault(); // Evita el comportamiento predeterminado del enlace
-                var selectedText = $(this).data('detalle'); // Obtiene el texto desde el atributo `data-value`
+                    var selectedText = $(this).data('modelodetalle'); // Obtiene el texto desde el atributo `data-value`
                 var ingresominimo = $(this).data("ingresominimo");
                 var costo = $(this).data("costo");
                 var plazo = $(this).data("plazo");
                 var descripcionCosto = $(this).data("descripcioncosto");
                 var costoConEntrega = $(this).data("costoconentrega");
-                var costoSinEntrega = $(this).data("costosinentrega");
+                var costoSinEntrega = $(this).data("costosinentrega");                      
 
                 // Actualizar los valores en el div
                     $("#ingresominimo").text("$" + ingresominimo.toLocaleString());
@@ -1296,7 +1313,7 @@
                     $("#costoconentrega").text("$" + costoConEntrega.toLocaleString());
                     $("#costosinentrega").text("$" + costoSinEntrega.toLocaleString());
                     $("#costoconentrega1").text("$" + costoConEntrega.toLocaleString());
-                    $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());
+                    $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());                        
 
                 if (selectedText != 'Sin Seleccionar') {
                     $('#selected-option').text('Está por adherir a: ' + selectedText); // Actualiza el texto del párrafo
@@ -1310,31 +1327,6 @@
             });
     });
 
-        $(function () {
-            // Mostrar por defecto la primera opción al cargar la página
-                var firstOption = $('.mod02').first().attr('data-moduloid');
-            $('#selected-option-ingreso').text('Opción seleccionada: ' + firstOption);
-            $('#cajaarchivos').hide();
-            $('.mod02').on('click', function (e) {
-                e.preventDefault(); // Evita el comportamiento predeterminado del enlace
-                var selectedText = $(this).data('detalle'); // Obtiene el texto desde el atributo `data-value`
-                if (selectedText != 'Sin Seleccionar') {
-                    if (selectedText != '3.000.000') {
-                        $('#selected-option-ingreso').text('Mis ingresos están comprendidas entre ' + selectedText); // Actualiza el texto del párrafo
-                    }
-                    else {
-                        $('#selected-option-ingreso').text('Mis ingresos son superiores a ' + selectedText);
-                    }
-                    $('#cajaarchivos').show();
-                    $('#finadhesion-link').removeClass('disabled');
-                } else {
-                    $('#selected-option-ingreso').text('Debe seleccionar el rango para pasar a la siguiente pestaña'); // Actualiza el texto del párrafo
-                    $('#cajaarchivos').hide();
-                    $('#finadhesion-link').addClass('disabled');
-                }
-
-            });
-        });
 
         $(function() {
             $("#btnCreateAdhesion").click(function (e) {
@@ -1342,33 +1334,45 @@
                 var selectedLink = $('.mod01');  // O puedes usar un selector más específico si es necesario
                 // Acceder al data-moduloid del enlace
                 var moduloId = selectedLink.data("moduloid");
-                var idInscripto = $(this).data("inscripto");
-                var programaId = $(this).data("programaid");
+                    var idInscripto =$(this).data("inscripto");
+                        var programaId = $(this).data("programaid");
+                            var modeloDetalles = selectedLink.data("modelodetalle");
                     console.log(idInscripto)
                         console.log(moduloId)
                             console.log(programaId)
+                            console.log(modeloDetalles)
                     $("#AjaxLoader").show("fast");
 
                  $.ajax({
-                                url: '@Url.Action("Adherir", "Adhesion")',
-                            data: {
+                         url: '@Url.Action("Adherir", "Adhesion")',
+                         data: {
                                 programaId: programaId,
                                 moduloId : moduloId,
-                                insId: idInscripto                                
-                            },
-                            type: "get",
-                            success: function (result) {
+                                insId: idInscripto,
+                                modeloDetalle : modeloDetalles
+                         },
+                         type: "get",
+                         success: function (result) {
                                 //console.log(result);
                                 $("#AjaxLoader").delay(2000).hide("slow");
                                 if (result.isRedirect) {
 
                                     //3_rotativa_ ya no uso el escribir sobre un tag el url
                                    // $('#hrefsuces').val(result.redirectUrl);
+                                    $("#modalAdhesion").modal('hide');
                                     $("#modalSuccessAdhesion").modal('show');
+                                    $("#btnAdhesion").prop('disabled', true);
                                 } else {
-
+                                         e.preventDefault();
+                                             $("#modalAdhesion").modal('hide');
+                                        bootbox.alert({
+                                            size: "small",
+                                            title: "I.V.U.J.",
+                                                message: result.ob,
+                                            callback: function () { }
+                                        });
                                 }
-                            },
+                         },
                             error: function (errormessage) {
                                 $("#AjaxLoader").delay(2000).hide("slow");
                                     e.preventDefault();
@@ -1383,44 +1387,11 @@
                         }).done(function (result) {
                             $("#AjaxLoader").delay(2000).hide("slow");
 
-                 });
+                        });
             });
         });
 
-        //  $(function () {
-        //     $("#uploadButton").on("click", function (e) {
-        //         e.preventDefault();  // Evitar el comportamiento predeterminado
-
-        //         let fileInput = $("#fileInput")[0];  // Obtener el input de archivo
-        //         let formData = new FormData();  // Crear un nuevo objeto FormData
-
-        //         // Comprobar si se ha seleccionado algún archivo
-        //         if (fileInput.files.length === 0) {
-        //             alert("Debe seleccionar un archivo.");
-        //             return;
-        //         }
-
-        //         // Agregar los archivos al FormData
-        //         for (let i = 0; i < fileInput.files.length; i++) {
-        //             formData.append("files[]", fileInput.files[i]);
-        //         }
-
-        //         // Enviar los archivos al servidor mediante AJAX
-        //         $.ajax({
-        //             url: '/Upload/UploadImages',  // Ruta del controlador en el servidor
-        //             type: 'POST',
-        //             data: formData,
-        //             contentType: false,
-        //             processData: false,
-        //             success: function (response) {
-        //                 alert(response);
-        //             },
-        //             error: function (response) {
-        //                 alert("response");
-        //             }
-        //         });
-        //     });
-        // });
+       
 
 </script>
 }

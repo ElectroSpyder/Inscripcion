@@ -36,76 +36,80 @@
             var adheridoId = await GetAdherido(inscViewModel.AdherirViewModel);
             string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId) VALUES " +
                                                    " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId ); SELECT SCOPE_IDENTITY();";
-            if(adheridoId != 0)
+            if (adheridoId != 0)
             {
                 inscViewModel.AdhesionViewModel.Success = false;
                 inscViewModel.AdherirViewModel.AdhesionId = adheridoId;
                 return inscViewModel;
             }
-            using TransactionScope ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
-            try
+            Connection();
+            using (TransactionScope ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                if (adheridoId == 0)
+                try
                 {
-                    using SqlCommand cmdInsertAdherido = new SqlCommand(insertAdherido, con);
-                    cmdInsertAdherido.CommandType = CommandType.Text;
-
-                    cmdInsertAdherido.Parameters.Add(new SqlParameter("@fechaAdhesion", inscViewModel.AdherirViewModel.FechaAdhesion));
-                    cmdInsertAdherido.Parameters.Add(new SqlParameter("@estado", 1)); //1 true
-                    cmdInsertAdherido.Parameters.Add(new SqlParameter("@moduloId", inscViewModel.AdherirViewModel.ModuloId));
-                    cmdInsertAdherido.Parameters.Add(new SqlParameter("@inscriptoId", inscViewModel.AdherirViewModel.InscriptoId));
-                    cmdInsertAdherido.Parameters.Add(new SqlParameter("@programaId", inscViewModel.AdherirViewModel.ProgramaId));
-
-                    if (con.State == ConnectionState.Closed)
-                        await con.OpenAsync();
-                    var objetoId = new object();  //limpio el objeto   
-                    objetoId = await cmdInsertAdherido.ExecuteScalarAsync();
-
-                    decimal adhesionId = (objetoId != null) ? (int)objetoId : 0;
-
-                    inscViewModel.AdherirViewModel.AdhesionId = (int)adhesionId;
-                    if (adheridoId > 0)
+                    if (adheridoId == 0)
                     {
-                        //1_ subir el archivo
-                        var tempVM = await GetUpload(inscViewModel, adheridoId);
-                        if (tempVM.FileUploadViewModel.Count == 0)
+                        using SqlCommand cmdInsertAdherido = new SqlCommand(insertAdherido, con);
+                        cmdInsertAdherido.CommandType = CommandType.Text;
+
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@fechaAdhesion", inscViewModel.AdherirViewModel.FechaAdhesion));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@estado", 1)); //1 true
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@moduloId", inscViewModel.AdherirViewModel.ModuloId));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@inscriptoId", inscViewModel.AdherirViewModel.InscriptoId));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@programaId", inscViewModel.AdherirViewModel.ProgramaId));
+
+                        if (con.State == ConnectionState.Closed)
+                            await con.OpenAsync();
+                        var objetoId = new object();  //limpio el objeto   
+                        objetoId = await cmdInsertAdherido.ExecuteScalarAsync();
+
+                        decimal adhesionId = (objetoId != null) ? (decimal)objetoId : 0;
+
+                        inscViewModel.AdherirViewModel.AdhesionId = (int)adhesionId;
+                        if (adhesionId > 0)
                         {
-                            inscViewModel.AdhesionViewModel.Success = false;                           
-                            return inscViewModel;
+                            //1_ subir el archivo
+                            var tempVM = await GetUpload(inscViewModel, (int)adhesionId);
+                            if (tempVM.FileUploadViewModel.Count == 0)
+                            {
+                                inscViewModel.AdhesionViewModel.Success = false;
+                                return inscViewModel;
+                            }
+                            inscViewModel.FileUploadViewModel = tempVM.FileUploadViewModel;
+                            //2_ incertar datos en base
+                            tempVM = await InsertArchivos(inscViewModel);
+                            if (tempVM.FileUploadViewModel.Count == 0)
+                            {
+                                inscViewModel.AdhesionViewModel.Success = false;
+                                return inscViewModel;
+                            }
+                            inscViewModel.FileUploadViewModel = tempVM.FileUploadViewModel;
                         }
-                        inscViewModel.FileUploadViewModel = tempVM.FileUploadViewModel;
-                        //2_ iincertar datos en base
-                        tempVM = await InsertArchivos(inscViewModel);
-                        if (tempVM.FileUploadViewModel.Count == 0)
-                        {
-                            inscViewModel.AdhesionViewModel.Success = false;
-                            return inscViewModel;
-                        }
-                        inscViewModel.FileUploadViewModel = tempVM.FileUploadViewModel;
+                        inscViewModel.AdhesionViewModel.Success = true;
+                        ts.Complete();
                     }
-                    inscViewModel.AdhesionViewModel.Success = true;
-                    ts.Complete();
+                    else
+                    {
+                        inscViewModel.AdhesionViewModel.Success = false;
+                        inscViewModel.AdherirViewModel.AdhesionId = 0;
+                        ts.Dispose();
+                    }
+                    return inscViewModel;
                 }
-                else
+                catch (Exception ex)
                 {
-                    inscViewModel.AdhesionViewModel.Success = false;
-                    inscViewModel.AdherirViewModel.AdhesionId = 0;
                     ts.Dispose();
+                    await con.CloseAsync();
+                    inscViewModel.AdhesionViewModel.Success = false;
+                    inscViewModel.AdhesionViewModel.ErrorMsg = ex.Message;
+                    return inscViewModel;
                 }
-                return inscViewModel;
+                finally
+                {
+                    await con.CloseAsync();
+                }
             }
-            catch (Exception ex)
-            {
-                ts.Dispose();
-                await con.CloseAsync();
-                inscViewModel.AdhesionViewModel.Success = false;
-                inscViewModel.AdhesionViewModel.ErrorMsg = ex.Message;
-                return inscViewModel;
-            }
-            finally
-            {
-                await con.CloseAsync();
-            }
+
         }
 
         private async Task<InscViewModel> InsertArchivos(InscViewModel inscViewModel)
@@ -113,6 +117,9 @@
             /*
              INSERT INTO ArchivosAdhesion(Fecha, NombreArchivo, Tamano, TipoContenido, InscriptoId, RutaArchivo)  VALUES
                     (@Fecha, @NombreArchivo, @Tamano, @TipoContenido, @InscriptoId, @RutaArchivo)GO
+
+            The parameterized query '(@Fecha nvarchar(8),@NombreArchivo nvarchar(13),@Tamano bigint,@' expects the parameter '@TipoContenido', which was not supplied.
+
              */
             var script = "INSERT INTO ArchivosAdhesion(Fecha, NombreArchivo, Tamano, TipoContenido, InscriptoId, RutaArchivo) " + 
                                         " VALUES (@Fecha, @NombreArchivo, @Tamano, @TipoContenido, @InscriptoId, @RutaArchivo); SELECT SCOPE_IDENTITY()" ;
@@ -128,7 +135,6 @@
                     cmd.Parameters.Add(new SqlParameter("@TipoContenido", item.TipoContenido));
 
                     cmd.Parameters.Add(new SqlParameter("@InscriptoId", item.InscriptoId));
-                    cmd.Parameters.Add(new SqlParameter("@Tamano", item.Tamano));
                     cmd.Parameters.Add(new SqlParameter("@RutaArchivo", item.RutaArchivo));
 
                     var objetoId = new object();
@@ -139,10 +145,11 @@
                     objetoId = await cmd.ExecuteScalarAsync();
 
                     await con.CloseAsync();
-                    decimal archivoId = (objetoId != null) ? (int)objetoId : 0;
+                    decimal archivoId = (objetoId != null) ? (decimal)objetoId : 0;                   
+                    
                     if (archivoId == 0)
                     {
-                        inscViewModel.FileUploadViewModel = new List<FileUploadViewModel>();
+                        inscViewModel.FileUploadViewModel = new List<FileUploadViewModel>();                        
                         return inscViewModel; //por si uno falla no deberia cargar nada
                     }
                    
@@ -150,40 +157,40 @@
                 }
                 return inscViewModel;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return inscViewModel;
+                throw;
             }
         }
 
-        private async Task<string> GuardarEnDisco(int adheridoId, string fecha, string nombreArchivo, byte[] fileContent)
+        private async Task<string> GuardarEnDisco(int adhesionId, string fecha, string nombreArchivo, byte[] fileContent)
         {
             try
             {
-                string random = new Random().Next(1000, 9999).ToString();
-                string fileName = $"{adheridoId}_{fecha}_{nombreArchivo}_{random}";
-                var ruta = CreateRutaAdherido(fileName, adheridoId);
+                string random = new Random().Next(1000, 9999999).ToString();
+                string fileName = $"{adhesionId}_{fecha}_{random}_{nombreArchivo}";
+                var ruta = CreateRutaAdherido(fileName, adhesionId);
 
                 await File.WriteAllBytesAsync(ruta, fileContent);
 
                 return ruta;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ex.Message;
+                throw;
             }
         }
 
-        private string CreateRutaAdherido(string fileName, int adheridoId)
+        private string CreateRutaAdherido(string fileName, int adhesionId)
         {
             try
             {
-                string _uploadPath = "F:/ArchivosDeAdhesion/";
-                
-                _uploadPath = _uploadPath + adheridoId.ToString().Trim();
-                if (!Directory.Exists(_uploadPath))
-                    Directory.CreateDirectory(_uploadPath);
-                return Path.Combine(_uploadPath, fileName);
+                string basePath = "F:/ArchivosDeAdhesion/";
+                string directoryPath = Path.Combine(basePath, adhesionId.ToString());
+                if(!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath); // No es necesario verificar si existe
+
+                return Path.Combine(directoryPath, fileName);
             }
             catch (Exception)
             {
@@ -191,17 +198,17 @@
             }
            
         }
-        private async Task<InscViewModel> GetUpload(InscViewModel inscViewModel, int adheridoId)
+        private async Task<InscViewModel> GetUpload(InscViewModel inscViewModel, int adhesionId)
         {
             try
             {               
-                var filesData = new List<FileUploadViewModel>();
-
-                string random = new Random().Next(1000, 9999999).ToString();
+                var filesData = new List<FileUploadViewModel>();               
 
                 if (inscViewModel.FileUploadViewModel == null || inscViewModel.FileUploadViewModel.Count == 0)
                 {
+                    inscViewModel.AdhesionViewModel.Success = false;
                     inscViewModel.FileUploadViewModel = new List<FileUploadViewModel>();
+                    return inscViewModel;
                 }
 
                 foreach (var item in inscViewModel.FileUploadViewModel)
@@ -216,18 +223,18 @@
                         Fecha = item.Fecha,
                         Tamano = item.Tamano,
                         InscriptoId = inscViewModel.InsId,
-                        AdheridoId = adheridoId,
-                        RutaArchivo = await GuardarEnDisco(adheridoId,item.Fecha.ToString(), item.NombreArchivo, item.FileContent)
+                        AdheridoId = adhesionId,
+                        RutaArchivo = await GuardarEnDisco(adhesionId,item.Fecha.ToString(), item.NombreArchivo, item.FileContent)
                     });
                 }
                 inscViewModel.FileUploadViewModel = filesData;
                 return inscViewModel;
-                ;
+                
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return inscViewModel;
-                throw ex;
+                throw;
             }            
         }
 
@@ -254,7 +261,7 @@
                 objetoId = await cmdConsulta.ExecuteScalarAsync();
 
                 await con.CloseAsync();
-                decimal adhesionId = (objetoId != null) ? (int)objetoId : 0;
+                decimal adhesionId = (objetoId != null) ? (decimal)objetoId : 0;
                 return (int)adhesionId;
             }
             catch (Exception ex)
@@ -270,10 +277,19 @@
                 await con.CloseAsync();
             }
         }
-        public async Task<AdhesionViewModel> GetProgramaYModulos()
-        {
-            Connection();
+
+        public async Task<AdhesionViewModel> GetProgramaYModulos(AdhesionViewModel adhesionModel)
+        {           
             var adhesionVM = new AdhesionViewModel();
+            var adhesionTempVM = await GetAdherido(adhesionModel);
+
+            if(adhesionTempVM.AdhesionId != 0)
+            {
+                adhesionTempVM.Success = true;
+                return adhesionTempVM;
+            }
+
+            Connection();
 
             try
             {
@@ -286,7 +302,7 @@
                 string query1 = "SELECT ModuloId, Titulo, Descripcion ,Plazo ,Costo , CostoSinEntrega, CostoConEntrega, IngresoMinimo, Estado ,ProgramaId FROM Modulos where ProgramaId = @ProgramId ";
                 string query2 = " SELECT DepartamentoProgramaId, ProgramaId, DepartamentoId, LocalidadId  FROM DepartamentoPrograma where ProgramaId = @ProgramId ";
 
-                var dt =  await GetDataTable(query,0);
+                var dt =  await GetDataTable(query,0, "Programa");
 
                 var modulosList = new List<ModulosVM>();
               
@@ -312,7 +328,7 @@
                 }
 
                 dt = new DataTable();
-                dt = await GetDataTable(query1, programaId);
+                dt = await GetDataTable(query1, programaId, "Programa");
                 
                 if (dt.Rows.Count > 0)
                 {
@@ -338,7 +354,7 @@
                 adhesionVM.ModulosVM = modulosList;
 
                 dt = new DataTable();
-                dt = await GetDataTable(query2, programaId);
+                dt = await GetDataTable(query2, programaId, "Programa");
                
                 if (dt.Rows.Count > 0)
                 {
@@ -356,8 +372,7 @@
                     }
                 }
                 
-                adhesionVM.DepartamentoProgramas = deptoProgramaList;
-
+                adhesionVM.DepartamentoProgramas = deptoProgramaList;                
                 adhesionVM.Success = true;
                 return  adhesionVM;
             }
@@ -376,7 +391,45 @@
 
         }
 
-        private async Task<DataTable> GetDataTable(string query, int param)
+        private async Task<AdhesionViewModel> GetAdherido(AdhesionViewModel model)
+        {           
+            try
+            {
+                //solo el programa activo
+                string consultarAdherido = "select a.AdhesionId, a.FechaAdhesion, m.Titulo from Adhesion a " +
+                    " inner join modulos m on a.ModuloId = m.ModuloId " +
+                    " inner join Programas p on p.ProgramaId = a.ProgramaId where p.Estado = 1 and a.InscriptoId = @inscriptoId";
+                using SqlCommand cmdConsulta = new SqlCommand(consultarAdherido, con);
+
+                var dt = await GetDataTable(consultarAdherido, model.InscriptoId, "Inscripto");
+     
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        model.AdhesionId = ConvertFromReader<int>(item["AdhesionId"]);
+                        model.FechaAdhesion = item["FechaAdhesion"] is DBNull ? null : ((DateTime)item["FechaAdhesion"]).ToString();
+                        model.DescripcionModulo = ConvertFromReader<string>(item["Titulo"]);
+                        break;
+                    }
+                }               
+                return model;
+            }
+            catch (Exception ex)
+            {
+                model.Success = false;
+                model.ErrorMsg = ex.Message;
+
+                await con.CloseAsync();
+                throw ex;
+            }
+            finally
+            {
+                await con.CloseAsync();
+            }
+        }
+
+        private async Task<DataTable> GetDataTable(string query, int param, string modo)
         {
             try
             {
@@ -391,9 +444,13 @@
                         CommandType = CommandType.Text
                     };
                 
-                if(param > 0)
+                if(param > 0 && modo  == "Programa")
                 {
                     cmd.Parameters.Add(new SqlParameter("@ProgramId", param));
+                }
+                if(param > 0 && modo == "Inscripto")
+                {
+                    cmd.Parameters.Add(new SqlParameter("@inscriptoId", param));
                 }
 
                 da = new SqlDataAdapter(cmd);

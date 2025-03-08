@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $('#declaracionModal').modal('toggle');
+    $('#declaracionAdhesionModal').modal('toggle');
 });
 
 $(function () {
@@ -7,6 +7,16 @@ $(function () {
     $("#declaracionClic").click(function () {
         $("#btnBuscar").prop("disabled", false);
         $("#declaracionModal").modal('hide');
+    });
+
+    $("#declaracionAdhesionClic").click(function () {
+        $("#declaracionAdhesionModal").modal('hide');
+        $("#declaracionModal").modal('show');
+    });
+
+    $("#btnHideModalDeclaracion").click(function () {
+        
+        $("#declaracionAdhesionModal").modal('hide');
     });
 
     $("#btnHideModalDeclaracion").click(function () {

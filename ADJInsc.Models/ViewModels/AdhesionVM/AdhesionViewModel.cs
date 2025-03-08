@@ -1,6 +1,5 @@
 ﻿namespace ADJInsc.Models.ViewModels.AdhesionVM
 {
-    using ADJInsc.Models.Models.DBAdhesion;
     using System.Collections.Generic;
     public class AdhesionViewModel
     {
@@ -10,5 +9,9 @@
         public bool Success { get; set; } //Ok, Error
         public string ErrorMsg { get; set; }
         public bool Habilitar { get; set; } = false;
+        public int InscriptoId { get; set; }
+        public int AdhesionId { get; set; }
+        public string FechaAdhesion { get; set; }
+        public string DescripcionModulo { get; set; }
     }
 }

@@ -7,6 +7,7 @@
         public int AdhesionId { get; set; }
         public int InscriptoId { get; set; }
         public int ModuloId { get; set; }
+        public string ModuloDescripcion { get; set; }
         public DateTime FechaAdhesion { get; set; }
         public string Descripcion { get; set; }
     }

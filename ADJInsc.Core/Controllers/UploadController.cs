@@ -52,7 +52,8 @@ namespace ADJInsc.Core.Controllers
                         NombreArchivo = file.FileName,                       
                         Tamano = file.Length,
                         Fecha = fecha,
-                        FileContent = memoryStream.ToArray()
+                        FileContent = memoryStream.ToArray(),
+                        TipoContenido = file.ContentType
                     });
 
                     archivosGuardados.Add(file.FileName);

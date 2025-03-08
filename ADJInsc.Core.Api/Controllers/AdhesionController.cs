@@ -43,13 +43,13 @@
         }
 
 
-        [HttpGet("/adhesion/GetAdhesionModel")]
+        [HttpPost("/adhesion/GetAdhesionModel")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<AdhesionViewModel> GetAdhesionModel()
+        public async Task<ActionResult<AdhesionViewModel>> GetAdhesionModel(AdhesionViewModel adhesionModel)
         {
             //var helper = new InscripcionService(_connectionString, mailService);
-            var model = service.GetProgramaYModulos().Result;
+            var model = service.GetProgramaYModulos(adhesionModel).Result;
 
             await Task.Delay(100).ConfigureAwait(false);
             return model;

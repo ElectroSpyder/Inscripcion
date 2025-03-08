@@ -79,8 +79,8 @@ function uploadFile(file, progressBar, uploadUrl) {
         },
         success: function (result) {
             $('#finadhesion-link').removeClass('disabled');
-            $("#AjaxLoader").delay(2000).hide("slow");
-            bootbox.alert(result.message);
+            //$("#AjaxLoader").delay(2000).hide("slow");
+            //bootbox.alert(result.message);
         },
         error: function () {
             $("#AjaxLoader").delay(2000).hide("slow");

@@ -22,9 +22,9 @@
 
         }
 
-        public async Task<AdhesionViewModel> GetProgramaYModulos()
+        public async Task<AdhesionViewModel> GetProgramaYModulos(AdhesionViewModel model)
         {
-            var result = await helper.GetProgramaYModulos();
+            var result = await helper.GetProgramaYModulos(model);
             return result;
         }
 

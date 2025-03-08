@@ -110,6 +110,70 @@
 
 </div>
 
+
+<div class="modal fade" id="declaracionAdhesionModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title list-group-item active w-100 text-center">Adhesión Online “Torres de Luján” </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body card">
+                <p class="text-justify">
+                    Bienvenido/a al <strong>Sistema de Adhesión Online a la operatoria público privada “Torres de Luján”</strong>  que lleva adelante el Instituto de Vivienda y Urbanismo de Jujuy (IVUJ), podrán adherir las personas:
+                    Que registren Inscripción y/o Actualización de datos online del IVUJ, hasta la fecha de 10 de marzo del 2025.
+                    Que residan en “Gran Jujuy” (que incluye a San Salvador de Jujuy, Palpalá y Yala).
+
+                    Y quienes cumplan con los requisitos publicados en la operatoria “Torres de Luján” tanto para la Inscripción como la Adhesión online en el IVUJ.
+                </p>
+                <label id="fin-label">
+                    <input type="checkbox" id="fin-checkbox">
+                    He leído y acepto los Requisitos y Causales de Exclusión del proceso de Adhesión Online de la operatoria “Torres de Luján”.
+                </label>
+                <div class="list-group" id="declaracionAceptar" >
+                    <a href="#" class="list-group-item active">
+                        Adhesión Online “Torres de Luján”
+                    </a>
+                    <a href="#" class="list-group-item">
+                        A partir de ahora, le pedimos que inicie la sesión en el Sistema de Inscripción y/o Actualización de Datos online del IVUJ.
+                        Le recordamos que esta operación estará habilitada sólo para:
+                    </a>
+                    <a href="#" class="list-group-item">
+                        Quienes registren Inscripción y/o Actualización de datos online del IVUJ, hasta la fecha del 10 de marzo del 2025
+                    </a>
+                    <a href="#" class="list-group-item">
+                        Quienes residan en “Gran Jujuy” (que incluye a San Salvador de Jujuy, Palpalá y Yala).
+                    </a>                   
+                    <a href="#" class="list-group-item">
+                        <strong>¡Atención!</strong>
+                        <p>El sistema también le requerirá que adjunte comprobante/s de ingresos económicos que declarará. Para avanzar, asegúrese de tener disponible en formato .jpg (imagen):</p>
+                        <ul>
+                            <li>Trabaja en Relación de Dependencia: últimos tres (3) recibos de sueldo</li>
+                            <li>Trabaja de manera Independiente/Autónoma: Constancia de Inscripción en ARCA al día.</li>
+                        </ul>
+                    </a>
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="declaracionAdhesionClic" type="submit" class="btn btn-primary" disabled>Aceptar</button>
+                <button type="button" id="btnHideModalDeclaracion" class="btn btn-outline-info">
+                    Rechazar
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
 <div class="modal fade" id="declaracionModal" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -201,6 +265,32 @@
         }
     </style>
 
-    <script src="~/js/Insc.js"></script>
-    
+    <script src="~/js/Insc1.js"></script>
+    <script type="text/javascript">
+         $(document).ready(function () {
+            // Esconde el div al cargar la página
+            $('#declaracionAceptar').hide();
+
+            $('#fin-checkbox').on('change', function () {
+                if ($(this).prop('checked')) {
+                    $('#fin-checkbox').addClass('highlighted');
+                    $('#declaracionAceptar').show(); // Muestra el div
+                    $('#declaracionAdhesionClic').prop('disabled', false);
+                } else {
+                    $('#fin-checkbox').removeClass('highlighted');
+                    $('#declaracionAceptar').hide(); // Oculta el div
+                    $('#declaracionAdhesionClic').prop('disabled', true);
+                }
+            });
+        });
+        /*
+
+         $('#programas-link').removeClass('disabled');
+                } else {
+                    // Checkbox desmarcado: quitar clase
+                    $('#confirmation-label').removeClass('highlighted');
+                    $('#programas-link').addClass('disabled');*/
+
+    </script>
+        
 }
