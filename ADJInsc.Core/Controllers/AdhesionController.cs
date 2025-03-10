@@ -13,6 +13,7 @@
     using Rotativa.AspNetCore;
     using ADJInsc.Models.ViewModels.UpLoad;
     using System.Linq;
+    using ADJInsc.Models.Models.DBInsc;
 
     public class AdhesionController : Controller
     {
@@ -86,7 +87,18 @@
 
                     var modeloNuevo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
                     modeloNuevo.AdherirViewModel = respuesta.AdherirViewModel;  //idAdhesion  -> probar
-                                        
+                                                                                //aqui debo setear el nombre de la localidad
+                    string descripcionLocalidad = string.Empty;
+
+                    foreach (var item in modeloNuevo.LocalidadesList)
+                    {
+                        if(int.Parse(item.Value.Split('-')[0]) == modeloNuevo.DepartamentoKey && int.Parse(item.Value.Split('-')[1]) == modeloNuevo.LocalidadKey)
+                        {
+                            modeloNuevo.LocalidadDesc = item.Text.Trim();
+                            break;
+                        }                        
+                    }
+
                     HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modeloNuevo);
 
                     //4_ rotativa_ retorno el json pero sin valor

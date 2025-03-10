@@ -5,20 +5,39 @@
 }
 <style>
     .highlighted {
-    font-weight: bold;
+        font-weight: bold;
+    }
+
+    #modalAdhesion .modal-dialog {
+        max-width: 40%; /* Ajusta el porcentaje según necesites */
+    }
+
+    #confirmation-label {
+        display: block; /* Convierte el label en bloque */
+        text-align: justify; /* Justifica el texto */
+        width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    }
+
+    #fin-label {
+        text-align: justify;
+        display: block; /* Asegura que ocupe todo el ancho disponible */
+    }
+
+    .parpadeo {
+        animation: parpadeo 1s infinite alternate;
     }
 </style>
 <div style="float:right;">
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">            
+        <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
             @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)
             {
-                    <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
+                <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
                 @*  <input id="btnAdhesion" type="submit" value="Cerrar y Adherir" class="btn btn-outline-success" /> *@
-                    <button id="btnAdhesion" type="button" class="btn btn-outline-success" float-right" data-toggle="modal" data-target="#modalAdhesion">
-                        <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
-                        <i class="fas fa-plus-circle"></i>
-                    </button>
+                <button id="btnAdhesion" type="button" class="btn btn-outline-success" float-right" data-toggle="modal" data-target="#modalAdhesion">
+                    <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
+                    <i class="fas fa-plus-circle"></i>
+                </button>
             }
             <form asp-controller="Inscripcion" asp-action="GoHome">
                 <img id="AjaxLoaderLogin" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
@@ -52,9 +71,9 @@
             </div>
             <div class="form-group col-md-12">
                 Teléfono (anteponiendo código de área) (*)
-                <input type="text" 
-                       class="form-control" 
-                       id="inputTel" 
+                <input type="text"
+                       class="form-control"
+                       id="inputTel"
                        placeholder="Teléfono"
                        onkeypress="return valideKeyNros(event);"
                        value="@Model.InsTelef">
@@ -86,26 +105,24 @@
 
 
                 CUIL-CUIT (*)
-                <input 
-                    id="inputCuitUno"
-                    maxlength="2"
-                    pattern="[0-9]+"
-                    size="2"
-                    type="text" 
-                    class="form-control" 
-                    style="width:16%; margin-left:4px;" 
-                    value="@Model.CuitCuilUno.Trim()"> -
+                <input id="inputCuitUno"
+                       maxlength="2"
+                       pattern="[0-9]+"
+                       size="2"
+                       type="text"
+                       class="form-control"
+                       style="width:16%; margin-left:4px;"
+                       value="@Model.CuitCuilUno.Trim()"> -
                 <input type="text" class="form-control" id="inputCuitDos" placeholder="D.N.I." value="@Model.InsNumdoc" disabled style="width:40%"> -
 
-                <input 
-                      id="inputCuitTres" 
-                      maxlength="1"
-                      pattern="[0-9]+"
-                      size="1"
-                      type="text" 
-                      class="form-control" 
-                      style="width:16%" 
-                      value="@Model.CuitCuilDos.Trim()">
+                <input id="inputCuitTres"
+                       maxlength="1"
+                       pattern="[0-9]+"
+                       size="1"
+                       type="text"
+                       class="form-control"
+                       style="width:16%"
+                       value="@Model.CuitCuilDos.Trim()">
 
 
 
@@ -118,13 +135,12 @@
         <div class="form-row card-body">
             <div class="form-group col-md-12">
                 Dirección (Detalle: Calle, Número, Piso, Lote, Manzana, Barrio, Código Postal) (*)
-                <input 
-                     type="text"
-                     multiple class="form-control" 
-                     id="inputAddress" 
-                     placeholder="Dirección"
-                     onkeyup="upperCase(this);"
-                     value="@Model.Direccion">
+                <input type="text"
+                       multiple class="form-control"
+                       id="inputAddress"
+                       placeholder="Dirección"
+                       onkeyup="upperCase(this);"
+                       value="@Model.Direccion">
             </div>
 
             <div class="form-group col-md-4">
@@ -144,13 +160,12 @@
         <div class="form-row card-body">
             <div class="form-group col-md-12">
                 <label for="inputLugar">Lugar de empleo del/la Titular (*):</label>
-                <input 
-                      type="text" 
-                      multiple class="form-control" 
-                      id="inputLugar" 
-                      placeholder="Lugar donde trabaja"
-                      onkeyup="upperCase(this);"
-                      value="@Model.NombreEmpleo">
+                <input type="text"
+                       multiple class="form-control"
+                       id="inputLugar"
+                       placeholder="Lugar donde trabaja"
+                       onkeyup="upperCase(this);"
+                       value="@Model.NombreEmpleo">
             </div>
 
             <div class="form-group col-md-4">
@@ -165,9 +180,11 @@
 
                 <input type="number" class="form-control" id="inputIngresoNeto" value="@Model.IngresoNeto">
             </div>
-            <h6 class="card-title">(**) En caso de que poseas más de una ocupación (sea dependiente y/o independiente), 
-            en “Sueldo Neto (sin puntos)” sumá todos los ingresos percibidos en tus trabajos (el que declarás, y los otros); 
-            además lo que sumen otros/as aportantes del grupo familiar, y colocá el total.</h6>
+            <h6 class="card-title">
+                (**) En caso de que poseas más de una ocupación (sea dependiente y/o independiente),
+                en “Sueldo Neto (sin puntos)” sumá todos los ingresos percibidos en tus trabajos (el que declarás, y los otros);
+                además lo que sumen otros/as aportantes del grupo familiar, y colocá el total.
+            </h6>
         </div>
     </div>
 
@@ -209,8 +226,6 @@
                     </tr>
                 </thead>
                 <tbody class="tbody">
-
-
                 </tbody>
             </table>
 
@@ -229,7 +244,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
                 <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
-                <input id="btnCreate" type="submit" value="Cerrar y enviar solicitud" class="btn btn-primary" />              
+                <input id="btnCreate" type="submit" value="Cerrar y enviar solicitud" class="btn btn-primary" />
             </div>
         </div>
     </div>
@@ -253,22 +268,20 @@
 
                     <div class="form-group col-md-12 has-success">
                         Apellido/s y Nombre/s (completos) (*)
-                        <input 
-                              type="text" 
-                              class="form-control" 
-                              id="inputNombreInicial"
-                              onkeyup="upperCase(this);"
-                              placeholder="Apellido y Nombre">
+                        <input type="text"
+                               class="form-control"
+                               id="inputNombreInicial"
+                               onkeyup="upperCase(this);"
+                               placeholder="Apellido y Nombre">
                     </div>
 
                     <div class="form-group col-md-12 has-success">
                         DNI Nº (*)
-                        <input 
-                              type="number" 
-                              class="form-control" 
-                              id="inputDniInicial" 
-                              maxlength="8"
-                              placeholder="D.N.I.">
+                        <input type="number"
+                               class="form-control"
+                               id="inputDniInicial"
+                               maxlength="8"
+                               placeholder="D.N.I.">
                     </div>
                     <div class="form-group col-md-12 has-success">
                         <label>Fecha Nacimiento (*)</label>
@@ -297,7 +310,7 @@
                     <div class="form-group col-md-12 has-success">
                         <label>Parentesco (seleccionar) (*)</label>
                         @Html.DropDownListFor(x => Model.ParentescoKey, Model.ParentescoList ?? new List<SelectListItem>(),
-                                     htmlAttributes: new { @class = "form-control", id = "ddParentescoInicialId", onchange = "elementoSeleccionado(this)" })
+                                 htmlAttributes: new { @class = "form-control", id = "ddParentescoInicialId", onchange = "elementoSeleccionado(this)" })
                     </div>
                 </div>
 
@@ -347,30 +360,29 @@
                                 <div class="tab-content mt-3">
                                     @*Panel de declaración jurada*@
                                     <div class="tab-pane active" id="inicio" role="tabpanel">
-                                        <h3 class="card-subtitle mb-2" >Inicio</h3>
+                                        <h3 class="card-subtitle mb-2">Inicio</h3>
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <label for="confirmation-checkbox" id="confirmation-label">
-                                                    <input type="checkbox" id="confirmation-checkbox" name="confirmation-checkbox" aria-labelledby="confirmation-label">
-                                                    Se deja expresamente aclarado, que la “tipología” a seleccionar dentro del programa, corresponderá a los “ingresos” 
+                                                    <input class="parpadeo" type="checkbox" id="confirmation-checkbox" name="confirmation-checkbox" aria-labelledby="confirmation-label">
+                                                    Se deja expresamente aclarado, que la “tipología” a seleccionar dentro del programa, corresponderá a los “ingresos”
                                                     a declarar de mi grupo familiar. Siendo la misma, mi única opción de adhesión para este Programa.
-                                                    @* Confirmo que el ingreso de todo mi grupo familiar supera los $ @string.Format("{0:N0}", Model.AdhesionViewModel.ProgramaVM.MontoAdhesion) *@
                                                 </label>
                                             </div>
-                                        </div>                                            
+                                        </div>
                                     </div>
                                     @*Panel de modulos de programas*@
                                     <div class="tab-pane" id="programas" role="tabpanel" aria-labelledby="programas-tab">
                                         <h3 class="card-subtitle mb-2">Tipologías</h3>
 
-                                        <div class="dropdown">                                            
+                                        <div class="dropdown">
                                             <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Adherir a 
+                                                Adherir a
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                                 {
-                                                        <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)">@opcion.Titulo</a></li>
+                                                    <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)">@opcion.Titulo</a></li>
                                                 }
                                             </ul>
                                         </div>
@@ -383,7 +395,7 @@
                                                     <strong><span id="costo">-</span></strong>
                                                 </li>
                                                 <li class="list-group-item">
-                                                   Monto aproximado del ahorro previo <strong><span id="ingresominimo">-</span></strong> </br>
+                                                    Monto aproximado del ahorro previo <strong><span id="ingresominimo">-</span></strong> </br>
                                                     <span id="descripcioncosto">-</span>
                                                 </li>
                                                 <li class="list-group-item">
@@ -400,46 +412,69 @@
                                     </div>
                                     @*Panel tab de carga de archivos*@
                                     <div class="tab-pane" id="ingresos" role="tabpanel" aria-labelledby="inresos-tab">
-
                                         <div>
+                                            <h5 class="card-subtitle mb-2">Ingresos</h5>
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    <input type="radio" id="dependencia" name="ingresos" value="dependencia">
+                                                    <label for="dependencia">Relación de dependencia (último recibo de sueldo)</label>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <input type="radio" id="autonomo" name="ingresos" value="autonomo">
+                                                    <label for="autonomo">Independiente / Autónomo (Constancia de inscripción al día en ARCA (ex AFIP))</label>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <input type="radio" id="ambos" name="ingresos" value="ambos">
+                                                    <label for="ambos">Ambos</label>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        @* <div>
                                             <h5 class="card-subtitle mb-2">Ingresos</h5>
                                             <ul class="list-group">
                                                 <li class="list-group-item">Relación de dependencia (último recibo de sueldo)</li>
                                                 <li class="list-group-item">Independiente / Autónomo (Constancia de inscripción al día en ARCA (ex AFIP))</li>
                                                 <li class="list-group-item">Ambos</li>
                                             </ul>
-                                        </div>
+                                        </div> *@
                                         <div class="mb-3"></div> <!-- Espacio entre divs -->
                                         <div>
                                             <h5 class="card-subtitle mb-2">Archivo</h5>
-                                            @*  <form id="uploadForm" enctype="multipart/form-data">
-                                                <input type="file" id="fileInput" multiple accept="image/*" />
-                                                <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
-
-                                                <div class="mb-3"></div> <!-- Espacio entre divs -->
-                                                <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en el momento oportuno.</p>
-                                                <button disabled type="submit" class="btn btn-danger btnModal subirArchivo">Subir</button>
-                                            </form> *@
                                             <!-- Formulario 1: Subir archivos -->
-                                            <form id="uploadForm" enctype="multipart/form-data" data-upload-url="@Url.Action("UploadImages", "Upload")">
-                                                <input type="file" id="fileInput" multiple accept="image/*" />
+                                            @*  <form id="uploadForm" enctype="multipart/form-data" data-upload-url="@Url.Action("UploadImages", "Upload")">
+                                                <input class="btn btn-outline-info" type="file" id="fileInput" multiple accept="image/*" />
                                                 <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
                                                 <div class="mb-3"></div> <!-- Espacio entre divs -->
                                                 <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en momento oportuno.</p>
                                                 <button type="submit" disabled>Subir Todos</button>
+                                            </form> *@
+                                            <form id="uploadForm" enctype="multipart/form-data" data-upload-url="@Url.Action("UploadImages", "Upload")">
+                                                <!-- Input de archivo oculto -->
+                                                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" />
+
+                                                <!-- Botón estilizado que activa el input -->
+                                                <label for="fileInput" class="btn btn-outline-info">Seleccionar imágenes</label>
+
+                                                <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+                                                <div class="mb-3"></div> <!-- Espacio entre divs -->
+
+                                                <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en momento oportuno.</p>
+
+                                                <button class="btn btn-outline-info" type="submit" disabled>Subir Todos</button>
                                             </form>
 
                                             <div id="AjaxLoader" style="display: none;">Cargando...</div>
 
                                             @if (ViewBag.Message != null)
                                             {
-                                                    <div class="alert alert-success" style="margin-top:20px">
+                                                <div class="alert alert-success" style="margin-top:20px">
                                                     @ViewBag.Message
-                                                    </div>
+                                                </div>
                                             }
                                             <div class="mb-3"></div> <!-- Espacio entre divs -->
                                             <div id="result"></div>
-                                        </div> 
+                                        </div>
 
                                     </div>
 
@@ -448,17 +483,20 @@
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <label id="fin-label">
-                                                    <input type="checkbox" id="fin-checkbox">
-                                                    El presente formulario reviste carácter de declaración jurada y declaro  conocer que la falsificación de datos es punible por el art. 172 del código penal, por lo tanto acepto que el ocultamiento y/o falsedad de datos de la información  que brindo, o las que a posterior aportara, o el no contar con la documentación respaldatoria dará lugar a mi exclusión para dicho programa. Aclarando específicamente que el no contar con los ingresos mínimos declarados, será causal de exclusión de forma directa.
-                                                    Se deja expresa conformidad, que el correo electrónico declarado  reviste carácter de Domicilio Electrónico, donde serán válidas todas las notificaciones electrónicas que en el futuro se me efectúe. Asumiendo la responsabilidad, en caso de proceder a cambiar el correo electrónico antes declarado, de informar a sí mismo a este organismo.
-                                                    La presente adhesión no genera un derecho adquirido a la adjudicación de un departamento por parte de este organismo.
+                                                    <input type="checkbox" id="fin-checkbox" class="parpadeo">
+                                                    <span class="text-justify">
+                                                        El presente formulario reviste carácter de declaración jurada y declaro  conocer que la falsificación de datos es punible por el art. 172 del código penal, por lo tanto acepto que el ocultamiento y/o falsedad de datos de la información  que brindo, o las que a posterior aportara, o el no contar con la documentación respaldatoria dará lugar a mi exclusión para dicho programa. Aclarando específicamente que el no contar con los ingresos mínimos declarados, será causal de exclusión de forma directa.
+                                                        Se deja expresa conformidad, que el correo electrónico declarado  reviste carácter de Domicilio Electrónico, donde serán válidas todas las notificaciones electrónicas que en el futuro se me efectúe. Asumiendo la responsabilidad, en caso de proceder a cambiar el correo electrónico antes declarado, de informar a sí mismo a este organismo.
+                                                        La presente adhesión no genera un derecho adquirido a la adjudicación de un departamento por parte de este organismo.
+                                                    </span>
+
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="form-group" >
+                                        <div class="form-group">
                                             <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
                                                 <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
-                                                <input id="btnCreateAdhesion" data-inscripto="@Model.InsId" data-programaid="@Model.AdhesionViewModel.ProgramaVM.ProgramaId" type="submit" value="Cerrar y enviar solicitud" class="btn btn-primary" disabled />                                               
+                                                <input id="btnCreateAdhesion" data-inscripto="@Model.InsId" data-programaid="@Model.AdhesionViewModel.ProgramaVM.ProgramaId" type="submit" value="Cerrar y enviar solicitud" class="btn btn-primary" disabled />
                                             </div>
                                         </div>
                                     </div>
@@ -525,7 +563,7 @@
                 </form>
             </div>
         </div>
-        </div>
+    </div>
 </div>
 
 <div id="modalSuccessAdhesion" class="modal" tabindex="-1" role="dialog">
@@ -555,7 +593,7 @@
                 </form>
             </div>
         </div>
-        </div>
+    </div>
 </div>
 
 <div id="modalError" class="modal" tabindex="-1" role="dialog">
@@ -586,64 +624,34 @@
         </div>
     </div>
 </div>
- <!-- Modal -->
-<div style="float:right;">
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
-            <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
+<!-- Modal -->
+<div class="modal fade" id="modalExisteAdhesion" tabindex="-1" role="dialog" aria-labelledby="modalAdhesionLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Encabezado -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalAdhesionLabel">Información de Adhesión</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-            @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)
-            {
-                        <button id="btnAdhesion" type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalAdhesion">
-                            <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
-                            <i class="fas fa-plus-circle"></i>
-                        </button>
-            }
-            else
-            {
-                if (Model.AdhesionViewModel.AdhesionId != 0)
-                {
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="modalExisteAdhesion" tabindex="-1" role="dialog" aria-labelledby="modalAdhesionLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <!-- Encabezado -->
-                                                <div class="modal-header bg-primary text-white">
-                                                    <h5 class="modal-title" id="modalAdhesionLabel">Información de Adhesión</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
+            <!-- Cuerpo del modal -->
+            <div class="modal-body">
+                <p><strong>Sr./Sra. @Model.InsNombre,</strong></p>
+                <p>Usted está adherido al programa <strong>@Model.AdhesionViewModel.DescripcionModulo</strong>.</p>
+                <p><strong>Número de Adhesión:</strong> <span class="h4 font-weight-bold text-primary">@Model.AdhesionViewModel.AdhesionId</span></p>
+                <p><strong>Fecha de Adhesión:</strong> <span class="text-primary">@Model.AdhesionViewModel.FechaAdhesion</span></p>
+            </div>
 
-                                                <!-- Cuerpo del modal -->
-                                                <div class="modal-body">
-                                                    <p><strong>Sr./Sra. @Model.InsNombre,</strong></p>
-                                                    <p>Usted está adherido al programa <strong>@Model.AdhesionViewModel.DescripcionModulo</strong>.</p>
-                                                    <p><strong>Número de Adhesión:</strong> <span class="h4 font-weight-bold text-primary">@Model.AdhesionViewModel.AdhesionId</span></p>
-                                                    <p><strong>Fecha de Adhesión:</strong> <span class="text-primary">@Model.AdhesionViewModel.FechaAdhesion</span></p>
-                                                </div>
+            <!-- Pie del modal -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-                                                <!-- Pie del modal -->
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                }
-            }
-
-            <!-- Formulario de cierre de sesión -->
-            <form asp-controller="Inscripcion" asp-action="GoHome">
-                <img id="AjaxLoaderLogin" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
-                <button class="btn btn-outline-danger" id="btnLogin">Cerrar sesión</button>
-            </form>
-
-            <!-- Botón de descargar declaración jurada -->
-            <button type="submit" class="btn btn-outline-info aceptarSuccess">Descargar Declaración Jurada</button>
-        </div> <!-- Cierra col-md-offset-2 col-md-10 -->
-    </div> <!-- Cierra form-group -->
-</div> <!-- Cierra div con float:right -->
 
 
 @section scripts {
@@ -651,8 +659,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-        <script src="~/js/uploadHandler3.js"></script>
-
+    <script src="~/js/uploadHandler3.js"></script>
     <script type="text/javascript">
             $(function () {
                 $(document).ready(function () {
@@ -671,6 +678,34 @@
                         }
                     });
             });
+             // Función para hacer parpadear el checkbox
+                $(function() {
+                // Selecciona el checkbox
+                const checkbox = document.getElementById('confirmation-checkbox');
+
+                // Función para hacer parpadear el checkbox
+                function startBlinking(checkbox) {
+                    checkbox.style.boxShadow = "0 0 5px red"; // Iniciar parpadeo con sombra
+                    // Configura un parpadeo en intervalos
+                    return setInterval(() => {
+                        checkbox.style.boxShadow = checkbox.style.boxShadow === "0 0 5px red" ? "0 0 15px red" : "0 0 5px red";
+                    }, 500); // Cambiar cada 500ms
+                }
+
+                // Inicia el parpadeo cuando la página se carga
+                let blinkInterval = startBlinking(checkbox);
+
+                // Evento para detener el parpadeo cuando el checkbox está marcado
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            clearInterval(blinkInterval); // Detener el parpadeo
+                            checkbox.style.boxShadow = "";  // Resetear la sombra
+                        } else {
+                            blinkInterval = startBlinking(checkbox); // Volver a iniciar el parpadeo si no está marcado
+                        }
+                    });
+                });
+
 
         $(function () {
             $('#aceptarBadSuccess').click(function () {
@@ -988,7 +1023,7 @@
                 $('#idMinInicial').css('border-color', 'lightgrey');
                 $('#idVetInicial').css('border-color', 'lightgrey');
                 $('#ddParentescoInicialId').css('border-color', 'lightgrey');
-                $.ajax({              
+                $.ajax({
                     url: '@Url.Action("UpdatePersona", "Bandeja")',
                         data: {
                             id: numeroDni
@@ -1340,7 +1375,7 @@
                     var plazo = $(this).data("plazo");
                     var descripcionCosto = $(this).data("descripcioncosto");
                     var costoConEntrega = $(this).data("costoconentrega");
-                    var costoSinEntrega = $(this).data("costosinentrega");                      
+                    var costoSinEntrega = $(this).data("costosinentrega");
 
                     // Actualizar los valores en el div
                         $("#ingresominimo").text("$" + ingresominimo.toLocaleString());
@@ -1350,7 +1385,7 @@
                         $("#costoconentrega").text("$" + costoConEntrega.toLocaleString());
                         $("#costosinentrega").text("$" + costoSinEntrega.toLocaleString());
                         $("#costoconentrega1").text("$" + costoConEntrega.toLocaleString());
-                        $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());                        
+                        $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());
 
                     if (selectedText != 'Sin Seleccionar') {
                         $('#selected-option').text('Está por adherir a: ' + selectedText); // Actualiza el texto del párrafo

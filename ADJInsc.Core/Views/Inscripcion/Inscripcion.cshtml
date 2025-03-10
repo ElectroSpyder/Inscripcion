@@ -283,13 +283,33 @@
                 }
             });
         });
-        /*
 
-         $('#programas-link').removeClass('disabled');
-                } else {
-                    // Checkbox desmarcado: quitar clase
-                    $('#confirmation-label').removeClass('highlighted');
-                    $('#programas-link').addClass('disabled');*/
+         $(function() {
+                // Selecciona el checkbox
+                const checkbox = document.getElementById('fin-checkbox');
+
+                // Función para hacer parpadear el checkbox
+                function startBlinking(checkbox) {
+                    checkbox.style.boxShadow = "0 0 5px red"; // Iniciar parpadeo con sombra
+                    // Configura un parpadeo en intervalos
+                    return setInterval(() => {
+                        checkbox.style.boxShadow = checkbox.style.boxShadow === "0 0 5px red" ? "0 0 35px red" : "0 0 5px red";
+                    }, 500); // Cambiar cada 500ms
+                }
+
+                // Inicia el parpadeo cuando la página se carga
+                let blinkInterval = startBlinking(checkbox);
+
+                // Evento para detener el parpadeo cuando el checkbox está marcado
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            clearInterval(blinkInterval); // Detener el parpadeo
+                            checkbox.style.boxShadow = "";  // Resetear la sombra
+                        } else {
+                            blinkInterval = startBlinking(checkbox); // Volver a iniciar el parpadeo si no está marcado
+                        }
+                    });
+                });
 
     </script>
         

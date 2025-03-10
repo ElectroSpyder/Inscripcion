@@ -300,6 +300,7 @@
                             cmd.Parameters.Add(new SqlParameter("@ins_ficha", inscViewModel.InsFicha));
                             cmd.Parameters.Add(new SqlParameter("@ins_tipflia", inscViewModel.InsTipflia));   //descripcion de tipo familia 
                             cmd.Parameters.Add(new SqlParameter("@ins_nombre", inscViewModel.InsNombre.Trim()));
+                            cmd.Parameters.Add(new SqlParameter("@ins_fecins", fechaInscripcion != null ? fechaInscripcion.ToString("yyyy-MM-dd HH:mm:ss") : string.Empty));
                             cmd.Parameters.Add(new SqlParameter("@ins_numdoc", inscViewModel.InsNumdoc));
                             cmd.Parameters.Add(new SqlParameter("@ins_email", inscViewModel.InsEmail.Trim()));
                             cmd.Parameters.Add(new SqlParameter("@ins_telef", inscViewModel.InsTelef));
@@ -312,8 +313,8 @@
                             cmd.Parameters.Add(new SqlParameter("@ins_discapacitado", inscViewModel.InsDiscapacitado));
                             cmd.Parameters.Add(new SqlParameter("@ins_minero", inscViewModel.InsMinero));
                             cmd.Parameters.Add(new SqlParameter("@ins_veterano", inscViewModel.InsVeterano));
-                            cmd.Parameters.Add(new SqlParameter("@ins_fecins", fechaInscripcion.ToString().Trim()));
-                            //Aqui agregar
+                            
+
                             if (con.State == ConnectionState.Closed)
                                 await con.OpenAsync();
 

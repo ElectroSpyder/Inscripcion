@@ -529,7 +529,8 @@
              Test.Insc.Api
              */
 
-            var service = this._apiService.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostInscViewModel", null, modelo, token).Result;
+            //var service = this._apiService.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostInscViewModel", null, modelo, token).Result;
+            var service = this._apiService.PostAsync<ResponseViewModel>("/Test.Insc.Api/helper/", "PostInscViewModel", null, modelo, token).Result;
 
             if (service.IsSuccess)
             {
