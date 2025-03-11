@@ -11,6 +11,7 @@
         public string RutaArchivo { get; set; }
         public byte[] FileContent { get; set; } // Guardamos el archivo en memoria
         public int AdheridoId { get; set; }
+        public string TipoIngreso { get; set; }
     }
 
 }

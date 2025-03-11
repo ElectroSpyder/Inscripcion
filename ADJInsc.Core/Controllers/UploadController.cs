@@ -37,6 +37,7 @@ namespace ADJInsc.Core.Controllers
             }
 
             string fecha = DateTime.Now.ToString("yyyyMMdd");
+            string tipoIngreso = Request.Form["TipoIngreso"]; // Obtener el string enviado
 
             try
             {
@@ -53,7 +54,8 @@ namespace ADJInsc.Core.Controllers
                         Tamano = file.Length,
                         Fecha = fecha,
                         FileContent = memoryStream.ToArray(),
-                        TipoContenido = file.ContentType
+                        TipoContenido = file.ContentType,
+                        TipoIngreso = tipoIngreso
                     });
 
                     archivosGuardados.Add(file.FileName);
@@ -66,7 +68,6 @@ namespace ADJInsc.Core.Controllers
                 return Json(new { success = false, message = "❌ Error: " + ex.Message });
             }
         }
-
 
     }
 }

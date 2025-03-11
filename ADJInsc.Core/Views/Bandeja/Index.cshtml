@@ -382,7 +382,7 @@
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                                 {
-                                                    <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)">@opcion.Titulo</a></li>
+                                                    <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)">@opcion.Titulo</a></li>
                                                 }
                                             </ul>
                                         </div>
@@ -392,17 +392,17 @@
                                             <ul class="list-group">
                                                 <li class="list-group-item">
                                                     Costo aproximado de la unidad habitacional
-                                                    <strong><span id="costo">-</span></strong>
+                                                    <strong><span id="costo"></span>  (<span id="costouvis"></span> UVIS)</strong>
                                                 </li>
                                                 <li class="list-group-item">
-                                                    Monto aproximado del ahorro previo <strong><span id="ingresominimo">-</span></strong> </br>
+                                                    Monto aproximado del ahorro previo <strong><span id="ingresominimo"></span></strong> (<span id="ingresominimouvis"></span> UVIS) <br>
                                                     <span id="descripcioncosto">-</span>
                                                 </li>
                                                 <li class="list-group-item">
                                                     <strong>Ingreso mínimo del grupo familiar:</strong>
                                                     <ul>
-                                                        <li>Sin entrega o anticipo a cancelar el Ahorro previo: <strong id="costosinentrega"></strong></li>
-                                                        <li>Con entregas o anticipo a cancelar el total del Ahorro previo: <strong id="costoconentrega"></strong></li>
+                                                        <li><strong id="costosinentrega"></strong> (<span id="costosinentregauvis"></span> UVIS) con el ahorro previo vigente a pagar en 48 meses, o</li>
+                                                        <li><strong id="costoconentrega"></strong> (<span id="costoconentregauvis"></span> UVIS) si se cancela el total del ahorro previo.</li>
                                                     </ul>
 
                                                 </li>
@@ -659,7 +659,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script src="~/js/uploadHandler3.js"></script>
+    <script src="~/js/uploadHandler4.js"></script>
     <script type="text/javascript">
             $(function () {
                 $(document).ready(function () {
@@ -1362,30 +1362,43 @@
                 });
         });
 
+        let selectedModulo = null;
         $(function () {
                 // Mostrar por defecto la primera opción al cargar la página
-                    var firstOption = $('.mod01').first().attr('data-moduloid');
-                $('#selected-option').text('Opción seleccionada: ' + firstOption);
-            $('#cajamonto').hide();
+                    //var firstOption = $('.mod01').first().attr('data-moduloid');
+                $('#selected-option').text('Opción seleccionada: ' );
+                $('#cajamonto').hide();
                 $('.mod01').on('click', function (e) {
                     e.preventDefault(); // Evita el comportamiento predeterminado del enlace
-                        var selectedText = $(this).data('modelodetalle'); // Obtiene el texto desde el atributo `data-value`
-                    var ingresominimo = $(this).data("ingresominimo");
-                    var costo = $(this).data("costo");
+                    var selectedText = $(this).data('modelodetalle'); // Obtiene el texto desde el atributo `data-value`
                     var plazo = $(this).data("plazo");
                     var descripcionCosto = $(this).data("descripcioncosto");
+                    var ingresominimo = $(this).data("ingresominimo");
+                    var costo = $(this).data("costo");                    
                     var costoConEntrega = $(this).data("costoconentrega");
                     var costoSinEntrega = $(this).data("costosinentrega");
 
+                     var ingresominimouvis = $(this).data("ingresominimouvis");
+                    var costouvis = $(this).data("costouvis");
+                    var costoConEntregauvis = $(this).data("costoconentregauvis");
+                    var costoSinEntregauvis = $(this).data("costosinentregauvis");
+                    selectedModulo = $(this);
                     // Actualizar los valores en el div
-                        $("#ingresominimo").text("$" + ingresominimo.toLocaleString());
-                        $("#costo").text("$" + costo.toLocaleString());
                         $("#plazo").text(plazo.toLocaleString());
                         $("#descripcioncosto").text(descripcionCosto.toLocaleString());
+
+                        $("#ingresominimo").text("$" + ingresominimo.toLocaleString());
+                        $("#costo").text("$" + costo.toLocaleString());  
                         $("#costoconentrega").text("$" + costoConEntrega.toLocaleString());
                         $("#costosinentrega").text("$" + costoSinEntrega.toLocaleString());
-                        $("#costoconentrega1").text("$" + costoConEntrega.toLocaleString());
-                        $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());
+
+                         $("#ingresominimouvis").text("$" + ingresominimouvis.toLocaleString());
+                        $("#costouvis").text("$" + costouvis.toLocaleString());
+                        $("#costoconentregauvis").text("$" + costoConEntregauvis.toLocaleString());
+                        $("#costosinentregauvis").text("$" + costoSinEntregauvis.toLocaleString());
+
+                        // $("#costoconentrega1").text("$" + costoConEntrega.toLocaleString());
+                        // $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());
 
                     if (selectedText != 'Sin Seleccionar') {
                         $('#selected-option').text('Está por adherir a: ' + selectedText); // Actualiza el texto del párrafo
@@ -1399,21 +1412,20 @@
                 });
         });
 
-
-            $(function() {
+        $(function() {
                 $("#btnCreateAdhesion").click(function (e) {
+               
                     e.preventDefault();
-                    var selectedLink = $('.mod01');  // O puedes usar un selector más específico si es necesario
+                    
+                    let moduloId = selectedModulo.data("moduloid");
+                    let modeloDetalles = selectedModulo.data("modelodetalle");
+
+                    var selectedLink = $(this);  // O puedes usar un selector más específico si es necesario
                     // Acceder al data-moduloid del enlace
-                    var moduloId = selectedLink.data("moduloid");
-                        var idInscripto =$(this).data("inscripto");
-                            var programaId = $(this).data("programaid");
-                                var modeloDetalles = selectedLink.data("modelodetalle");
-                        console.log(idInscripto)
-                            console.log(moduloId)
-                                console.log(programaId)
-                                console.log(modeloDetalles)
-                        $("#AjaxLoader").show("fast");
+                    var programaId = $(this).data("programaid");
+                    var idInscripto = $(this).data("inscripto");
+                    
+                    $("#AjaxLoader").show("fast");
 
                      $.ajax({
                              url: '@Url.Action("Adherir", "Adhesion")',
@@ -1459,9 +1471,9 @@
                             }).done(function (result) {
                                 $("#AjaxLoader").delay(2000).hide("slow");
 
-                            });
+                     });
                 });
-            });
+        });
 
 
 

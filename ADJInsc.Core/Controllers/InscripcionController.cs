@@ -75,8 +75,6 @@
             return View("Inscripcion");
         }
 
-
-
         [HttpPost]
         [AllowAnonymous]
         public IActionResult BuscarPersona(string numDni)
@@ -152,8 +150,6 @@
                         };
 
                         HttpContext.Session.SetObjectAsJson<AltaTitularViewModel>("altaTitular", alta);
-
-
 
                         //return RedirectToAction("AltaTitular");    //prueba para que funcione en celular
                         return RedirectToAction("Index");
@@ -231,16 +227,7 @@
                     }
                 }
                 else
-                {
-                    /*
-                     * Esto es viejo porque 
-                     * if (result.InsId == 0)
-                    {
-                        return View("ExisteInsc", result);
-                        //si insId e menor que cero significa que eldni ya existe en base de grupoFamiliar
-                        //se debe mostrar mensaje o un popup que diga que se debe hacercar al ivuj
-                    }
-                     */
+                {                    
                     result.InsNumdoc = numDni;
                     result.Existe = false;
                     //aqui agregar el dni al modelo de carga
@@ -248,11 +235,6 @@
                     alta.InsNumdoc = numDni;
                     HttpContext.Session.SetObjectAsJson<AltaTitularViewModel>("altaTitular", alta);
                 }
-
-                //HttpContext.Session.SetObjectAsJson<UsuarioTitularViewModel>("viewTitularModelo", result); //cargo en cache el resultado
-                //ViewBag.Header = string.Empty;
-                //return RedirectToAction("AltaTitular");   //para que funcione en celular
-
 
                 return RedirectToAction("Index");
                 //return View("AltaTitular", result); 
@@ -264,9 +246,7 @@
                     MensajeModel = "Debe ingresar un número!"
                 };
                 return RedirectToAction("Mensaje", mensaje);
-
             }
-
         }
 
 
@@ -368,30 +348,22 @@
                                 mensaje.MensajeModel = "Se ha registrado con éxito como usuario/a del Sistema de Inscripción / Actualización de Datos del IVUJ. En la casilla que declaró recibirá un correo para validación puede demorar hasta 24hs. y luego podrá empezar a cargar datos.";
                                 return RedirectToAction("Mensaje", mensaje);
 
-                                //return Json("OK");
-                                //RedirectToAction("Index", "Home");
                             }
                             else
                             {
                                 var mensaje = new UsuarioTitularViewModel();
                                 mensaje.MensajeModel = "El correo ingresa ya esta en uso.";
                                 return RedirectToAction("Mensaje", mensaje);
-
-                               // return Json("El correo ingresa ya esta en uso.");
                             }
                         }
                     }
-
                 }
                 else
                 {
                     var mensaje = new UsuarioTitularViewModel();
                     mensaje.MensajeModel = "Disculpe las molestias, vuelva a cargar la página";
                     return RedirectToAction("Mensaje", mensaje);
-
-                    //return Json("Error");
                 }
-
             }
             catch (Exception ex)
             {
@@ -402,7 +374,6 @@
         [HttpPost]
         public IActionResult GoHome()
         {
-
             return RedirectToAction("Inscripcion");
         }
 

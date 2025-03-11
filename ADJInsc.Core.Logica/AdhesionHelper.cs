@@ -113,16 +113,9 @@
         }
 
         private async Task<InscViewModel> InsertArchivos(InscViewModel inscViewModel)
-        {
-            /*
-             INSERT INTO ArchivosAdhesion(Fecha, NombreArchivo, Tamano, TipoContenido, InscriptoId, RutaArchivo)  VALUES
-                    (@Fecha, @NombreArchivo, @Tamano, @TipoContenido, @InscriptoId, @RutaArchivo)GO
-
-            The parameterized query '(@Fecha nvarchar(8),@NombreArchivo nvarchar(13),@Tamano bigint,@' expects the parameter '@TipoContenido', which was not supplied.
-
-             */
-            var script = "INSERT INTO ArchivosAdhesion(Fecha, NombreArchivo, Tamano, TipoContenido, InscriptoId, RutaArchivo) " + 
-                                        " VALUES (@Fecha, @NombreArchivo, @Tamano, @TipoContenido, @InscriptoId, @RutaArchivo); SELECT SCOPE_IDENTITY()" ;
+        {            
+            var script = "INSERT INTO ArchivosAdhesion(Fecha, NombreArchivo, Tamano, TipoContenido, InscriptoId, RutaArchivo, TipoIngreso) " +
+                                        " VALUES (@Fecha, @NombreArchivo, @Tamano, @TipoContenido, @InscriptoId, @RutaArchivo, @TipoIngreso); SELECT SCOPE_IDENTITY()";
             try
             {
                 var archivos = new List<string>();
@@ -136,6 +129,7 @@
 
                     cmd.Parameters.Add(new SqlParameter("@InscriptoId", item.InscriptoId));
                     cmd.Parameters.Add(new SqlParameter("@RutaArchivo", item.RutaArchivo));
+                    cmd.Parameters.Add(new SqlParameter("@TipoIngreso", item.TipoIngreso));
 
                     var objetoId = new object();
 
@@ -299,7 +293,7 @@
                  *   SELECT DepartamentoProgramaId, ProgramaId, DepartamentoId, LocalidadId  FROM DepartamentoPrograma where ProgramaId = 1
                  */
                 string query = "SELECT ProgramaId, Descripcion ,FechaInicio ,FechaLimite ,Estado ,FechaCortePrograma ,MontoAdhesion FROM Programas where Estado = 1 ";
-                string query1 = "SELECT ModuloId, Titulo, Descripcion ,Plazo ,Costo , CostoSinEntrega, CostoConEntrega, IngresoMinimo, Estado ,ProgramaId FROM Modulos where ProgramaId = @ProgramId ";
+                string query1 = "SELECT ModuloId, Titulo, Descripcion ,Plazo ,Costo , CostoSinEntrega, CostoConEntrega, IngresoMinimo, Estado ,ProgramaId, CostoUvis , CostoSinEntregaUvis, CostoConEntregaUvis, IngresoMinimoUvis FROM Modulos where ProgramaId = @ProgramId ";
                 string query2 = " SELECT DepartamentoProgramaId, ProgramaId, DepartamentoId, LocalidadId  FROM DepartamentoPrograma where ProgramaId = @ProgramId ";
 
                 var dt =  await GetDataTable(query,0, "Programa");
@@ -345,7 +339,11 @@
                             CostoConEntrega = ConvertFromReader<decimal>(item["CostoConEntrega"]),
                             IngresoMinimo = ConvertFromReader<decimal>(item["IngresoMinimo"]),
                             Estado = ConvertFromReader<int>(item["Estado"]),
-                            ProgramaId = ConvertFromReader<int>(item["ProgramaId"])
+                            ProgramaId = ConvertFromReader<int>(item["ProgramaId"]),
+                            CostoUvis = ConvertFromReader<decimal>(item["CostoUvis"]),
+                            CostoSinEntregaUvis = ConvertFromReader<decimal>(item["CostoSinEntregaUvis"]),
+                            CostoConEntregaUvis = ConvertFromReader<decimal>(item["CostoConEntregaUvis"]),
+                            IngresoMinimoUvis = ConvertFromReader<decimal>(item["IngresoMinimoUvis"]),
                         };
                         modulosList.Add(moduloVM);
                     }

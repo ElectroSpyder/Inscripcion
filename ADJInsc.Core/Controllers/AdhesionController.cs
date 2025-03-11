@@ -13,7 +13,6 @@
     using Rotativa.AspNetCore;
     using ADJInsc.Models.ViewModels.UpLoad;
     using System.Linq;
-    using ADJInsc.Models.Models.DBInsc;
 
     public class AdhesionController : Controller
     {
@@ -34,28 +33,22 @@
         {
             // public int InsId { get; set; }
             var tokenSource = new CancellationTokenSource();
+           if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle))
+                return Json(new
+                {
+                    redirectUrl = "",
+                    isRedirect = false,
+                    ob = "No se seleccionaron datos, vuelva a intentarlo o comuníquese con IVUJ."
+                });
+
             var token = tokenSource.Token;
-            var modeloVM = new InscViewModel();
-            var _memoryArchivoVM = new List<FileUploadViewModel>();
-            modeloVM = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
-            _memoryArchivoVM = HttpContext.Session.GetObjectFromJson<List<FileUploadViewModel>>("_filesInMemory");
+            
+            // Obtener datos de la sesión
+            var modeloVM = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo") ?? new InscViewModel();
+            var _memoryArchivoVM = HttpContext.Session.GetObjectFromJson<List<FileUploadViewModel>>("_filesInMemory") ?? new List<FileUploadViewModel>();
 
-            var modeloAdherir = new AdherirViewModel
-            {
-                InscriptoId = insId,
-                ModuloId = moduloId,
-                ModuloDescripcion = modeloDetalle == null ? " " : modeloDetalle.Trim(),
-                ProgramaId = programaId,
-                FechaAdhesion = Fecha.ToString()                
-            };
-
-            modeloVM.AdherirViewModel = modeloAdherir;
-            // 🔴 Agregar archivos almacenados en memoria a `modeloVM`
-            if (_memoryArchivoVM != null && _memoryArchivoVM.Any())
-            {
-                modeloVM.FileUploadViewModel = _memoryArchivoVM;
-            }
-            else
+            // Validar si hay archivos en memoria antes de continuar
+            if (!_memoryArchivoVM.Any())
             {
                 return Json(new
                 {
@@ -65,9 +58,22 @@
                 });
             }
 
-            HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modeloVM);
+            // Crear el modelo de adhesión
+            modeloVM.AdherirViewModel = new AdherirViewModel
+            {
+                InscriptoId = insId,
+                ModuloId = moduloId,
+                ModuloDescripcion = modeloDetalle?.Trim() ?? " ",
+                ProgramaId = programaId,
+                FechaAdhesion = Fecha.ToString()
+            };
 
-            var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
+            // Asignar archivos a `modeloVM`
+            modeloVM.FileUploadViewModel = _memoryArchivoVM;
+
+            HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modeloVM);
+            //Insc.Api
+            var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
             if (service.IsSuccess)
             {
                 var respuesta = (InscViewModel)service.Result;
@@ -131,7 +137,6 @@
                 });
             }
         }
-
         public IActionResult GetPdfAdhesion()
         {
             var modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");

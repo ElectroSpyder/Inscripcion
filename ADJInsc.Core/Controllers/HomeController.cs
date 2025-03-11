@@ -49,23 +49,10 @@
         [AllowAnonymous]
         public IActionResult CargarUsuario([FromBody] ModeloCarga modeloCarga)
         {
-/*
-            var modelo = HttpContext.Session.GetObjectFromJson<UsuarioTitularViewModel>("viewModelo");
-
-            modelo.InsNumdoc = modeloCarga.dni.Trim();
-            modelo.InsNombre = modeloCarga.apellido + ", " + modeloCarga.nombre;
-            modelo.InsFecins = DateTime.Now.ToShortDateString();
-            modelo.InsEmail = modeloCarga.email;
-            modelo.Usuario = modeloCarga.usuario;
-            modelo.Clave = modeloCarga.clave;
-            modelo.InsTipflia = modeloCarga.tipoFamilia;
-            */
-
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
 
             var result = this.apiAservice.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;  // 
-
 
             //aqui van todas las insctrucciones para controlar el valor devuelto
             if (result.IsSuccess)
@@ -91,8 +78,7 @@
 
                 if (convert)
                 {
-                    //var helper = new InscripcionHelper(_connectionString);
-
+                    
                     var model = new ResponseViewModel();
                     var tokenSource = new CancellationTokenSource();
                     var token = tokenSource.Token;
@@ -100,9 +86,6 @@
 
                     var result = (UsuarioTitularViewModel)service.Result;
                     
-                    //var inscripto = helper.GetInscripto(numeroDniEntero);
-
-                    //var result = helper.GetListadosInciales().Result;
                     var modelo = HttpContext.Session.GetObjectFromJson<UsuarioTitularViewModel>("viewModelo");
 
                     if (result.InsId > 0)

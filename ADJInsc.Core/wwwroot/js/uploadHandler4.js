@@ -58,6 +58,12 @@ function uploadFile(file, progressBar, uploadUrl) {
     let formData = new FormData();
     formData.append("FilesModel", file); // Debe coincidir con el backend
 
+    // Obtener el radio seleccionado y su label
+    let selectedRadio = $("input[name='ingresos']:checked");
+    let labelText = selectedRadio.length ? $("label[for='" + selectedRadio.attr("id") + "']").text() : "";
+
+    formData.append("TipoIngreso", labelText); // Agregar al formData
+
     return $.ajax({
         url: uploadUrl,
         data: formData,
