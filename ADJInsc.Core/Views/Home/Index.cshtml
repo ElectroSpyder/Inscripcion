@@ -592,7 +592,7 @@
 
         $(function() {
             $("#btnBuscar").click(function (e) {
-
+                e.preventDefault();
                     var numeroDni = $("#dniInput").val();
                     if (numeroDni.length > 7) {
 
