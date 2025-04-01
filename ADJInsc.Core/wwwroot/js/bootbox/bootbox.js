@@ -78,7 +78,7 @@
 
   var templates = {
     dialog:
-    '<div class="bootbox modal" tabindex="-1" role="dialog" aria-hidden="true">' +
+    '<div class="bootbox modal" tabindex="-1" role="dialog" inert>' +
     '<div class="modal-dialog">' +
     '<div class="modal-content">' +
     '<div class="modal-body"><div class="bootbox-body"></div></div>' +
@@ -92,7 +92,7 @@
     footer:
     '<div class="modal-footer"></div>',
     closeButton:
-    '<button type="button" class="bootbox-close-button close" aria-hidden="true">&times;</button>',
+    '<button type="button" class="bootbox-close-button close" inert>&times;</button>',
     form:
     '<form class="bootbox-form"></form>',
     button:

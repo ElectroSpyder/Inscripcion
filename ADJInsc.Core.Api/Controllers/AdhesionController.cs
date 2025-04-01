@@ -55,5 +55,17 @@
             return model;
 
         }
+
+        [HttpPost("/adhesion/GetModelPdf")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ModelPdf>> GetModelPdf(ModelPdf modelPdf)
+        {            
+            var model = service.GetModelPdf(modelPdf).Result;
+
+            await Task.Delay(100).ConfigureAwait(false);
+            return model;
+
+        }
     }
 }

@@ -5,6 +5,7 @@
     using ADJInsc.Models.ViewModels;
     using ADJInsc.Models.ViewModels.AdhesionVM;
     using ADJInsc.Models.ViewModels.UpLoad;
+    using Org.BouncyCastle.Asn1.IsisMtt.X509;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -31,8 +32,12 @@
             //string constr = ConfigurationManager.ConnectionStrings["InscConnection"].ToString();     //PRODUCCION                                                                                                        //string constr = ConfigurationManager.ConnectionStrings["TestConnection"].ToString();       //TEST
             con = new SqlConnection(_connectionString);
         }
-        public async Task<InscViewModel> PostModeloAdhesion(InscViewModel inscViewModel)
+          
+        public async Task<InscViewModel> PostModeloAdhesion(InscViewModel model)
         {
+            InscViewModel inscViewModel = new InscViewModel();
+            inscViewModel = model;
+
             var adheridoId = await GetAdherido(inscViewModel.AdherirViewModel);
             string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId) VALUES " +
                                                    " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId ); SELECT SCOPE_IDENTITY();";
@@ -63,7 +68,7 @@
                         var objetoId = new object();  //limpio el objeto   
                         objetoId = await cmdInsertAdherido.ExecuteScalarAsync();
 
-                        decimal adhesionId = (objetoId != null) ? (decimal)objetoId : 0;
+                        decimal adhesionId = (objetoId != null) ? Convert.ToDecimal(objetoId) : 0;
 
                         inscViewModel.AdherirViewModel.AdhesionId = (int)adhesionId;
                         if (adhesionId > 0)
@@ -112,12 +117,15 @@
 
         }
 
-        private async Task<InscViewModel> InsertArchivos(InscViewModel inscViewModel)
+        private async Task<InscViewModel> InsertArchivos(InscViewModel modelo)
         {            
             var script = "INSERT INTO ArchivosAdhesion(Fecha, NombreArchivo, Tamano, TipoContenido, InscriptoId, RutaArchivo, TipoIngreso) " +
                                         " VALUES (@Fecha, @NombreArchivo, @Tamano, @TipoContenido, @InscriptoId, @RutaArchivo, @TipoIngreso); SELECT SCOPE_IDENTITY()";
             try
             {
+                InscViewModel inscViewModel = new InscViewModel();
+                inscViewModel = modelo;
+
                 var archivos = new List<string>();
                 foreach (var item in inscViewModel.FileUploadViewModel)
                 {
@@ -129,7 +137,7 @@
 
                     cmd.Parameters.Add(new SqlParameter("@InscriptoId", item.InscriptoId));
                     cmd.Parameters.Add(new SqlParameter("@RutaArchivo", item.RutaArchivo));
-                    cmd.Parameters.Add(new SqlParameter("@TipoIngreso", item.TipoIngreso));
+                    cmd.Parameters.Add(new SqlParameter("@TipoIngreso", item.TipoIngreso.Trim()));
 
                     var objetoId = new object();
 
@@ -139,7 +147,7 @@
                     objetoId = await cmd.ExecuteScalarAsync();
 
                     await con.CloseAsync();
-                    decimal archivoId = (objetoId != null) ? (decimal)objetoId : 0;                   
+                    decimal archivoId = (objetoId != null) ? Convert.ToDecimal(objetoId) : 0;                   
                     
                     if (archivoId == 0)
                     {
@@ -192,11 +200,14 @@
             }
            
         }
-        private async Task<InscViewModel> GetUpload(InscViewModel inscViewModel, int adhesionId)
+        private async Task<InscViewModel> GetUpload(InscViewModel model, int adhesionId)
         {
+            InscViewModel inscViewModel = new InscViewModel();
+            inscViewModel = model;
+
             try
             {               
-                var filesData = new List<FileUploadViewModel>();               
+                var filesData = new List<FileUploadViewModel>();                
 
                 if (inscViewModel.FileUploadViewModel == null || inscViewModel.FileUploadViewModel.Count == 0)
                 {
@@ -218,6 +229,7 @@
                         Tamano = item.Tamano,
                         InscriptoId = inscViewModel.InsId,
                         AdheridoId = adhesionId,
+                        TipoIngreso = item.TipoIngreso,
                         RutaArchivo = await GuardarEnDisco(adhesionId,item.Fecha.ToString(), item.NombreArchivo, item.FileContent)
                     });
                 }
@@ -255,7 +267,7 @@
                 objetoId = await cmdConsulta.ExecuteScalarAsync();
 
                 await con.CloseAsync();
-                decimal adhesionId = (objetoId != null) ? (decimal)objetoId : 0;
+                decimal adhesionId = (objetoId != null) ? Convert.ToDecimal(objetoId) : 0;
                 return (int)adhesionId;
             }
             catch (Exception ex)
@@ -272,9 +284,11 @@
             }
         }
 
-        public async Task<AdhesionViewModel> GetProgramaYModulos(AdhesionViewModel adhesionModel)
+        public async Task<AdhesionViewModel> GetProgramaYModulos(AdhesionViewModel model)
         {           
             var adhesionVM = new AdhesionViewModel();
+            AdhesionViewModel adhesionModel = new AdhesionViewModel();
+            adhesionModel = model;
             var adhesionTempVM = await GetAdherido(adhesionModel);
 
             if(adhesionTempVM.AdhesionId != 0)
@@ -380,7 +394,7 @@
                 adhesionVM.ErrorMsg = ex.Message;
 
                 await con.CloseAsync();
-                throw ex;
+                throw;
             }
             finally
             {
@@ -478,5 +492,48 @@
             }
         }
 
+        public async Task<ModelPdf> GetModelPdf(ModelPdf modelPdf)
+        {
+            var model = new ModelPdf();
+            var inscripto = modelPdf.InscriptoId;
+            string script = "select A.AdhesionId, L.LocalidadDesc, I.ins_email, I.ins_nombre, I.cuit_cuil, I.ins_numdoc,A.FechaAdhesion, M.Titulo from Localidad L inner join InsDomici N on (N.IdDepartamento = L.DepartamentoKey and N.IdLocalidad = L.LocalidadKey) inner join Inscriptos I on I.IdDomicilio = N.insd_id inner join Adhesion A on I.ins_id = A.InscriptoId inner join Modulos M on (M.ProgramaId = A.ProgramaId and M.ModuloId = A.ModuloId) where A.InscriptoId = @inscriptoId";
+            //@inscriptoId
+            try
+            {
+                Connection();
+                using SqlCommand cmdConsulta = new SqlCommand(script, con);
+
+                var dt = await GetDataTable(script, int.Parse(inscripto), "Inscripto");
+                model.InscriptoId = inscripto;
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        model.AdheridoId = ConvertFromReader<int>(item["AdhesionId"]).ToString();
+                        model.Localidad = ConvertFromReader<string>(item["LocalidadDesc"]);
+                        model.Correo = ConvertFromReader<string>(item["ins_email"]);
+                        model.NombreAdherido = ConvertFromReader<string>(item["ins_nombre"]);
+                        model.CuitAdherido = ConvertFromReader<string>(item["cuit_cuil"]).ToString();
+                        model.DniAdherido = ConvertFromReader<string>(item["ins_numdoc"]).ToString();
+                        model.FechaAdhesion = ConvertFromReader<string>(item["FechaAdhesion"]).ToString();
+                        model.TipologiaDescripcion = ConvertFromReader<string>(item["Titulo"]);
+                        break;
+                    }
+                }
+                return model;
+
+            }
+            catch (Exception ex)
+            {
+                model.NombreAdherido = ex.Message;
+
+                await con.CloseAsync();
+                throw ex;
+            }
+            finally
+            {
+                await con.CloseAsync();
+            }
+        }
     }
 }

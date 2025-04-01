@@ -260,7 +260,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Familia</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span inert>&times;</span>
                 </button>
             </div>
             <div class="modal-body card">
@@ -330,7 +330,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">@Model.AdhesionViewModel.ProgramaVM.Descripcion</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span inert>&times;</span>
                 </button>
             </div>
             <div class="container">
@@ -403,7 +403,6 @@
                                                         <li><strong id="costosinentrega"></strong> (<span id="costosinentregauvis"></span> UVIS) con el ahorro previo vigente a pagar en 48 meses, o</li>
                                                         <li><strong id="costoconentrega"></strong> (<span id="costoconentregauvis"></span> UVIS) si se cancela el total del ahorro previo.</li>
                                                     </ul>
-
                                                 </li>
                                             </ul>
                                         </div>
@@ -416,7 +415,7 @@
                                             <ul class="list-group">
                                                 <li class="list-group-item">
                                                     <input type="radio" id="dependencia" name="ingresos" value="dependencia">
-                                                    <label for="dependencia">Relación de dependencia (últimos tres recibos de sueldos)</label>
+                                                    <label for="dependencia">Relación de dependencia (un recibo de sueldo)</label>
                                                 </li>
                                                 <li class="list-group-item">
                                                     <input type="radio" id="autonomo" name="ingresos" value="autonomo">
@@ -520,7 +519,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Integrante</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span inert>&times;</span>
                 </button>
             </div>
             <div class="modal-body card">
@@ -541,7 +540,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">SOLICITUD DE INSCRIPCIÓN / ACTUALIZACIÓN - DECLARACIÓN JURADA</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span inert>&times;</span>
                 </button>
             </div>
             <div></div>
@@ -571,7 +570,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">SOLICITUD DE ADHESION - DECLARACIÓN JURADA</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span inert>&times;</span>
                 </button>
             </div>
             <div></div>
@@ -583,8 +582,8 @@
 
             <div class="modal-footer">
                 <form asp-controller="Adhesion" asp-action="GetPdfAdhesion" target="_blank">
-                    <input hidden id="hrefsuces" />
-                    <button type="submit" class="btn btn-danger btnModal aceptarSuccessAdhesion">Descargar PDF</button>
+                    <input type="hidden" id="hrefsuces" name="pdfUrl" value="@Model.InsId" />
+                    <button type="submit" data-inscriptopdf="@Model.InsId" class="btn btn-danger btnModal aceptarSuccessAdhesion">Descargar PDF</button>
                 </form>
 
                 <form asp-controller="Inscripcion" asp-action="GoHome">
@@ -601,7 +600,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">INSCRIPCIÓN/ ACTUALIZACIÓN</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span inert>&times;</span>
                 </button>
             </div>
             <div></div>
@@ -624,14 +623,14 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="modalExisteAdhesion" tabindex="-1" role="dialog" aria-labelledby="modalAdhesionLabel" aria-hidden="true">
+<div class="modal fade" id="modalExisteAdhesion" tabindex="-1" role="dialog" aria-labelledby="modalAdhesionLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!-- Encabezado -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="modalAdhesionLabel">Información de Adhesión</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                    <span aria-hidden="true">&times;</span>
+                    <span>&times;</span>
                 </button>
             </div>
 
@@ -645,11 +644,19 @@
 
             <!-- Pie del modal -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <form asp-controller="Adhesion" asp-action="GetPdfAdhesion" target="_blank">
+                    <input type="hidden" id="hrefsuces" name="pdfUrl" value="@Model.InsId" />
+                    <button type="submit" data-inscriptopdf="@Model.InsId" class="btn btn-danger btnModal aceptarSuccessAdhesion">Descargar PDF</button>
+                </form>
+
+                <form asp-controller="Inscripcion" asp-action="GoHome">
+                    <button type="submit" id="cerrarSuccess" class="btn btn-danger btnModal">Salir y Cerrar</button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
 
 
 
@@ -658,7 +665,7 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    <script src="~/js/uploadHandler4.js"></script>
+    <script src="~/js/uploadHandler8.js"></script>
     <script type="text/javascript">
             $(function () {
                 $(document).ready(function () {
@@ -710,6 +717,8 @@
             $('#aceptarBadSuccess').click(function () {
                 /*var url = $('#hrefsuces').val();
                 window.open(url, '_blank');*/
+                const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
                 $("#modalError").modal('hide');
             })
         })
@@ -720,6 +729,8 @@
                 /*  2_ rotativa_ Comentar ya que habre desde el boton
                 var url = $('#hrefsuces').val();
                 window.open(url, '_blank');*/
+                const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
                     $("#modalSuccessAdhesion").modal('hide');
             })
         })
@@ -730,6 +741,8 @@
                 /*  2_ rotativa_ Comentar ya que habre desde el boton
                 var url = $('#hrefsuces').val();
                 window.open(url, '_blank');*/
+                 const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
                 $("#modalSuccess").modal('hide');
             })
         })
@@ -941,6 +954,8 @@
 
             function Delete(numerodni) {
                 $("#numeroDocId").val(numerodni);
+                const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
                 $("#modalBorrar").modal('show');
             };
 
@@ -989,6 +1004,8 @@
                             }
                         });
                     });
+                    const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
                     $("#modalBorrar").modal('hide');
                 })
              });
@@ -1061,6 +1078,8 @@
 
                         $('#ddParentescoInicialId').val(result.parentescoKey);
 
+                        const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
                         $('#modalInicialFamilia').modal('show');
                         $('#btnUpdate').show();
                         $('#btnAdd').hide();
@@ -1111,6 +1130,8 @@
                 var neto = $('#inputIngresoNeto').val();
 
                 var cont = validarForm();
+                const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
                 $("#AjaxLoader").show("fast");
 
                 if (cont === 0) {
@@ -1144,6 +1165,8 @@
 
                                     //3_rotativa_ ya no uso el escribir sobre un tag el url
                                    // $('#hrefsuces').val(result.redirectUrl);
+                                   const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
                                     $("#modalSuccess").modal('show');
                                 } else {
                                     console.log(result.ob)
@@ -1328,7 +1351,9 @@
          });
 
         $('#bologna-list a').on('click', function (e) {
-            e.preventDefault()
+            e.preventDefault();
+            const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
             $(this).tab('show')
         });
 
@@ -1391,16 +1416,18 @@
                         $("#costoconentrega").text("$" + costoConEntrega.toLocaleString());
                         $("#costosinentrega").text("$" + costoSinEntrega.toLocaleString());
 
-                         $("#ingresominimouvis").text("$" + ingresominimouvis.toLocaleString());
-                        $("#costouvis").text("$" + costouvis.toLocaleString());
-                        $("#costoconentregauvis").text("$" + costoConEntregauvis.toLocaleString());
-                        $("#costosinentregauvis").text("$" + costoSinEntregauvis.toLocaleString());
+                         $("#ingresominimouvis").text(ingresominimouvis.toLocaleString());
+                        $("#costouvis").text(costouvis.toLocaleString());
+                        $("#costoconentregauvis").text(costoConEntregauvis.toLocaleString());
+                        $("#costosinentregauvis").text(costoSinEntregauvis.toLocaleString());
 
                         // $("#costoconentrega1").text("$" + costoConEntrega.toLocaleString());
                         // $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());
 
                     if (selectedText != 'Sin Seleccionar') {
                         $('#selected-option').text('Está por adherir a: ' + selectedText); // Actualiza el texto del párrafo
+                        const buttonElement = document.activeElement; // Get the currently focused element
+                 buttonElement.blur(); // Remove focus from the button
                         $('#cajamonto').show();
                         $('#ingresos-link').removeClass('disabled');
                     } else {
@@ -1442,6 +1469,9 @@
 
                                         //3_rotativa_ ya no uso el escribir sobre un tag el url
                                        // $('#hrefsuces').val(result.redirectUrl);
+                                        const buttonElement = document.activeElement; // Get the currently focused element
+                                        buttonElement.blur(); // Remove focus from the button
+
                                         $("#modalAdhesion").modal('hide');
                                         $("#modalSuccessAdhesion").modal('show');
                                         $("#btnAdhesion").prop('disabled', true);

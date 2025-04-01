@@ -28,7 +28,7 @@
                // 
              */
             // 
-            var service = _apiAservice.GetAsync<ResponseViewModel>("/Insc.Api/login/", "GetVerificador" + "?id=" + id, token).Result;
+            var service = _apiAservice.GetAsync<ResponseViewModel>("/Test.Insc.Api/login/", "GetVerificador" + "?id=" + id, token).Result;
 
             var response = (ResponseViewModel)service.Result;
 

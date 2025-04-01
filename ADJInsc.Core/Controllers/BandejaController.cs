@@ -12,6 +12,7 @@
     using Rotativa.AspNetCore;
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
     using Wkhtmltopdf.NetCore;
@@ -41,9 +42,13 @@
                 clave = inputPassword,
                 dni = "0",
                 nombre = "0",
-                //  apellido = "0",
                 email = "0",
-                tipoFamilia = "0"
+                tipoFamilia = "0",
+                cuitTres = "0",
+                cuitUno = "0",
+                IdDomicilio = 0,
+                telefono = "0"
+
             };
 
             var tokenSource = new CancellationTokenSource();
@@ -314,8 +319,8 @@
         [HttpPost]
         public JsonResult UpdatePersona(int id)
         {
-
-            var modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
+            var modelo = new InscViewModel();
+            modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
             var individuo = new GrupoFamiliarViewModel();
             foreach (var item in modelo.GrupoFamiliar)
             {
@@ -343,7 +348,8 @@
 
         public JsonResult List()
         {
-            var modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
+            InscViewModel modelo = new InscViewModel();
+            modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
             if (modelo == null)
             {
                 return Json(null);
@@ -378,11 +384,13 @@
             HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modelo);
 
         }
-
+        /*System.NullReferenceException: Object reference not set to an instance of an object.
+   at ADJInsc.Core.Controllers.BandejaController.GuardarData(String dni, String nombre, String tipoFamilia, Int32 disc, Int32 minero, Int32 veterano, String cuitUno, String cuitTres, String direccion, String departamento, String localidad, String lugarTrabajo, String revista, String neto, String telefono) in D:\Remoto\ADJInsc.Core\Controllers\BandejaController.cs:line 403*/
         public JsonResult GuardarData(string dni, string nombre, string tipoFamilia, int disc, int minero, int veterano, string cuitUno, string cuitTres,
                                       string direccion, string departamento, string localidad, string lugarTrabajo, string revista, string neto, string telefono)
         {
-            var modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
+            var modelo = new InscViewModel();
+            modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
 
 
             if (string.IsNullOrWhiteSpace(localidad))
@@ -503,18 +511,9 @@
                 }
                 else
                 {
-                    if (item.FecNacDia == null)
-                    {
-                        item.FecNacDia = DateTime.Now.Day.ToString();
-                    }
-                    if (item.FecNacMes == null)
-                    {
-                        item.FecNacMes = DateTime.Now.Month.ToString();
-                    }
-                    if (item.FecNacAnio == null)
-                    {
-                        item.FecNacAnio = DateTime.Now.Year.ToString();
-                    }
+                    item.FecNacDia ??= DateTime.Now.Day.ToString();
+                    item.FecNacMes ??= DateTime.Now.Month.ToString();
+                    item.FecNacAnio ??= DateTime.Now.Year.ToString();
                 }
             }
 
@@ -529,7 +528,7 @@
              Test.Insc.Api
              */
 
-            var service = this._apiService.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostInscViewModel", null, modelo, token).Result;            
+            var service = this._apiService.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostInscViewModel", null, modelo, token).Result;
 
             if (service.IsSuccess)
             {
@@ -591,7 +590,12 @@
             {
                 InscriptoId = insId
             };
+
+            /*
+             var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "GetAdhesionModel",null, modelOut, token).Result;
             var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "GetAdhesionModel",null, modelOut, token).Result;
+             */
+            var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "GetAdhesionModel", null, modelOut, token).Result;
             var result = (AdhesionViewModel)service?.Result;
 
             if (result.Success)
@@ -601,19 +605,20 @@
         }
 
         public bool Verificado(InscViewModel model)
-        {            
-            if (!DateTime.TryParse(model.InsFecins, out DateTime fechaInscripcion))
-                return false; // Retorna false si la fecha no es válida
-            if (!DateTime.TryParse(model.AdhesionViewModel.ProgramaVM.FechaInicio, out DateTime fechaInicio))
-                return false;
-            bool verificado = fechaInscripcion <= fechaInicio;// &&;
-                              //fechaInscripcion <= model.AdhesionViewModel.ProgramaVM.FechaLimite;
+        {
+            if (model.AdherirViewModel.AdhesionId != 0) return false; //si ya esta no comparo nada
 
+            string[] formatos = { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM-dd" };                     
+
+            if (!DateTime.TryParseExact(model.InsFecins, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaConvertida))
+                return false;
+
+            var fechaInicioComparar = ConvertirFechaInicio(model.AdhesionViewModel.ProgramaVM.FechaInicio); 
+
+            bool verificado =fechaConvertida.Date <= fechaInicioComparar.Date;
+                           
             if (!verificado)
                 return false; // Retorna false si la fecha no está en el rango permitido
-
-            //if (model.AdhesionViewModel.AdhesionId != 0)
-            //    return false;
 
             return model.AdhesionViewModel.DepartamentoProgramas.Any(x =>
                 x.DepartamentoId == model.DepartamentoKey &&
@@ -621,6 +626,21 @@
 
         }
 
+        private DateTime ConvertirFechaInicio(string fechaString)
+        {
+            if(string.IsNullOrEmpty(fechaString)) return DateTime.MinValue;
+
+            string[] partes = fechaString.Split('/');
+
+            string dia = partes[0];  // "03"
+            string mes = partes[1];  // "11"
+            string anio = partes[2]; // "2025"
+
+            Console.WriteLine($"Día: {dia}");
+            Console.WriteLine($"Mes: {mes}");
+            Console.WriteLine($"Año: {anio}");
+            return DateTime.Parse(mes+"/"+ dia+"/" + anio);
+        }
         public JsonResult Adherir(int ProgramaId, int moduloId)
         {
             // public int InsId { get; set; }
@@ -642,6 +662,10 @@
                 AdherirViewModel = modeloAdherir
             };
 
+            /*
+             var service = this._apiService.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostAdherir", null, modelo, token).Result;
+            var service = this._apiService.PostAsync<ResponseViewModel>("/Test.Insc.Api/helper/", "PostAdherir", null, modelo, token).Result;
+             */
             var service = this._apiService.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostAdherir", null, modelo, token).Result;
             if (service.IsSuccess)
             {

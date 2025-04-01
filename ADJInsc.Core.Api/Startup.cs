@@ -1,4 +1,4 @@
-namespace ADJInsc.Core.Api
+﻿namespace ADJInsc.Core.Api
 {
     using ADJInsc.Core.Api.Service.Interface;
     using ADJInsc.Core.Api.Service.Metodos;
@@ -26,7 +26,7 @@ namespace ADJInsc.Core.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();           
+            services.AddControllers();
 
             services.AddCors();
             // Add MVC services to the services container.
@@ -62,7 +62,7 @@ namespace ADJInsc.Core.Api
                     {
                         Name = "IVUJ",
                         Email = string.Empty,
-                        Url = new Uri("https://ivuj.gob.ar/"),
+                        Url = new Uri("http://ivuj.gob.ar/"),
                     }
                 });
                 options.ResolveConflictingActions(apiDescription => apiDescription.First());
@@ -76,6 +76,12 @@ namespace ADJInsc.Core.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
+
 
             app.UseStaticFiles();
 
@@ -95,6 +101,7 @@ namespace ADJInsc.Core.Api
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

@@ -152,7 +152,7 @@
 
         }
 
-        public async Task<ResponseViewModel> PostInscViewModel(InscViewModel inscViewModel)
+        public async Task<ResponseViewModel> PostInscViewModel(InscViewModel model)
         {
             Connection();
             var modeloResponse = new ResponseViewModel
@@ -166,7 +166,10 @@
                 object objetoId = string.Empty;
 
                 try
-                {                  
+                {
+                    InscViewModel inscViewModel = new InscViewModel();
+                    inscViewModel = model;
+
                     var queryDomicilio = "sp_insert_update_Domicilio";
                     using (SqlCommand cmdInsDomicilio = new SqlCommand(queryDomicilio, con))
                     {
@@ -345,7 +348,6 @@
                 }
                 finally
                 {
-
                     await con.CloseAsync();
                 }
 
@@ -545,7 +547,11 @@
                 {
                     ts.Dispose();
                     await con.CloseAsync();
-                    return new ResponseViewModel();
+                    return new ResponseViewModel
+                    {
+                        Existe = false,
+                         Observacion = ex.Message
+                    };
                 }
                 finally
                 {
@@ -1538,9 +1544,6 @@
                         Text = r.TipoRevistaDesc
                     }).OrderBy(o => o.Text).ToList();
                 }
-
-
-
                 return pList;
             }
             catch(Exception ex)

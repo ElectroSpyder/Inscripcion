@@ -52,7 +52,11 @@
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
 
-            var result = this.apiAservice.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;  // 
+            /*
+             var result = this.apiAservice.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;  // 
+            var result = this.apiAservice.PostAsync<ResponseViewModel>("/Test.Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;  // 
+             */
+            var result = this.apiAservice.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;   // 
 
             //aqui van todas las insctrucciones para controlar el valor devuelto
             if (result.IsSuccess)
@@ -82,6 +86,10 @@
                     var model = new ResponseViewModel();
                     var tokenSource = new CancellationTokenSource();
                     var token = tokenSource.Token;
+                    /*
+                     var service = this.apiAservice.GetAsync<UsuarioTitularViewModel>("/Insc.Api/helper/", "GetInscripto" + "?id=" + numDni, token).Result;  // 
+                    var service = this.apiAservice.GetAsync<UsuarioTitularViewModel>("/Test.Insc.Api/helper/", "GetInscripto" + "?id=" + numDni, token).Result;  // 
+                     */
                     var service = this.apiAservice.GetAsync<UsuarioTitularViewModel>("/Insc.Api/helper/", "GetInscripto" + "?id=" + numDni, token).Result;  // 
 
                     var result = (UsuarioTitularViewModel)service.Result;
@@ -133,6 +141,10 @@
                     var tokenSource = new CancellationTokenSource();
                     var token = tokenSource.Token;
 
+                    /*
+                     var service = this.apiAservice.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "GetUsuario", model, null, token).Result;
+                    var service = this.apiAservice.PostAsync<ResponseViewModel>("/Test.Insc.Api/helper/", "GetUsuario", model, null, token).Result;
+                     */
                     var service = this.apiAservice.PostAsync<ResponseViewModel>("/Insc.Api/helper/", "GetUsuario", model, null, token).Result;
 
                     var result = (ResponseViewModel)service.Result;
@@ -180,9 +192,15 @@
                 var tokenSource = new CancellationTokenSource();
                 var token = tokenSource.Token;
 
+                /*
                 var result = this.apiAservice.PostAsync<ResponseViewModel>
                                   ("/Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;
-               
+                var result = this.apiAservice.PostAsync<ResponseViewModel>
+                                  ("/Test.Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;
+                 */
+                var result = this.apiAservice.PostAsync<ResponseViewModel>
+                                  ("/Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;
+
                 if (result.IsSuccess)
                 {
                     var modeloResponse = (ResponseViewModel)result.Result;

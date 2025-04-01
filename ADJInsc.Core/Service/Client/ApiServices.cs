@@ -11,14 +11,12 @@ namespace xa.App.Services
     using ADJInsc.Models.Basic;
     using ADJInsc.Models.ViewModels;
     using ADJInsc.Models.ViewModels.AdhesionVM;
-    using ADJInsc.Models.ViewModels.UpLoad;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using System;
     using System.IO;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -237,6 +235,67 @@ namespace xa.App.Services
             }
         }
 
+        public async Task<Response> PostPdfAdhesionAsync<T>(string prefix, string controller, ModelPdf modelo = null, CancellationToken cancellationToken = default)
+        {
+
+            string url = $"{_urlBase.UrlServer}{prefix}{controller}";
+            try
+            {
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                using var request = new HttpRequestMessage(HttpMethod.Post, url);
+
+                var json = string.Empty;
+                json = JsonConvert.SerializeObject(modelo);               
+
+                request.Content = new StringContent(json);
+                request.Content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+
+                using var response = await client
+                     .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+                     .ConfigureAwait(false);
+
+                response.EnsureSuccessStatusCode();
+                var stream = await response.Content.ReadAsStreamAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    if (modelo != null)
+                    {
+                        return new Response
+                        {
+                            IsSuccess = true,
+                            Result = DeserializeJsonFromStream<ModelPdf>(stream),
+                            Message = "Ok"
+                        };
+                    }
+                    else
+                    {
+                        return new Response
+                        {
+                            IsSuccess = false,
+                            Message = response.ReasonPhrase
+                        };
+                    }
+                }
+                else
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = response.ReasonPhrase
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = "Excepcion  --> " + ex.Message
+                };
+            }
+        }
         private static T DeserializeJsonFromStream<T>(Stream stream)
         {
             if (stream == null || stream.CanRead == false)

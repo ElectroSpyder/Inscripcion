@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Atención";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        $(document).ready(function() {
+            bootbox.alert("Disculpe las molestias, no se pudo cargar el PDF, pero está Adherido, comuniquese con IVUJ. Gracias!");
+        });
+    </script>
+}
+<h2>Atención</h2>
+<p></p>

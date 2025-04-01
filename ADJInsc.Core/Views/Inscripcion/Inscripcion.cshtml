@@ -82,7 +82,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Inicio de Sesión</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span tabindex="-1" inert>&times;</span>
                 </button>
             </div>
             <form asp-controller="Bandeja" asp-action="Index">
@@ -117,7 +117,7 @@
             <div class="modal-header">
                 <h5 class="modal-title list-group-item active w-100 text-center">Adhesión Online “Torres de Luján” </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span tabindex="-1" inert>&times;</span>
                 </button>
             </div>
 
@@ -151,7 +151,7 @@
                         <strong>¡Atención!</strong>
                         <p>El sistema también le requerirá que adjunte comprobante/s de ingresos económicos que declarará. Para avanzar, asegúrese de tener disponible en formato .jpg (imagen):</p>
                         <ul>
-                            <li>Trabaja en Relación de Dependencia: últimos tres (3) recibos de sueldo</li>
+                            <li>Trabaja en Relación de Dependencia: un recibo de sueldo</li>
                             <li>Trabaja de manera Independiente/Autónoma: Constancia de Inscripción en ARCA al día.</li>
                         </ul>
                     </a>
@@ -176,7 +176,7 @@
             <div class="modal-header">
                 <h5 class="modal-title list-group-item active">Sistema de Inscripción / Actualización de Datos del IVU</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span tabindex="-1" inert>&times;</span>
                 </button>
             </div>
             
@@ -218,7 +218,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">Recuperar contraseña</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span tabindex="-1" inert>&times;</span>
                 </button>
             </div>
             <form asp-controller="Login" asp-action="Recuperar">
@@ -263,22 +263,28 @@
 
     <script src="~/js/Insc1.js"></script>
     <script type="text/javascript">
-         $(document).ready(function () {
-            // Esconde el div al cargar la página
-            $('#declaracionAceptar').hide();
 
-            $('#fin-checkbox').on('change', function () {
-                if ($(this).prop('checked')) {
-                    $('#fin-checkbox').addClass('highlighted');
-                    $('#declaracionAceptar').show(); // Muestra el div
-                    $('#declaracionAdhesionClic').prop('disabled', false);
-                } else {
-                    $('#fin-checkbox').removeClass('highlighted');
-                    $('#declaracionAceptar').hide(); // Oculta el div
-                    $('#declaracionAdhesionClic').prop('disabled', true);
-                }
+        $(function(){
+            $(document).ready(function () {
+            // Esconde el div al cargar la página
+                    $('#declaracionAceptar').hide();
+
+                    $('#fin-checkbox').on('change', function () {
+                        if ($(this).prop('checked')) {
+                            $('#fin-checkbox').addClass('highlighted');
+                            const buttonElement = document.activeElement // Get the currently focused element
+                            buttonElement.blur() // Remove focus from the button
+                            $('#declaracionAceptar').show(); // Muestra el div
+                            $('#declaracionAdhesionClic').prop('disabled', false);
+                        } else {
+                            $('#fin-checkbox').removeClass('highlighted');
+                            $('#declaracionAceptar').hide(); // Oculta el div
+                            $('#declaracionAdhesionClic').prop('disabled', true);
+                        }
+                    });
             });
         });
+         
 
          $(function() {
                 // Selecciona el checkbox

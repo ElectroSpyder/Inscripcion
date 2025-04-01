@@ -1,5 +1,6 @@
 ﻿namespace ADJInsc.Core.Api.Service.Adhesion
 {
+    using System;
     using System.Threading.Tasks;
    
     using ADJInsc.Core.Api.Service.Interface;
@@ -33,6 +34,13 @@
             var result = await helper.PostModeloAdhesion(inscViewModel);
             //var Helper = new Helper.EmailSender(result.CodigoVerificador.ToString(), model.email);
                         
+            return result;
+        }
+
+        public async Task<ModelPdf> GetModelPdf(ModelPdf modelPdf)
+        {
+            var result = await helper.GetModelPdf(modelPdf);           
+
             return result;
         }
     }

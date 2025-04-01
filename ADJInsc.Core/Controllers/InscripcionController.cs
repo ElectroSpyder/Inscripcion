@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Authorization;
     using ADJInsc.Models.ViewModels;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class InscripcionController : Controller
     {
@@ -284,7 +285,7 @@
                  
                  */
                 var result = this.apiAservice.PostAsync<ResponseViewModel>
-                                 ("/Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;
+                                  ("/Insc.Api/helper/", "PostModelo", modeloCarga, null, token).Result;
 
 
                 if (result.IsSuccess)

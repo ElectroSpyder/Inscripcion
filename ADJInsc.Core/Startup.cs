@@ -6,6 +6,7 @@ namespace ADJInsc.Core
     using ADJInsc.Models.ViewModels;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http.Features;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -28,6 +29,7 @@ namespace ADJInsc.Core
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             var cultureInfo = new CultureInfo("es-ES"); // Español España
             cultureInfo.NumberFormat.NumberGroupSeparator = "."; // Asegura que use el punto
 
@@ -35,6 +37,11 @@ namespace ADJInsc.Core
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             services.AddControllersWithViews();
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 15728640; // 15 MB (cambiar según necesidad)
+            });
 
             services.AddWkhtmltopdf();
 
@@ -70,6 +77,7 @@ namespace ADJInsc.Core
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            //app.UseHttpsRedirection();
 
             Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "..\\Rotativa\\Windows\\");
 

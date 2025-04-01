@@ -73,7 +73,12 @@
 
             HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modeloVM);
             //Insc.Api
-            var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
+            /*
+             var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
+            var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
+             */
+            var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM, null, token).Result;
+
             if (service.IsSuccess)
             {
                 var respuesta = (InscViewModel)service.Result;
@@ -137,12 +142,45 @@
                 });
             }
         }
-        public IActionResult GetPdfAdhesion()
+        //public IActionResult ErrorPage()
+        //{
+        //    return View("ErrorPage");
+        //}
+        public IActionResult GetPdfAdhesion(string pdfUrl)
         {
-            var modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
 
-            return new ViewAsPdf("_ReporteAdhesion", modelo);
+            if (string.IsNullOrEmpty(pdfUrl))
+            {
+                var modeloView = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
+                var modeloSesion = new ModelPdf
+                {
+                    AdheridoId = modeloView.AdherirViewModel.AdhesionId.ToString(),
+                    Correo = modeloView.InsEmail,
+                    CuitAdherido = modeloView.CuitCuil,
+                    DniAdherido = modeloView.InsNumdoc,
+                    FechaAdhesion = modeloView.AdherirViewModel.FechaAdhesion,
+                    Localidad = modeloView.LocalidadDesc,
+                    InscriptoId = modeloView.InsId.ToString(),
+                    NombreAdherido = modeloView.InsNombre,
+                    TipologiaDescripcion = modeloView.AdherirViewModel.Descripcion
+                };
+                return new ViewAsPdf("_ReporteAdhesion", modeloSesion);
+            }
+            else
+            {
+                var tokenSource = new CancellationTokenSource();
+                var token = tokenSource.Token;
+                var modeloVM = new ModelPdf { InscriptoId = pdfUrl.Trim() };
+                /*
+                var modelo = this._apiService.PostPdfAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "GetModelPdf", modeloVM, token).Result;
+                var modelo = this._apiService.PostPdfAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "GetModelPdf", modeloVM, token).Result;
+                 */
 
+                var modelo = this._apiService.PostPdfAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "GetModelPdf", modeloVM, token).Result;
+                if (modelo.IsSuccess)
+                    return new ViewAsPdf("_ReporteAdhesion", (ModelPdf)modelo.Result);
+                return RedirectToAction("ErrorPage");
+            }
         }
     }
 }

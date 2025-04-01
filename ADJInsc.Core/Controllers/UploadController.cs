@@ -41,26 +41,32 @@ namespace ADJInsc.Core.Controllers
 
             try
             {
+                //porque se repite
+                //var _memoryArchivoVM = HttpContext.Session.GetObjectFromJson<List<FileUploadViewModel>>("_filesInMemory") ?? new List<FileUploadViewModel>();
                 List<string> archivosGuardados = new List<string>();
-
-                foreach (var file in Request.Form.Files)
-                {
-                    using var memoryStream = new MemoryStream();
-                    await file.CopyToAsync(memoryStream);
-
-                    _filesInMemory.Add(new FileUploadViewModel
+                var _memoryArchivoVM = new List<FileUploadViewModel>();
+                    foreach (var file in Request.Form.Files)
                     {
-                        NombreArchivo = file.FileName,                       
-                        Tamano = file.Length,
-                        Fecha = fecha,
-                        FileContent = memoryStream.ToArray(),
-                        TipoContenido = file.ContentType,
-                        TipoIngreso = tipoIngreso
-                    });
+                        using var memoryStream = new MemoryStream();
+                        await file.CopyToAsync(memoryStream);
+                        //porque se repite
+                        _memoryArchivoVM.Add(new FileUploadViewModel
+                        {
+                            NombreArchivo = file.FileName,
+                            Tamano = file.Length,
+                            Fecha = fecha,
+                            FileContent = memoryStream.ToArray(),
+                            TipoContenido = file.ContentType,
+                            TipoIngreso = tipoIngreso
+                        });
 
-                    archivosGuardados.Add(file.FileName);
-                }
-                HttpContext.Session.SetObjectAsJson<List<FileUploadViewModel>>("_filesInMemory", _filesInMemory);
+                        archivosGuardados.Add(file.FileName);
+                    }
+              
+
+                    //_filesInMemory = _memoryArchivoVM;
+                    HttpContext.Session.SetObjectAsJson<List<FileUploadViewModel>>("_filesInMemory", _memoryArchivoVM);
+                //HttpContext.Session.SetObjectAsJson<List<FileUploadViewModel>>("_filesInMemory", _filesInMemory);
                 return Json(new { success = true, message = "✅ Archivos subidos correctamente: " + string.Join(", ", archivosGuardados) });
             }
             catch (Exception ex)

@@ -534,6 +534,7 @@
     <Compile Include="ViewModels\AdhesionVM\AdherirViewModel.cs" />
     <Compile Include="ViewModels\AdhesionVM\AdhesionViewModel.cs" />
     <Compile Include="ViewModels\AdhesionVM\DepartamentoProgramaVM.cs" />
+    <Compile Include="ViewModels\AdhesionVM\ModelPdf.cs" />
     <Compile Include="ViewModels\AdhesionVM\ModulosVM.cs" />
     <Compile Include="ViewModels\AdhesionVM\ProgramaVM.cs" />
     <Compile Include="ViewModels\AltaTitularViewModel.cs" />
