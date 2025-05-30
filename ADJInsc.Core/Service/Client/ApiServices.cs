@@ -44,30 +44,43 @@ namespace xa.App.Services
                 //ResponseHeaderRead permite leer aunque no haya llegado todo el json
                 using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 
-                var stream = await response.Content.ReadAsStreamAsync();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
 
-                //var content = await StreamToStringAsync(stream);  //deserializa para obtener el error
+                    //var content = await StreamToStringAsync(stream);  //deserializa para obtener el error
 
-                if (response.IsSuccessStatusCode == false)
+                    if (response.IsSuccessStatusCode == false)
+                    {
+                        return new Response
+                        {
+                            IsSuccess = false,
+                            Result = StreamToStringAsync(stream)
+                        };
+                        /*throw new ApiException
+                        {
+                            StatusCode = (int)response.StatusCode,
+                            Content = await StreamToStringAsync(stream)  //deserializa para obtener el error
+                    };*/
+                    }
+
+                    return new Response
+                    {
+                        IsSuccess = true,
+                        Result = DeserializeJsonFromStream<T>(stream),
+                        Message = "Ok"
+                    };
+                }
+                else
                 {
                     return new Response
                     {
                         IsSuccess = false,
-                        Result = StreamToStringAsync(stream)
+                        Result = null,
+                        Message = "Ok"
                     };
-                    /*throw new ApiException
-                    {
-                        StatusCode = (int)response.StatusCode,
-                        Content = await StreamToStringAsync(stream)  //deserializa para obtener el error
-                };*/
                 }
-
-                return new Response
-                {
-                    IsSuccess = true,
-                    Result = DeserializeJsonFromStream<T>(stream),
-                    Message = "Ok"
-                };
+               
             }
             catch (Exception ex)
             {

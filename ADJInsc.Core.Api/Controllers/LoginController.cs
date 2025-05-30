@@ -32,7 +32,9 @@
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<InscViewModel>> GetLogin(ModeloCarga modeloCarga)
         {
-            //var service = new LoginService(_connectionString);
+            if(modeloCarga.usuario == null) return BadRequest("Usuario es requerido.");
+            if(modeloCarga.clave == null) return BadRequest("Contraseña es requerido.");
+
             var result = loginService.GetLogin(modeloCarga.usuario.Trim(), modeloCarga.clave.Trim()).Result;
             await Task.Delay(500).ConfigureAwait(false);
 
@@ -44,7 +46,7 @@
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseViewModel>> GetVerificador(string id)
         {
-           // var service = new LoginService(_connectionString);
+            if(id == null) return BadRequest("Error, Guid incorrecto");
             var result = loginService.VerificarGuid(new Guid(id)).Result;
             await Task.Delay(100).ConfigureAwait(false);
 
@@ -75,7 +77,8 @@
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetResetPasword(string email)
         {
-            //var service = new LoginService(_connectionString);
+            if (email == null) return BadRequest("Debe proporcionar un email valido");
+
             var result = loginService.ResetPasword(email).Result;
             await Task.Delay(100).ConfigureAwait(false);
 
@@ -96,7 +99,16 @@
         {
             try
             {
-                var dni = int.Parse(modeloCarga.dni);
+                if (string.IsNullOrWhiteSpace(modeloCarga.dni))
+                {
+                    return BadRequest("El DNI es obligatorio.");
+                }
+
+                if (!int.TryParse(modeloCarga.dni, out int dni))
+                {
+                    return BadRequest("El DNI debe ser un número válido.");
+                }
+               
                 if (dni < 1) return NotFound("Dni incorrecto");
                 if (string.IsNullOrEmpty(modeloCarga.usuario)) return NotFound("Email vacío");
 

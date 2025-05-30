@@ -32,17 +32,19 @@
         {
             var modelo = HttpContext.Session.GetObjectFromJson<AltaTitularViewModel>("altaTitular");
 
-            List<SelectListItem> tipoFamilia = modelo.GetListado().Select
-                      (r => new SelectListItem
-                      {
-                          Value = $"{r.TipoFamiliaKey}",
-                          Text = r.TipoFamiliaDesc
-                      })
-                      .OrderBy(o => o.Text)
-                      .ToList();
+            if (modelo != null)
+            {
+                List<SelectListItem> tipoFamilia = modelo.GetListado().Select
+                          (r => new SelectListItem
+                          {
+                              Value = $"{r.TipoFamiliaKey}",
+                              Text = r.TipoFamiliaDesc
+                          })
+                          .OrderBy(o => o.Text)
+                          .ToList();
 
-            modelo.TipoFamiliaList = tipoFamilia;
-
+                modelo.TipoFamiliaList = tipoFamilia;
+            }
             return View(modelo);
             
         }
@@ -95,8 +97,17 @@
                  */
 
                 var service = this.apiAservice.GetAsync<UsuarioTitularViewModel>("/Insc.Api/helper/", "GetInscripto" + "?id=" + numDni, token).Result;
+                
                 var result = (UsuarioTitularViewModel)service.Result;
 
+                if (result == null)
+                {
+                    var mensaje = new UsuarioTitularViewModel
+                    {
+                        MensajeModel = "Sin servicio, vuelva a itnentar más tarde"
+                    };
+                    return RedirectToAction("Mensaje", mensaje);
+                }
                 var model = new UsuarioTitularViewModel();
 
                 result.TipoFamiliaList = model.GetListado().Select

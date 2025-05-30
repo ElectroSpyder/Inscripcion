@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $('#declaracionAdhesionModal').modal('toggle');
+    $('#declaracionModal').modal('toggle');
 });
 
 $(function () {
@@ -9,15 +9,15 @@ $(function () {
         $("#declaracionModal").modal('hide');
     });
 
-    $("#declaracionAdhesionClic").click(function () {
-        $("#declaracionAdhesionModal").modal('hide');
-        $("#declaracionModal").modal('show');
-    });
+    //$("#declaracionAdhesionClic").click(function () {
+    //    $("#declaracionAdhesionModal").modal('hide');
+    //    $("#declaracionModal").modal('show');
+    //});
 
-    $("#btnHideModalDeclaracion").click(function () {
+    //$("#btnHideModalDeclaracion").click(function () {
         
-        $("#declaracionAdhesionModal").modal('hide');
-    });
+    //    $("#declaracionAdhesionModal").modal('hide');
+    //});
 
     $("#btnHideModalDeclaracion").click(function () {
         $("#btnBuscar").prop("disabled", true);

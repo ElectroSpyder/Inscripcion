@@ -96,19 +96,18 @@
                     //Aqui si Estado es Inscripto entonces obtener los datos del programa
                     //el modelo adhesion agregar el viewModel de inscripto
                     
-                    if (modelo.InsEstado == "I"  )
-                    {                        
-                        modelo.AdhesionViewModel = GetAdhesionModel(modelo.InsId);
-                        if (Verificado(modelo))
-                        {
-                            modelo.AdhesionViewModel.Habilitar = true;
-                        }
-                        else
-                        {
-                            modelo.AdhesionViewModel.Habilitar = false;
-                        }
-                            
-                    }
+                    //if (modelo.InsEstado == "I"  )
+                    //{                        
+                    //    modelo.AdhesionViewModel = GetAdhesionModel(modelo.InsId);
+                    //    if (Verificado(modelo))
+                    //    {
+                    //        modelo.AdhesionViewModel.Habilitar = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        modelo.AdhesionViewModel.Habilitar = false;
+                    //    }                            
+                    //}
 
                     HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modelo);
 
@@ -322,21 +321,22 @@
             var modelo = new InscViewModel();
             modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
             var individuo = new GrupoFamiliarViewModel();
-            foreach (var item in modelo.GrupoFamiliar)
-            {
-                if (item.InsfNumdoc == id)
+
+            if (modelo.GrupoFamiliar != null && modelo.GrupoFamiliar.Any()) {
+                foreach (var item in modelo.GrupoFamiliar)
                 {
-                    item.InsfEstado = "M";
-                    individuo = item;
-                    break;
+                    if (item.InsfNumdoc == id)
+                    {
+                        item.InsfEstado = "M";
+                        individuo = item;
+                        break;
+                    }
                 }
-            }
+            }           
 
             HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modelo);
             return Json(individuo);
-
         }
-
 
         public IActionResult GetPdfHome()
         {
@@ -345,7 +345,6 @@
             return new ViewAsPdf("_Reporte", modelo);
 
         }
-
         public JsonResult List()
         {
             InscViewModel modelo = new InscViewModel();
@@ -408,41 +407,55 @@
             var tipoFamiliaDesc = string.Empty;
             var tipoRevistaDesc = string.Empty;
 
-            foreach (var item in modelo.TipoFamiliaList)
+            if (modelo.TipoFamiliaList != null && modelo.TipoFamiliaList.Any())
             {
-                if (tipoFamilia == item.Value.ToString())
+                foreach (var item in modelo.TipoFamiliaList)
                 {
-                    tipoFamiliaDesc = item.Text.Trim();
-                    break;
+                    if (tipoFamilia == item.Value.ToString())
+                    {
+                        tipoFamiliaDesc = item.Text.Trim();
+                        break;
+                    }
+                }
+            }
+           
+            if(modelo.LocalidadesList!= null && modelo.LocalidadesList.Any())
+            {
+                foreach (var item in modelo.LocalidadesList)
+                {
+                    if (localidad == item.Value.ToString())
+                    {
+                        desKeyLoc = item.Text.Trim();
+                        break;
+                    }
+                }
+            }
+            
+            if(modelo.DepartamentosList!= null && modelo.DepartamentosList.Any())
+            {
+                foreach (var item in modelo.DepartamentosList)
+                {
+                    if (departamento == item.Value)
+                    {
+                        desKeyDep = item.Text.Trim();
+                        break;
+                    }
+                }
+            }
+            
+            if(modelo.TipoRevistaList != null && modelo.TipoRevistaList.Any())
+            { 
+                foreach (var item in modelo.TipoRevistaList)
+                {
+                    if (revista == item.Value)
+                    {
+                        tipoRevistaDesc = item.Text.Trim();
+                        break;
+                    }
                 }
             }
 
-            foreach (var item in modelo.LocalidadesList)
-            {
-                if (localidad == item.Value.ToString())
-                {
-                    desKeyLoc = item.Text.Trim();
-                    break;
-                }
-            }
-
-            foreach (var item in modelo.DepartamentosList)
-            {
-                if (departamento == item.Value)
-                {
-                    desKeyDep = item.Text.Trim();
-                    break;
-                }
-            }
-
-            foreach (var item in modelo.TipoRevistaList)
-            {
-                if (revista == item.Value)
-                {
-                    tipoRevistaDesc = item.Text.Trim();
-                    break;
-                }
-            }
+           
 
             modelo.InsTipflia = tipoFamiliaDesc;
             modelo.IdTipoFamilia = int.Parse(tipoFamilia);

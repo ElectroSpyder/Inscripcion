@@ -1,9 +1,11 @@
-﻿namespace ADJInsc.Core.Api.Service.Inscripcion
+﻿using ADJInsc.Models.ViewModels;
+using System.Threading.Tasks;
+using ADJInsc.Core.Logica;
+using ADJInsc.Core.Api.Service.Interface;
+
+namespace ADJInsc.Core.Api.Service.Inscripcion
 {    
-    using ADJInsc.Models.ViewModels;   
-    using System.Threading.Tasks;     
-    using ADJInsc.Core.Logica;
-    using ADJInsc.Core.Api.Service.Interface;
+    
 
     public class InscripcionService
     {
@@ -26,12 +28,16 @@
             return  result; 
         }
 
+        
         public async Task<ResponseViewModel> PostServerModelo(ModeloCarga model)
         {
             var result = await helper.PostServerModelo(model);
+            if(result.CodigoVerificador == null) return null;
+
+
             var Helper = new Helper.EmailSender(result.CodigoVerificador.ToString(), model.email);
 
-            //await Helper.SendEmail();
+            await Helper.SendEmail();
             return result;
         }
 

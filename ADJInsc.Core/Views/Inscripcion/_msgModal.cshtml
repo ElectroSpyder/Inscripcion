@@ -20,12 +20,11 @@
                                 <div class="modal-body card">
                                     <h4>@Model.MensajeModel</h4>
                                 </div>
-                                <div class="modal-footer">
-                                    <form asp-controller="Inscripcion" asp-action="GoHome">
-                                        <button type="button" id="btnIrAlta" class="btn btn-outline-primary">Aceptar</button>
-                                        </form>
-                                       
-                                </div>
+                        <div class="modal-footer">
+                            <form asp-controller="Inscripcion" asp-action="GoHome">
+                                <button type="button" id="btnIrAlta" class="btn btn-outline-primary">Aceptar</button>
+                            </form>
+                        </div>
                             </div>
 
                 </div>
@@ -61,7 +60,8 @@
 
         $(function () {
 
-            $("#btnIrAlta").click(function () {
+            $("#btnIrAlta").click(function (e) {
+                e.preventDefault();
                 $("#loginModal").modal('hide');
                 history.go(-2);
 

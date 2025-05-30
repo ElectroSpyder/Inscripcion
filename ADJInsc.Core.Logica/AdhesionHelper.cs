@@ -1,18 +1,13 @@
 ﻿namespace ADJInsc.Core.Logica
-{
-    using ADJInsc.Models.Models.DBAdhesion;
-    using ADJInsc.Models.Models.DBInsc;
+{   
     using ADJInsc.Models.ViewModels;
     using ADJInsc.Models.ViewModels.AdhesionVM;
     using ADJInsc.Models.ViewModels.UpLoad;
-    using Org.BouncyCastle.Asn1.IsisMtt.X509;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
     using System.IO;
-    using System.Reflection;
     using System.Threading.Tasks;
     using System.Transactions;
 

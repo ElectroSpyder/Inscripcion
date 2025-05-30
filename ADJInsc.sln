@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30503.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADJInsc.Models", "ADJInsc.Models\ADJInsc.Models.csproj", "{189D63E9-352A-4C37-982B-2E5C39ED140A}"
 EndProject
@@ -10,6 +10,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADJInsc.Core.Api", "ADJInsc.Core.Api\ADJInsc.Core.Api.csproj", "{61CDF8BB-533A-4CD7-ADFB-739A13F8D6E4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ADJInsc.Core.Logica", "ADJInsc.Core.Logica\ADJInsc.Core.Logica.csproj", "{050C0399-17EA-47B6-AFF1-90EF8DBEDB1A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1EA9661-FAA0-49B9-ACAD-D1B28F986C5A} = {D1EA9661-FAA0-49B9-ACAD-D1B28F986C5A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADJInsc.Helper", "ADJInsc.Helper\ADJInsc.Helper.csproj", "{D1EA9661-FAA0-49B9-ACAD-D1B28F986C5A}"
 EndProject

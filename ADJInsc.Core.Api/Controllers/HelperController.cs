@@ -84,10 +84,10 @@
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ResponseViewModel>> PostModelo(ModeloCarga modeloCarga)
-        {
-            // var helper = new InscripcionService(_connectionString, mailService);
+        {         
             var modelo = service.PostServerModelo(modeloCarga).Result;
 
+            if (modelo == null) return BadRequest("Error");
             if (modelo.UsuarioId < 0)   
                 return BadRequest();
             

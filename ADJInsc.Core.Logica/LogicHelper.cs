@@ -162,9 +162,6 @@
 
             using (TransactionScope ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-
-                object objetoId = string.Empty;
-
                 try
                 {
                     InscViewModel inscViewModel = new InscViewModel();
@@ -443,7 +440,8 @@
 
                                 objetoId = await cmd.ExecuteScalarAsync();
 
-                                var UsuarioId = (objetoId != null) ? (decimal)objetoId : 0;
+                                //var UsuarioId = (objetoId != null) ? (decimal)objetoId : 0;
+                                var UsuarioId = (objetoId != null) ? Convert.ToDecimal(objetoId) : 0;
 
                                 if (UsuarioId == 0) { ts.Dispose(); return new ResponseViewModel { Existe = false, UsuarioId = 0, InscriptoId = 0 }; }
 
@@ -482,7 +480,8 @@
                                     {
                                         //ejecuto obteniendo el resultado, o sea el id de Inscripto
                                         objetoId = await cmd1.ExecuteScalarAsync();  //incerto y obtengo el InscriptoId
-                                        InscriptoId = (objetoId != null) ? (decimal)objetoId : 0;
+                                        //InscriptoId = (objetoId != null) ? (decimal)objetoId : 0;
+                                        InscriptoId = (objetoId != null) ? Convert.ToDecimal(objetoId) : 0;
                                     }
 
                                     if (InscriptoId == 0) { ts.Dispose(); return new ResponseViewModel { Existe = false, UsuarioId = 0, InscriptoId = 0 }; }
@@ -527,12 +526,9 @@
                                         }
                                     }
 
-
                                     modeloResponse.InscriptoId = (int)InscriptoId;
                                     modeloResponse.Existe = false;
-                                    ts.Complete();
-
-                                    //await SendEmail(_mailService, modeloResponse, model.email);
+                                    ts.Complete();                                    
 
                                 }
 
@@ -1096,7 +1092,7 @@
                         idUsuario = (int)row["IdUsuario"];
                     }
 
-                    if (estado == "M" || estado == "A") return null;
+                    if (estado == "M" || estado == "A") return null;                    
                     if (inscEmail.Trim() != email) return null;
 
                     query = "select ClaveUsuario from Usuario where Id=@idUsuario";
@@ -1154,8 +1150,8 @@
                     await con.OpenAsync();
 
                 var objetoId = await cmd1.ExecuteScalarAsync();
-                var result = (objetoId != null) ? (decimal)objetoId : 0;
-
+                //var result = (objetoId != null) ? (decimal)objetoId : 0;
+                var result = (objetoId != null) ? Convert.ToDecimal(objetoId) : 0;
                 if (result > 0)
                 {
                     ts.Complete();
