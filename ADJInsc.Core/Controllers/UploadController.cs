@@ -13,8 +13,7 @@ namespace ADJInsc.Core.Controllers
 {
 
     public class UploadController : Controller
-    {
-        private static List<FileUploadViewModel> _filesInMemory = new List<FileUploadViewModel>();
+    {       
         public IConfiguration Configuration { get; }
         public string _connectionString { get; set; }
         //private readonly IMailService mailService;

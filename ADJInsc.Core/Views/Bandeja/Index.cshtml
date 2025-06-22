@@ -30,7 +30,7 @@
 <div style="float:right;">
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
-            @* @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)
+            @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)
             {
                 <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
                 
@@ -38,7 +38,7 @@
                     <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
                     <i class="fas fa-plus-circle"></i>
                 </button>
-            } *@
+            }
             <form asp-controller="Inscripcion" asp-action="GoHome">
                 <img id="AjaxLoaderLogin" alt="Enviando ..." style="display:none; width:50px; height:50px;" src="~/image/loader.gif" />
                 <button class="btn btn-outline-danger " id="btnLogin">Cerrar sesion</button>

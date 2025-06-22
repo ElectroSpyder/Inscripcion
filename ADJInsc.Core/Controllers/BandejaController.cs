@@ -95,19 +95,19 @@
 
                     //Aqui si Estado es Inscripto entonces obtener los datos del programa
                     //el modelo adhesion agregar el viewModel de inscripto
-                    
-                    //if (modelo.InsEstado == "I"  )
-                    //{                        
-                    //    modelo.AdhesionViewModel = GetAdhesionModel(modelo.InsId);
-                    //    if (Verificado(modelo))
-                    //    {
-                    //        modelo.AdhesionViewModel.Habilitar = true;
-                    //    }
-                    //    else
-                    //    {
-                    //        modelo.AdhesionViewModel.Habilitar = false;
-                    //    }                            
-                    //}
+
+                    if (modelo.InsEstado == "I")
+                    {
+                        modelo.AdhesionViewModel = GetAdhesionModel(modelo.InsId);
+                        if (Verificado(modelo))
+                        {
+                            modelo.AdhesionViewModel.Habilitar = true;
+                        }
+                        else
+                        {
+                            modelo.AdhesionViewModel.Habilitar = false;
+                        }
+                    }
 
                     HttpContext.Session.SetObjectAsJson<InscViewModel>("viewModelo", modelo);
 
