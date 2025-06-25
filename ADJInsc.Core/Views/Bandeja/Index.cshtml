@@ -343,10 +343,14 @@
                                         <a class="nav-link active" href="#inicio" role="tab" aria-controls="inicio" aria-selected="true">Inicio</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link disabled" href="#programas" id="programas-link" role="tab" aria-controls="programas" aria-selected="false">Tipología</a>
+                                        @*<a class="nav-link disabled" href="#programas" id="programas-link" role="tab" aria-controls="programas" aria-selected="false">Tipología</a> *@
+                                        <a class="nav-link disabled" href="#departamentos" id="departamentos-link" role="tab" aria-controls="departamentos" aria-selected="false">Departamentos</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link disabled" href="#ingresos" id="ingresos-link" role="tab" aria-controls="ingresos" aria-selected="false">Documentación de Ingresos</a>
+                                        <a class="nav-link disabled" href="#ingresos" id="ingresos-link" role="tab" aria-controls="ingresos" aria-selected="false">Ingresos</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link disabled" href="#inmueble" id="inmueble-link" role="tab" aria-controls="inmueble" aria-selected="false">Registro de Inmueble</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link disabled" href="#finadhesion" id="finadhesion-link" role="tab" aria-controls="finadhesion" aria-selected="false">Declaración Jurada</a>
@@ -357,7 +361,9 @@
                                 <h4 class="card-title"></h4>
                                 @*  <h6 class="card-subtitle mb-2">Carácter de declaración Jurada</h6> *@
 
-                                <div class="tab-content mt-3">
+                                <div class="tab-content mt-3">                                 
+
+
                                     @*Panel de declaración jurada*@
                                     <div class="tab-pane active" id="inicio" role="tabpanel">
                                         <h3 class="card-subtitle mb-2">Inicio</h3>
@@ -365,17 +371,222 @@
                                             <div class="checkbox">
                                                 <label for="confirmation-checkbox" id="confirmation-label">
                                                     <input class="parpadeo" type="checkbox" id="confirmation-checkbox" name="confirmation-checkbox" aria-labelledby="confirmation-label">
-                                                    Se deja expresamente aclarado, que la “tipología” a seleccionar dentro del programa, corresponderá a los “ingresos”
-                                                    a declarar de mi grupo familiar. Siendo la misma, mi única opción de adhesión para este Programa.
+                                                   @*  Se deja expresamente aclarado, que la “tipología” a seleccionar dentro del programa, corresponderá a los “ingresos”
+                                                    a declarar de mi grupo familiar. Siendo la misma, mi única opción de adhesión para este Programa. *@
+                                                    Acepto tener conocimiento que el ocultamiento y/o falsedad de datos, de la información que brindo en la adhesión online al Programa 
+                                                    “288 Departamentos e Infraestructura en Alto Comedero”, darán lugar a mi exclusión directa del Programa. Y dejo conformidad que, el no cumplir con los requisitos 
+                                                    informados en la adhesión online Programa “288 Departamentos e Infraestructura en Alto Comedero” en ivuj.gob.ar, darán lugar a la baja directa de mi Adhesión Online.
                                                 </label>
                                             </div>
+                                             <div class="form-group card-body">
+                                                    <div class="form-group col-md-12">
+                                                        Postulante Titular CUIL/T (*)
+                                                        <input type="text" class="form-control" id="inputAdhesionTitularCuit" placeholder="Cuit Titular" value="" >
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        Postulante Cotitular CUIL/T  (*)
+                                                        <input type="text" class="form-control" id="inputAdhesionCoTitularCuit" placeholder="Cuit Co Titular" value="" >
+                                                    </div>
+                                            </div>
+
                                         </div>
                                     </div>
-                                    @*Panel de modulos de programas*@
-                                    <div class="tab-pane" id="programas" role="tabpanel" aria-labelledby="programas-tab">
-                                        <h3 class="card-subtitle mb-2">Tipologías</h3>
+                                    @*Panel de Departamento*@
+                                     <div class="tab-pane" id="departamentos" role="tabpanel" aria-labelledby="departamentos-tab">
+                                        <h3 class="card-subtitle mb-2">Departamento</h3>
+                                        
+                                        <div class="display" >
+                                            <h3 class="modal-title">Está por adherir online al Programa 288 Departamentos e Infraestructura en Alto Comedero.</h3>
+                                           @*  @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
+                                            { *@
+                                                <ul class="list-group">
+                                                    <li class="list-group-item">                                                   
+                                                        <strong>Costo aproximado de la unidad habitacional</strong> <span>$106.000.000</span> 
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <p>Con un Plan de Financiación de hasta 25 años. <u>Aclaración</u>: el plazo máximo de financiación puede ser menor de acuerdo a la edad del postulante, 
+                                                            fijando como requisito la edad límite de 55 años.</p>
+                                                    </li>
 
+                                                    <li class="list-group-item">
+                                                        <strong>Monto aproximado del ahorro previo </strong> <span>$21.200.000</span> 
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <p>El ahorro previo representa el 20% del costo total de la unidad habitacional,
+                                                            para ser cancelado en un plazo máximo de 48 meses.</p>
+                                                    </li>
+                                                     <li class="list-group-item">
+                                                        <p><u>Aclaración</u>: Las cuotas a cancelar desde el mes 25 al 48 del “Ahorro Previo”, se sumarán a las primeras 24 cuotas del 
+                                                            “Plan de Financiación” del saldo de la unidad habitacional”</p>
+                                                    </li>
+                                                </ul>
+                                            @* } *@
+                                        </div>
+
+                                    </div>
+
+
+                                    @*Panel de modulos de ingresos o programa*@
+                                    <div class="tab-pane" id="ingresos" role="tabpanel" aria-labelledby="ingresos-tab">
+                                        <h4 class="card-subtitle mb-2">Ingresos del grupo Familiar</h4>
+                                        <h5><strong>Ingreso mínimo requeridos por grupo familiar:</strong></h5>
+                                        <ul>
+                                            <li><strong>$2.800.000</strong> con el “Ahorro Previo” activo/vigente a pagar en 48 cuotas mensuales.</li>
+                                            <li><strong>$800.000</strong> si se cancela el total del “Ahorro Previo” (de $ 21.200.000 monto aproximado)</li>
+                                        </ul>
+                                        <p><u>Aclaración</u>: toda entrega o anticipo a abonar, disminuye el ingreso mínimo requerido por grupo familiar. Para mayor información, consulta las “Preguntas Frecuentes de Adhesión Online” en ivuj.gob.ar</p>
                                         <div class="dropdown">
+                                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                               Seleccione una opción
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                
+                                                <li><a class="dropdown-item mod01" href="#" >Ingreso familiar Menor a $800.000</a></li>
+                                                <li><a class="dropdown-item mod01" href="#" >Ingreso familiar entre $800.000 y $2.799.999 con opción de “Anticipo Total/Parcial” del Ahorro Previo</a></li>
+                                                <li><a class="dropdown-item mod01" href="#" >Ingreso familiar Superiores a $2.800.000</a></li>
+                                                
+                                            </ul>
+                                        </div>
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                         <h4 class="card-subtitle mb-2">Ingreso Laboral</h4>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Seleccione una opción
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                
+                                                <li><a class="dropdown-item mod01" href="#" >· Relación de dependencia (último recibo de sueldo)</a></li>
+                                                <li><a class="dropdown-item mod01" href="#" >· Relación de Independencia/Autónomo Registrado</a></li>
+                                                <li><a class="dropdown-item mod01" href="#" >· Ambos</a></li>
+                                                
+                                            </ul>
+                                        </div>
+                                        @* /*Opcion 3*/ *@
+                                         <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                         <p id="selected-option2" style="margin-top: 20px; font-weight: bold;">opción seleccionada:
+                                             <strong>Ambos</strong> </p>
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                        <div>
+                                            <div>
+                                                @* <h5 class="card-subtitle mb-2"><strong>Relación de dependencia del Postulante Titular y Cotitular</strong></h5> *@
+                                                @* <h5 class="card-subtitle mb-2"><strong>Relación de independencia/Autónomo Registrado del Postulante Titular y Cotitular</strong></h5> *@
+                                                
+                                                <!-- Formulario 1: Subir archivos -->
+                                                @*  <form id="uploadForm" enctype="multipart/form-data" data-upload-url="@Url.Action("UploadImages", "Upload")">
+                                                    <input class="btn btn-outline-info" type="file" id="fileInput" multiple accept="image/*" />
+                                                    <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+                                                    <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                                    <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en momento oportuno.</p>
+                                                    <button type="submit" disabled>Subir Todos</button>
+                                                </form> *@
+                                                <p>Cargue solo el último recibo de sueldo del Titular y del Cotitular en formato PDF o JPG</p>
+                                                <form id="uploadForm" enctype="multipart/form-data" data-upload-url="@Url.Action("UploadImages", "Upload")">
+                                                    <!-- Input de archivo oculto -->
+                                                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" />
+
+                                                    <!-- Botón estilizado que activa el input -->
+                                                    <label for="fileInput" class="btn btn-outline-info">Seleccionar archivo</label>
+
+                                                    <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+                                                    <div class="mb-3"></div> <!-- Espacio entre divs -->
+
+                                                    @* <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en momento oportuno.</p> *@
+
+                                                    <button class="btn btn-outline-info" type="submit" disabled>Guardar</button>
+                                                </form>
+
+                                                <div id="AjaxLoader" style="display: none;">Cargando...</div>
+
+                                                @if (ViewBag.Message != null)
+                                                {
+                                                    <div class="alert alert-success" style="margin-top:20px">
+                                                        @ViewBag.Message
+                                                    </div>
+                                                }
+                                                <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                                <div id="result"></div>
+                                            </div>
+                                        </div>
+                                         <div class="mb-3"></div> <!-- Espacio entre divs -->                                         
+                                        <p><strong>Sus registros se verificarán desde la Base de Datos de ARCA (Ex AFIP)</strong></p>
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                         <div class="checkbox">
+                                                <label for="confirmation-checkbox" id="confirmation-label">
+                                                    <input class="parpadeo" type="checkbox" id="confirmation-checkbox" name="confirmation-checkbox" aria-labelledby="confirmation-label">
+                                                    Declaro como Postulante Titular y Cotitular encontrarme inscripto/registrado en ARCA (Ex AFIP) Y dejo conformidad que el ocultamiento y/o falsedad de datos darán
+                                            lugar a la baja directa de mi adhesión online al “Programa 288 Departamentos e Infraestructura en Alto Comedero
+                                                </label>
+                                         </div>
+                                         <div>
+                                             <p><u>Aclaración</u>:  la presente documentación es la mínima requerida para la adhesión online,
+                                                 encontrándose facultado el IVUJ a solicitar nueva documentación en el momento oportuno.</p>
+                                         </div>
+                                        
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+
+                                        @* opcion 2 *@
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                         <p id="selected-option1" style="margin-top: 20px; font-weight: bold;">opción seleccionada:
+                                             <strong>Relación de Independencia/Autónomo Registrado</strong> </p>
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                        <p><strong>Sus registros se verificarán desde la Base de Datos de ARCA (Ex AFIP)</strong></p>
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                         <div class="checkbox">
+                                                <label for="confirmation-checkbox" id="confirmation-label">
+                                                    <input class="parpadeo" type="checkbox" id="confirmation-checkbox" name="confirmation-checkbox" aria-labelledby="confirmation-label">
+                                                    Declaro como Postulante Titular y Cotitular encontrarme inscripto/registrado en ARCA (Ex AFIP) Y dejo conformidad que el ocultamiento y/o falsedad de datos darán
+                                            lugar a la baja directa de mi adhesión online al “Programa 288 Departamentos e Infraestructura en Alto Comedero
+                                                </label>
+                                            </div>
+                                        
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+
+                                        <p id="selected-option" style="margin-top: 20px; font-weight: bold;">opción seleccionada: <strong>Relación de dependencia (último recibo de sueldo)</strong> </p>
+                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                        <div>
+                                            <div>
+                                                @* <h5 class="card-subtitle mb-2"><strong>Relación de dependencia del Postulante Titular y Cotitular</strong></h5> *@
+                                                <h5 class="card-subtitle mb-2"><strong>Relación de independencia/Autónomo Registrado del Postulante Titular y Cotitular</strong></h5>
+                                                
+                                                <!-- Formulario 1: Subir archivos -->
+                                                @*  <form id="uploadForm" enctype="multipart/form-data" data-upload-url="@Url.Action("UploadImages", "Upload")">
+                                                    <input class="btn btn-outline-info" type="file" id="fileInput" multiple accept="image/*" />
+                                                    <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+                                                    <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                                    <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en momento oportuno.</p>
+                                                    <button type="submit" disabled>Subir Todos</button>
+                                                </form> *@
+                                                <p>Cargue solo el último recibo de sueldo del Titular y del Cotitular en formato PDF o JPG</p>
+                                                <form id="uploadForm" enctype="multipart/form-data" data-upload-url="@Url.Action("UploadImages", "Upload")">
+                                                    <!-- Input de archivo oculto -->
+                                                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" />
+
+                                                    <!-- Botón estilizado que activa el input -->
+                                                    <label for="fileInput" class="btn btn-outline-info">Seleccionar archivo</label>
+
+                                                    <div id="previewContainer" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+                                                    <div class="mb-3"></div> <!-- Espacio entre divs -->
+
+                                                    @* <p>Se notifica que la presente documentación es la mínima requerida para la adhesión, encontrándose facultado el IVUJ a solicitar nueva documentación en momento oportuno.</p> *@
+
+                                                    <button class="btn btn-outline-info" type="submit" disabled>Guardar</button>
+                                                </form>
+
+                                                <div id="AjaxLoader" style="display: none;">Cargando...</div>
+
+                                                @if (ViewBag.Message != null)
+                                                {
+                                                    <div class="alert alert-success" style="margin-top:20px">
+                                                        @ViewBag.Message
+                                                    </div>
+                                                }
+                                                <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                                <div id="result"></div>
+                                            </div>
+                                        </div>
+                                        @* <div class="dropdown">
                                             <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Adherir a
                                             </button>
@@ -385,7 +596,7 @@
                                                     <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)">@opcion.Titulo</a></li>
                                                 }
                                             </ul>
-                                        </div>
+                                        </div> *@
 
                                         <p id="selected-option" style="margin-top: 20px; font-weight: bold;">Ninguna opción seleccionada</p>
                                         <div id="cajamonto" class="display" style="display:none;">
@@ -409,20 +620,21 @@
 
                                     </div>
                                     @*Panel tab de carga de archivos*@
-                                    <div class="tab-pane" id="ingresos" role="tabpanel" aria-labelledby="inresos-tab">
+                                    <div class="tab-pane" id="ingresos1" role="tabpanel" aria-labelledby="inresos-tab">
                                         <div>
-                                            <h5 class="card-subtitle mb-2">Ingresos</h5>
+                                            <h3 class="card-subtitle mb-2">Ingresos del grupo Familiar</h3>
+                                            <h5><strong>Ingreso mínimo requeridos por grupo familiar:</strong></h5>
                                             <ul class="list-group">
                                                 <li class="list-group-item">
-                                                    <input type="radio" id="dependencia" name="ingresos" value="dependencia">
+                                                    <input type="radio" id="dependencia" name="ingresos1" value="dependencia">
                                                     <label for="dependencia">Relación de dependencia (un recibo de sueldo)</label>
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <input type="radio" id="autonomo" name="ingresos" value="autonomo">
+                                                    <input type="radio" id="autonomo" name="ingresos1" value="autonomo">
                                                     <label for="autonomo">Independiente / Autónomo (Constancia de inscripción al día en ARCA (ex AFIP))</label>
                                                 </li>
                                                 <li class="list-group-item">
-                                                    <input type="radio" id="ambos" name="ingresos" value="ambos">
+                                                    <input type="radio" id="ambos" name="ingresos1" value="ambos">
                                                     <label for="ambos">Ambos</label>
                                                 </li>
                                             </ul>
@@ -476,19 +688,53 @@
 
                                     </div>
 
+                                      @*Panel de inmueble*@
+                                    <div class="tab-pane" id="inmueble"  role="tabpanel" aria-labelledby="inmueble-tab">
+                                        <h3 class="card-subtitle mb-2">Propiedad</h3>
+                                        <div class="form-group">
+                                            <div>
+                                                <p>El ser propietario/a de un inmueble, poseer un condominio, la nuda propiedad o el usufructo de alguna propiedad, 
+                                                    resulta ser una <strong>causal de exclusión</strong> a la adhesión del Programa “288 Departamentos e Infraestructura en Alto Comedero”.</p>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label for="confirmation-checkbox" id="confirmation-label">
+                                                    <input class="parpadeo" type="checkbox" id="confirmation-checkbox" name="confirmation-checkbox" aria-labelledby="confirmation-label">
+                                                  Declaro como Titular y Cotitular <strong>“no poseer registros de propiedad”</strong> que interfieran en mi adhesión online como futuro postulante. 
+                                                  Y dejo conformidad que el ocultamiento y/o falsedad de datos darán lugar a la baja directa de mi adhesión al Programa “288 Departamentos e Infraestructura en Alto Comedero”
+                                                </label>
+                                            </div>
+                                            <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                             <div>
+                                                    <p><strong>Sus registros de No Propiedad serán verificados en la Base de Datos del Registro de Inmuebles.</strong></p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
                                     <div class="tab-pane" id="finadhesion" role="tabpanel" aria-labelledby="inresos-tab">
                                         <h3 class="card-subtitle mb-2">Carácter de declaración Jurada</h3>
                                         <div class="form-group">
                                             <div class="checkbox">
-                                                <label id="fin-label">
+                                                <div id="fin-label">
                                                     <input type="checkbox" id="fin-checkbox" class="parpadeo">
-                                                    <span class="text-justify">
-                                                        El presente formulario reviste carácter de declaración jurada y declaro  conocer que la falsificación de datos es punible por el art. 172 del código penal, por lo tanto acepto que el ocultamiento y/o falsedad de datos de la información  que brindo, o las que a posterior aportara, o el no contar con la documentación respaldatoria dará lugar a mi exclusión para dicho programa. Aclarando específicamente que el no contar con los ingresos mínimos declarados, será causal de exclusión de forma directa.
-                                                        Se deja expresa conformidad, que el correo electrónico declarado  reviste carácter de Domicilio Electrónico, donde serán válidas todas las notificaciones electrónicas que en el futuro se me efectúe. Asumiendo la responsabilidad, en caso de proceder a cambiar el correo electrónico antes declarado, de informar a sí mismo a este organismo.
-                                                        La presente adhesión no genera un derecho adquirido a la adjudicación de un departamento por parte de este organismo.
-                                                    </span>
+                                                    <div><span class="text-justify">
+                                                        El presente formulario reviste carácter de <strong>DECLARACIÓN JURADA</strong> y declaro conocer que la falsificación de datos es punible por el art. 172 del código penal, por lo tanto acepto que el ocultamiento y/o falsedad de datos de la información que brindo, o las que a posterior aportara, o el no contar con la documentación respaldatoria dará lugar a mi exclusión para el Programa de referencia. Aclarando específicamente que el no contar con los requisitos mínimos solicitados, será causal de exclusión de forma directa.
+                                                     </span></div>
+                                                      <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                                    <div><span class="text-justify">   
+                                                        Se deja expresa conformidad, que el correo electrónico declarado reviste carácter de Domicilio Electrónico, donde serán válidas todas las notificaciones electrónicas que en el futuro se me efectúe. Asumiendo la responsabilidad, en caso de proceder a cambiar el correo electrónico antes declarado, de informar a sí mismo a este organismo.
+                                                      </span></div>
+                                                       <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                                    <div><span class="text-justify">
+                                                        La presente adhesión online no genera un derecho adquirido a la adjudicación de un departamento por parte de este organismo.
+                                                    </span></div>
+                                                    
+                                                     
+                                                     
+                                                      
+                                                      
 
-                                                </label>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -1362,11 +1608,19 @@
                     if ($(this).prop('checked')) {
                         // Checkbox marcado: agregar clase
                         $('#confirmation-label').addClass('highlighted');
-                        $('#programas-link').removeClass('disabled');
+                        //$('#programas-link').removeClass('disabled');
+                        $('#departamentos-link').removeClass('disabled');
+                        $('#ingresos-link').removeClass('disabled');
+                        $('#inmueble-link').removeClass('disabled'); //finadhesion
+                        $('#finadhesion-link').removeClass('disabled'); 
                     } else {
                         // Checkbox desmarcado: quitar clase
                         $('#confirmation-label').removeClass('highlighted');
-                        $('#programas-link').addClass('disabled');
+                       // $('#programas-link').addClass('disabled');  //departamentos y ingresos-link
+                       $('#departamentos-link').addClass('disabled'); 
+                       $('#ingresos-link').addClass('disabled'); 
+                        $('#inmueble-link').addClass('disabled'); 
+                        $('#finadhesion-link').addClass('disabled'); 
                     }
                 });
         });
@@ -1504,6 +1758,33 @@
                 });
         });
 
+        $(function (){
+            $('#inputAdhesionTitularCuit').on('input', function () {
+                var valor = $(this).val();
+                // Elimina cualquier caracter que no sea número
+                valor = valor.replace(/\D/g, '');
+                // Aplica el formato XX-XXXXXXXX-X
+                if (valor.length > 2 && valor.length <= 10) {
+                    valor = valor.substring(0, 2) + '-' + valor.substring(2);
+                } else if (valor.length > 10) {
+                    valor = valor.substring(0, 2) + '-' + valor.substring(2, 10) + '-' + valor.substring(10, 11);
+                }
+                $(this).val(valor);
+            });
+
+             $('#inputAdhesionCoTitularCuit').on('input', function () {
+                var valor = $(this).val();
+                // Elimina cualquier caracter que no sea número
+                valor = valor.replace(/\D/g, '');
+                // Aplica el formato XX-XXXXXXXX-X
+                if (valor.length > 2 && valor.length <= 10) {
+                    valor = valor.substring(0, 2) + '-' + valor.substring(2);
+                } else if (valor.length > 10) {
+                    valor = valor.substring(0, 2) + '-' + valor.substring(2, 10) + '-' + valor.substring(10, 11);
+                }
+                $(this).val(valor);
+            });
+        });
 
 
     </script>

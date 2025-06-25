@@ -632,10 +632,10 @@
                            
             if (!verificado)
                 return false; // Retorna false si la fecha no está en el rango permitido
-
-            return model.AdhesionViewModel.DepartamentoProgramas.Any(x =>
-                x.DepartamentoId == model.DepartamentoKey &&
-                (x.LocalidadId <= 0 || x.LocalidadId == model.LocalidadKey));
+            return true;  //modificado para testear
+            //return model.AdhesionViewModel.DepartamentoProgramas.Any(x =>
+            //    x.DepartamentoId == model.DepartamentoKey &&
+            //    (x.LocalidadId <= 0 || x.LocalidadId == model.LocalidadKey));
 
         }
 
