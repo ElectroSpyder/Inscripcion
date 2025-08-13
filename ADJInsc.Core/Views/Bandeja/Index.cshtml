@@ -373,15 +373,36 @@
                                                     <input class="parpadeo" type="checkbox" id="confirmation-checkbox" name="confirmation-checkbox" aria-labelledby="confirmation-label">
                                                    @*  Se deja expresamente aclarado, que la “tipología” a seleccionar dentro del programa, corresponderá a los “ingresos”
                                                     a declarar de mi grupo familiar. Siendo la misma, mi única opción de adhesión para este Programa. *@
-                                                    Acepto tener conocimiento que el ocultamiento y/o falsedad de datos, de la información que brindo en la adhesión online al Programa 
-                                                    “288 Departamentos e Infraestructura en Alto Comedero”, darán lugar a mi exclusión directa del Programa. Y dejo conformidad que, el no cumplir con los requisitos 
-                                                    informados en la adhesión online Programa “288 Departamentos e Infraestructura en Alto Comedero” en ivuj.gob.ar, darán lugar a la baja directa de mi Adhesión Online.
+                                                    Acepto tener conocimiento sobre las condiciones del programa "288 Departamentos e Infraestructura en Alto Comedero"
+                                                    y dejo conformidad que la presentación de información falsa o incompleta en este formulario o el incumplimiento de los requisitos informados 
+                                                    en esta adhesión online, darán lugar a mi exclusión inmediata del programa.
                                                 </label>
                                             </div>
                                              <div class="form-group card-body">
                                                     <div class="form-group col-md-12">
                                                         Postulante Titular CUIL/T (*)
-                                                        <input type="text" class="form-control" id="inputAdhesionTitularCuit" placeholder="Cuit Titular" value="" >
+                                                       @*  <input type="text" class="form-control" id="inputAdhesionTitularCuit" placeholder="Cuit Titular" value="" /> *@
+                                                    <div class="form-inline col-md-12" style="width:auto; margin-bottom:1px;">
+                                                        
+                                                        <input id="adhesionInputCuitUno"
+                                                               maxlength="2"
+                                                               pattern="[0-9]+"
+                                                               size="2"
+                                                               type="text"
+                                                               class="form-control"
+                                                               style="width:16%; margin-left:4px;"
+                                                               value="@Model.CuitCuilUno.Trim()"> -
+                                                        <input type="text" class="form-control" id="adhesionInputCuitDos" placeholder="D.N.I." value="@Model.InsNumdoc" disabled style="width:40%"> -
+
+                                                        <input id="adhesionInputCuitTres"
+                                                               maxlength="1"
+                                                               pattern="[0-9]+"
+                                                               size="1"
+                                                               type="text"
+                                                               class="form-control"
+                                                               style="width:16%"
+                                                               value="@Model.CuitCuilDos.Trim()">
+                                                    </div>
                                                     </div>
                                                     <div class="form-group col-md-12">
                                                         Postulante Cotitular CUIL/T  (*)
