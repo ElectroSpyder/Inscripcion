@@ -32,10 +32,13 @@
         {
             InscViewModel inscViewModel = new InscViewModel();
             inscViewModel = model;
-
+            /* ,<CuitCuilUno, nchar(10),>
+           ,<CuitCuilDos, nchar(10),>
+           ,<InsNumdoc, nchar(10),>
+           ,<NombreApellidoCotitular, varchar(50),>)*/
             var adheridoId = await GetAdherido(inscViewModel.AdherirViewModel);
-            string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId) VALUES " +
-                                                   " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId ); SELECT SCOPE_IDENTITY();";
+            string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId, CuitCuilUno, CuitCuilDos, InsNumdoc, NombreApellidoCotitular ) VALUES " +
+                                                   " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId, @CuitCuilUno, @CuitCuilDos, @InsNumdoc, @NombreApellidoCotitular ); SELECT SCOPE_IDENTITY();";
             if (adheridoId != 0)
             {
                 inscViewModel.AdhesionViewModel.Success = false;
@@ -57,6 +60,10 @@
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@moduloId", inscViewModel.AdherirViewModel.ModuloId));
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@inscriptoId", inscViewModel.AdherirViewModel.InscriptoId));
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@programaId", inscViewModel.AdherirViewModel.ProgramaId));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@CuitCuilUno", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.CuitCuilUno) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.CuitCuilUno));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@CuitCuilDos", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.CuitCuilDos) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.CuitCuilDos));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@InsNumdoc", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.InsNumdoc) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.InsNumdoc));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@NombreApellidoCotitular", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.NombreApellidoCotitular) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.NombreApellidoCotitular));
 
                         if (con.State == ConnectionState.Closed)
                             await con.OpenAsync();
@@ -302,7 +309,7 @@
                  *   SELECT DepartamentoProgramaId, ProgramaId, DepartamentoId, LocalidadId  FROM DepartamentoPrograma where ProgramaId = 1
                  */
                 string query = "SELECT ProgramaId, Descripcion ,FechaInicio ,FechaLimite ,Estado ,FechaCortePrograma ,MontoAdhesion FROM Programas where Estado = 1 ";
-                string query1 = "SELECT ModuloId, Titulo, Descripcion ,Plazo ,Costo , CostoSinEntrega, CostoConEntrega, IngresoMinimo, Estado ,ProgramaId, CostoUvis , CostoSinEntregaUvis, CostoConEntregaUvis, IngresoMinimoUvis FROM Modulos where ProgramaId = @ProgramId ";
+                string query1 = "SELECT ModuloId, Titulo, Descripcion ,Plazo ,Costo , CostoSinEntrega, CostoConEntrega, IngresoMinimo, Estado ,ProgramaId, CostoUvis , CostoSinEntregaUvis, CostoConEntregaUvis, IngresoMinimoUvis, EsModulo FROM Modulos where ProgramaId = @ProgramId ";
                 string query2 = " SELECT DepartamentoProgramaId, ProgramaId, DepartamentoId, LocalidadId  FROM DepartamentoPrograma where ProgramaId = @ProgramId ";
 
                 var dt =  await GetDataTable(query,0, "Programa");
@@ -353,6 +360,7 @@
                             CostoSinEntregaUvis = ConvertFromReader<decimal>(item["CostoSinEntregaUvis"]),
                             CostoConEntregaUvis = ConvertFromReader<decimal>(item["CostoConEntregaUvis"]),
                             IngresoMinimoUvis = ConvertFromReader<decimal>(item["IngresoMinimoUvis"]),
+                            EsModulo = ConvertFromReader<int>(item["EsModulo"]) //1 si es modulo, es lo que carga el combo de departamentos, vacio u otro valor es solo info para mostrar
                         };
                         modulosList.Add(moduloVM);
                     }

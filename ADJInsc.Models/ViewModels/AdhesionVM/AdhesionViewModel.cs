@@ -14,5 +14,9 @@
         public int AdhesionId { get; set; }
         public string FechaAdhesion { get; set; }
         public string DescripcionModulo { get; set; }
+        public string CuitCuilUno { get; set; }
+        public string CuitCuilDos { get; set; }
+        public string InsNumdoc { get; set; }
+        public string NombreApellidoCotitular { get; set; }
     }
 }

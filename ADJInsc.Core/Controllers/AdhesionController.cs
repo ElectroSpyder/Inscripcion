@@ -29,8 +29,10 @@
             // this.mailService = mailService;
             this._apiService = apiService;
         }
-        public JsonResult Adherir(int programaId, int moduloId, int insId, string modeloDetalle)
+        public JsonResult Adherir(int programaId, int moduloId, int insId, string modeloDetalle, string nombreCotitular,string adhesionCotitularInputCuitUno,string adhesionCotitularInputCuitTres,string adhesionCotitularInputCuitDosDni)
         {
+            if(moduloId== 0) moduloId = 12;
+
             // public int InsId { get; set; }
             var tokenSource = new CancellationTokenSource();
            if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle))
@@ -65,7 +67,11 @@
                 ModuloId = moduloId,
                 ModuloDescripcion = modeloDetalle?.Trim() ?? " ",
                 ProgramaId = programaId,
-                FechaAdhesion = Fecha.ToString()
+                FechaAdhesion = Fecha.ToString(),
+                NombreApellidoCotitular = nombreCotitular?.Trim() ?? " ",
+                CuitCuilUno = adhesionCotitularInputCuitUno?.Trim() ?? " ",
+                CuitCuilDos = adhesionCotitularInputCuitDosDni?.Trim() ?? " ",
+                InsNumdoc = adhesionCotitularInputCuitTres?.Trim() ?? " "
             };
 
             // Asignar archivos a `modeloVM`

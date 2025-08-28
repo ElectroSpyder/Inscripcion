@@ -406,7 +406,39 @@
                                                                style="width:16%"
                                                                value="@Model.CuitCuilDos.Trim()">
                                                     </div>
-                                                    </div>                                                   
+                                                    </div>
+                                                <div class="form-group col-md-12">
+                                                    Ingrese Apellido/s y Nombre/s (completos) de Cotitular
+                                                    <div class="col-md-12">
+                                                       
+                                                        <input type="text" style="width:75%; margin-bottom:1px;"                                                           
+                                                               class="form-control"
+                                                               id="inputCotitularNombreInicial"
+                                                               onkeyup="upperCase(this);"
+                                                               placeholder="Apellido y Nombre">
+                                                    </div>
+                                                    CUIL/T de Cotitular
+                                                    <div class="form-inline col-md-12" style="width:auto; margin-bottom:1px;">
+
+                                                        <input id="adhesionCotitularInputCuitUno"
+                                                               maxlength="2"
+                                                               pattern="[0-9]+"
+                                                               size="2"
+                                                               type="text"
+                                                               class="form-control"
+                                                               style="width:16%; margin-left:4px;" > -
+                                                        <input maxlength="8" pattern="[0-9]+" type="text" class="form-control" id="adhesionCotitularInputCuitDosDni" placeholder="D.N.I." style="width:40%"> -
+
+                                                        <input id="adhesionCotitularInputCuitTres"
+                                                               maxlength="1"
+                                                               pattern="[0-9]+"
+                                                               size="1"
+                                                               type="text"
+                                                               class="form-control"
+                                                               style="width:16%"
+                                                               >
+                                                    </div>
+                                                    </div>
                                             </div>
 
                                         </div>
@@ -495,9 +527,22 @@
                                                 Adherir a
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
                                                 @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                                 {
-                                                    <li><a class="dropdown-item mod01" href="#" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)">@opcion.Titulo</a></li>
+                                                    @if (opcion.EsModulo == 1)
+                                                    {
+                                                        <li><a class="dropdown-item mod02" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)" type="hidden">@opcion.Titulo</a></li>
+                                                    }
+                                           
+                                                }
+                                                @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
+                                                {
+                                                    @if(opcion.EsModulo != 1)
+                                                    {
+                                                        <li><a class="dropdown-item mod01" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)">@opcion.Titulo</a></li>
+                                                    }
+                                                    
                                                 }
                                             </ul>
                                         </div> 
@@ -535,7 +580,7 @@
                     
                                       @*Panel de inmueble*@
                                     <div class="tab-pane" id="inmueble"  role="tabpanel" aria-labelledby="inmueble-tab">
-                                        <h3 class="card-subtitle mb-2">Propiedad</h3>
+                                        <h3 class="card-subtitle mb-2">Registro de Inmueble</h3>
                                         <div class="form-group">
                                             <div>
                                                 <p>
@@ -1302,6 +1347,7 @@
 
         });
 
+        
         function validarForm() {
             var cont = 0;
 
@@ -1571,15 +1617,49 @@
                 $("#btnCreateAdhesion").click(function (e) {
                
                     e.preventDefault();
-                    
-                    let moduloId = selectedModulo.data("moduloid");
+                    var cont = 0
+                    //let moduloId = selectedModulo.data("moduloid");
                     let modeloDetalles = selectedModulo.data("modelodetalle");
+
+
+                    let moduloId = $(".dropdown-item.mod02").attr("data-moduloid");
+
+                    const nombreCotitular = document.getElementById('inputCotitularNombreInicial').value;
+                    const adhesionCotitularInputCuitUno = document.getElementById('adhesionCotitularInputCuitUno').value;
+                    const adhesionCotitularInputCuitTres = document.getElementById('adhesionCotitularInputCuitTres').value;
+                    const adhesionCotitularInputCuitDosDni = document.getElementById('adhesionCotitularInputCuitDosDni').value;    
 
                     var selectedLink = $(this);  // O puedes usar un selector más específico si es necesario
                     // Acceder al data-moduloid del enlace
                     var programaId = $(this).data("programaid");
                     var idInscripto = $(this).data("inscripto");
-                    
+
+                    // if (!nombreCotitular) {
+                    //     $("#inputCotitularNombreInicial").css("border-color", "red");
+                    //     cont++;
+                    // } else {
+                    //     $("#inputCotitularNombreInicial").css("border-color", "green");                        
+                    // }
+
+                    // if (adhesionCotitularInputCuitUno.length === 0) {
+                    //     $("#adhesionCotitularInputCuitUno").css("border-color", "red");
+                    //     cont++;
+                    // } else {
+                    //     $("#adhesionCotitularInputCuitUno").css("border-color", "green");
+                    // }
+                    // if (adhesionCotitularInputCuitDosDni.length === 0) {
+                    //     $("#adhesionCotitularInputCuitDosDni").css("border-color", "red");
+                    //     cont++;
+                    // } else {
+                    //     $("#adhesionCotitularInputCuitDosDni").css("border-color", "green");
+                    // }
+                    // if (adhesionCotitularInputCuitTres.length === 0) {
+                    //     $("#adhesionCotitularInputCuitTres").css("border-color", "red");
+                    //     cont++;
+                    // } else {
+                    //     $("#adhesionCotitularInputCuitTres").css("border-color", "green");
+                    // }                                            
+
                     $("#AjaxLoader").show("fast");
 
                      $.ajax({
@@ -1588,7 +1668,12 @@
                                     programaId: programaId,
                                     moduloId : moduloId,
                                     insId: idInscripto,
-                                    modeloDetalle : modeloDetalles
+                                    modeloDetalle : modeloDetalles,
+                                    nombreCotitular : nombreCotitular,
+                                    adhesionCotitularInputCuitUno : adhesionCotitularInputCuitUno,
+                                    adhesionCotitularInputCuitTres : adhesionCotitularInputCuitTres,
+                                    adhesionCotitularInputCuitDosDni : adhesionCotitularInputCuitDosDni
+
                              },
                              type: "get",
                              success: function (result) {
@@ -1630,6 +1715,8 @@
                                 $("#AjaxLoader").delay(2000).hide("slow");
 
                      });
+                     
+                     
                 });
         });
 

@@ -27,5 +27,6 @@
         public decimal CostoSinEntregaUvis { get; set; }
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal CostoConEntregaUvis { get; set; }
+        public int EsModulo { get; set; } //1 si es modulo, es lo que carga el combo de departamentos, vacio u otro valor es solo info para mostrar
     }
 }

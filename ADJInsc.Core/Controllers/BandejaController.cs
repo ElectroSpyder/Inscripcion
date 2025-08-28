@@ -601,7 +601,11 @@
 
             var modelOut = new AdhesionViewModel
             {
-                InscriptoId = insId
+                InscriptoId = insId,
+                CuitCuilDos = "0",
+                CuitCuilUno = "0",
+                InsNumdoc = "0",
+                NombreApellidoCotitular = ""
             };
 
             /*
