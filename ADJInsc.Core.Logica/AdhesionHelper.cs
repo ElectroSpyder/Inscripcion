@@ -32,13 +32,10 @@
         {
             InscViewModel inscViewModel = new InscViewModel();
             inscViewModel = model;
-            /* ,<CuitCuilUno, nchar(10),>
-           ,<CuitCuilDos, nchar(10),>
-           ,<InsNumdoc, nchar(10),>
-           ,<NombreApellidoCotitular, varchar(50),>)*/
+            
             var adheridoId = await GetAdherido(inscViewModel.AdherirViewModel);
-            string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId, CuitCuilUno, CuitCuilDos, InsNumdoc, NombreApellidoCotitular ) VALUES " +
-                                                   " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId, @CuitCuilUno, @CuitCuilDos, @InsNumdoc, @NombreApellidoCotitular ); SELECT SCOPE_IDENTITY();";
+            string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId, CuitCuilUno, CuitCuilDos, InsNumdoc, NombreApellidoCotitular, RelacionLaboral, LugarLaboral ) VALUES " +
+                                                   " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId, @CuitCuilUno, @CuitCuilDos, @InsNumdoc, @NombreApellidoCotitular, @RelacionLaboral, @LugarLaboral ); SELECT SCOPE_IDENTITY();";
             if (adheridoId != 0)
             {
                 inscViewModel.AdhesionViewModel.Success = false;
@@ -64,6 +61,8 @@
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@CuitCuilDos", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.CuitCuilDos) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.CuitCuilDos));
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@InsNumdoc", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.InsNumdoc) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.InsNumdoc));
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@NombreApellidoCotitular", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.NombreApellidoCotitular) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.NombreApellidoCotitular));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@RelacionLaboral", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.RelacionLaboral) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.RelacionLaboral));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@LugarLaboral", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.LugarLaboral) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.LugarLaboral));
 
                         if (con.State == ConnectionState.Closed)
                             await con.OpenAsync();
@@ -73,25 +72,25 @@
                         decimal adhesionId = (objetoId != null) ? Convert.ToDecimal(objetoId) : 0;
 
                         inscViewModel.AdherirViewModel.AdhesionId = (int)adhesionId;
-                        if (adhesionId > 0)
-                        {
-                            //1_ subir el archivo
-                            var tempVM = await GetUpload(inscViewModel, (int)adhesionId);
-                            if (tempVM.FileUploadViewModel.Count == 0)
-                            {
-                                inscViewModel.AdhesionViewModel.Success = false;
-                                return inscViewModel;
-                            }
-                            inscViewModel.FileUploadViewModel = tempVM.FileUploadViewModel;
-                            //2_ incertar datos en base
-                            tempVM = await InsertArchivos(inscViewModel);
-                            if (tempVM.FileUploadViewModel.Count == 0)
-                            {
-                                inscViewModel.AdhesionViewModel.Success = false;
-                                return inscViewModel;
-                            }
-                            inscViewModel.FileUploadViewModel = tempVM.FileUploadViewModel;
-                        }
+                        //if (adhesionId > 0)
+                        //{
+                        //    //1_ subir el archivo
+                        //    var tempVM = await GetUpload(inscViewModel, (int)adhesionId);
+                        //    if (tempVM.FileUploadViewModel.Count == 0)
+                        //    {
+                        //        inscViewModel.AdhesionViewModel.Success = false;
+                        //        return inscViewModel;
+                        //    }
+                        //    inscViewModel.FileUploadViewModel = tempVM.FileUploadViewModel;
+                        //    //2_ incertar datos en base
+                        //    tempVM = await InsertArchivos(inscViewModel);
+                        //    if (tempVM.FileUploadViewModel.Count == 0)
+                        //    {
+                        //        inscViewModel.AdhesionViewModel.Success = false;
+                        //        return inscViewModel;
+                        //    }
+                        //    inscViewModel.FileUploadViewModel = tempVM.FileUploadViewModel;
+                        //}
                         inscViewModel.AdhesionViewModel.Success = true;
                         ts.Complete();
                     }

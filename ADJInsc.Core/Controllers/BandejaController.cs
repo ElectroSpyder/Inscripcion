@@ -612,7 +612,7 @@
              var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "GetAdhesionModel",null, modelOut, token).Result;
             var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "GetAdhesionModel",null, modelOut, token).Result;
              */
-            var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "GetAdhesionModel", null, modelOut, token).Result;
+            var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "GetAdhesionModel", null, modelOut, token).Result;
             var result = (AdhesionViewModel)service?.Result;
 
             if (result.Success)

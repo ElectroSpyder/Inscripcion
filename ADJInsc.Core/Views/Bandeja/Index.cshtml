@@ -383,6 +383,10 @@
                                             </div>
                                              <div class="form-group card-body">
                                                     <div class="form-group col-md-12">
+                                                        Apellido/s y Nombre/s
+                                                    <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" value="@Model.InsNombre" disabled>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
                                                         Postulante Titular CUIL/T (*)
                                                        @*  <input type="text" class="form-control" id="inputAdhesionTitularCuit" placeholder="Cuit Titular" value="" /> *@
                                                     <div class="form-inline col-md-12" style="width:auto; margin-bottom:1px;">
@@ -412,7 +416,7 @@
                                                     <div class="col-md-12">
                                                        
                                                         <input type="text" style="width:75%; margin-bottom:1px;"                                                           
-                                                               class="form-control"
+                                                               class="form-control parpadeo"
                                                                id="inputCotitularNombreInicial"
                                                                onkeyup="upperCase(this);"
                                                                placeholder="Apellido y Nombre">
@@ -425,7 +429,7 @@
                                                                pattern="[0-9]+"
                                                                size="2"
                                                                type="text"
-                                                               class="form-control"
+                                                               class="form-control parpadeo"
                                                                style="width:16%; margin-left:4px;" > -
                                                         <input maxlength="8" pattern="[0-9]+" type="text" class="form-control" id="adhesionCotitularInputCuitDosDni" placeholder="D.N.I." style="width:40%"> -
 
@@ -434,7 +438,7 @@
                                                                pattern="[0-9]+"
                                                                size="1"
                                                                type="text"
-                                                               class="form-control"
+                                                               class="form-control parpadeo"
                                                                style="width:16%"
                                                                >
                                                     </div>
@@ -527,22 +531,18 @@
                                                 Adherir a
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
+                                                
                                                 @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                                 {
-                                                    @if (opcion.EsModulo == 1)
-                                                    {
-                                                        <li><a class="dropdown-item mod02" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)" type="hidden">@opcion.Titulo</a></li>
-                                                    }
-                                           
-                                                }
-                                                @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
-                                                {
-                                                    @if(opcion.EsModulo != 1)
+                                                    @if (Convert.ToInt32(opcion.EsModulo) != 1)
                                                     {
                                                         <li><a class="dropdown-item mod01" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)">@opcion.Titulo</a></li>
                                                     }
-                                                    
+                                                    else
+                                                    {
+                                                        <li hidden><a class="dropdown-item mod02" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)" type="hidden">@opcion.Titulo</a></li>
+                                                    }
+
                                                 }
                                             </ul>
                                         </div> 
@@ -552,6 +552,16 @@
 
                                         <p id="selected-option" style="margin-top: 20px; font-weight: bold;">Ninguna opción seleccionada</p>
                                         <div id="cajamonto" class="display" style="display:none;">
+                                            Ingrese lugar donde trabaja
+                                            <p>(le solicitamos que detalle con precisión el nombre de la entidad y la localidad en donde se encuentra su dependencia laboral)</p>
+                                            <div class="col-md-12">
+
+                                                <input type="text" style="width:75%; margin-bottom:1px;"
+                                                       class="form-control parpadeo"
+                                                       id="inputLugarTrabajo"
+                                                       onkeyup="upperCase(this);"
+                                                       placeholder="Lugar donde trabaja">
+                                            </div>
                                             <p>
                                                 Recuerde que esta Adhesión Online, tiene carácter de DECLARACIÓN JURADA. En caso de obtener un orden de prelación en el sorteo público, se verificarán los ingresos del grupo familiar de la siguiente manera:
                                             </p>
@@ -786,7 +796,47 @@
     </div>
 </div>
 
+<div class="modal fade" id="simpleModalError" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">I.V.U.J.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="simpleModalMessage">
+                <!-- Aquí se carga el mensaje dinámico -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btnModal" data-dismiss="modal">
+                    Salir y Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="modal fade" id="simpleModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">I.V.U.J.</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="simpleModalMessage">
+                <!-- Aquí se carga el mensaje dinámico -->
+            </div>
+            <div class="modal-footer">
+                <form asp-controller="Inscripcion" asp-action="GoHome">
+                    <button type="submit" id="cerrarSuccess" class="btn btn-danger btnModal">Salir y Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @section scripts {
@@ -795,6 +845,7 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script src="~/js/uploadHandler8.js"></script>
+    
     <script type="text/javascript">
             $(function () {
                 $(document).ready(function () {
@@ -881,6 +932,17 @@
                 CargarDeptoLocalidad();
             })
         });
+
+        function showSimpleModal(message) {
+            $("#simpleModalMessage").text(message);
+
+             $("#simpleModal").modal('show');
+        }
+        function showSimpleModalError(message) {
+            $("#simpleModalMessage").text(message);
+
+             $("#simpleModalError").modal('show');
+        }
 
         function CargarDeptoLocalidad() {
 
@@ -1303,7 +1365,7 @@
                             },
                             error: function (errormessage) {
                                 $("#AjaxLoader").delay(2000).hide("slow");
-                                    e.preventDefault();
+                                    // e.preventDefault();
 
                                     bootbox.alert({
                                         size: "small",
@@ -1317,7 +1379,7 @@
 
                         });
                     } else {
-                        e.preventDefault();
+                        // e.preventDefault();
 
                         bootbox.alert({
                             size: "small",
@@ -1627,38 +1689,14 @@
                     const nombreCotitular = document.getElementById('inputCotitularNombreInicial').value;
                     const adhesionCotitularInputCuitUno = document.getElementById('adhesionCotitularInputCuitUno').value;
                     const adhesionCotitularInputCuitTres = document.getElementById('adhesionCotitularInputCuitTres').value;
-                    const adhesionCotitularInputCuitDosDni = document.getElementById('adhesionCotitularInputCuitDosDni').value;    
-
+                    const adhesionCotitularInputCuitDosDni = document.getElementById('adhesionCotitularInputCuitDosDni').value;
+                    const adhesionLugarTrabajo = document.getElementById('inputLugarTrabajo').value;
+                    //inputLugarTrabajo
                     var selectedLink = $(this);  // O puedes usar un selector más específico si es necesario
                     // Acceder al data-moduloid del enlace
                     var programaId = $(this).data("programaid");
                     var idInscripto = $(this).data("inscripto");
 
-                    // if (!nombreCotitular) {
-                    //     $("#inputCotitularNombreInicial").css("border-color", "red");
-                    //     cont++;
-                    // } else {
-                    //     $("#inputCotitularNombreInicial").css("border-color", "green");                        
-                    // }
-
-                    // if (adhesionCotitularInputCuitUno.length === 0) {
-                    //     $("#adhesionCotitularInputCuitUno").css("border-color", "red");
-                    //     cont++;
-                    // } else {
-                    //     $("#adhesionCotitularInputCuitUno").css("border-color", "green");
-                    // }
-                    // if (adhesionCotitularInputCuitDosDni.length === 0) {
-                    //     $("#adhesionCotitularInputCuitDosDni").css("border-color", "red");
-                    //     cont++;
-                    // } else {
-                    //     $("#adhesionCotitularInputCuitDosDni").css("border-color", "green");
-                    // }
-                    // if (adhesionCotitularInputCuitTres.length === 0) {
-                    //     $("#adhesionCotitularInputCuitTres").css("border-color", "red");
-                    //     cont++;
-                    // } else {
-                    //     $("#adhesionCotitularInputCuitTres").css("border-color", "green");
-                    // }                                            
 
                     $("#AjaxLoader").show("fast");
 
@@ -1671,9 +1709,9 @@
                                     modeloDetalle : modeloDetalles,
                                     nombreCotitular : nombreCotitular,
                                     adhesionCotitularInputCuitUno : adhesionCotitularInputCuitUno,
-                                    adhesionCotitularInputCuitTres : adhesionCotitularInputCuitTres,
-                                    adhesionCotitularInputCuitDosDni : adhesionCotitularInputCuitDosDni
-
+                                    adhesionCotitularInputCuitDos : adhesionCotitularInputCuitTres,
+                                    adhesionCotitularInputCuitDni : adhesionCotitularInputCuitDosDni,
+                                    adhesionLugarTrabajo : adhesionLugarTrabajo
                              },
                              type: "get",
                              success: function (result) {
@@ -1691,25 +1729,32 @@
                                         $("#btnAdhesion").prop('disabled', true);
                                     } else {
                                              e.preventDefault();
-                                                 $("#modalAdhesion").modal('hide');
-                                            bootbox.alert({
-                                                size: "small",
-                                                title: "I.V.U.J.",
-                                                    message: result.ob,
-                                                callback: function () { }
-                                            });
+                                                //  $("#modalAdhesion").modal('hide');
+                                                //     var dialog = bootbox.alert({
+                                                //     size: "small",
+                                                //     title: "I.V.U.J.",
+                                                //     message: result.ob,
+                                                //     callback: function () {
+                                                //         dialog.modal('hide'); // se cierra después de aceptar
+                                                //     }
+                                                // });
+                                                $("#modalAdhesion").modal('hide');
+                                                showSimpleModalError(result.ob);
                                     }
                              },
                                 error: function (errormessage) {
                                     $("#AjaxLoader").delay(2000).hide("slow");
                                         e.preventDefault();
 
-                                        bootbox.alert({
-                                            size: "small",
-                                            title: "I.V.U.J.",
-                                            message: "Datos ingresados de forma incorrecta",
-                                            callback: function () { }
-                                        });
+                                        // var dialog = bootbox.alert({
+                                        //     size: "small",
+                                        //     title: "I.V.U.J.",
+                                        //     message: "Datos ingresados de forma incorrecta",
+                                        //      callback: function () {
+                                        //                 dialog.modal('hide'); // se cierra después de aceptar
+                                        //             }
+                                        // });
+                                        showSimpleModalError(errormessage.ob);
                                 }
                             }).done(function (result) {
                                 $("#AjaxLoader").delay(2000).hide("slow");

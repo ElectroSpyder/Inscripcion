@@ -14,5 +14,7 @@
         public string CuitCuilDos { get; set; }
         public string InsNumdoc { get; set; }
         public string NombreApellidoCotitular { get; set; }
+        public string RelacionLaboral { get; set; }
+        public string LugarLaboral { get; set; }
     }
 }
