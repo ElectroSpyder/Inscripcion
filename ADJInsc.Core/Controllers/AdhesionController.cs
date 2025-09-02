@@ -29,13 +29,13 @@
             // this.mailService = mailService;
             this._apiService = apiService;
         }
-        public JsonResult Adherir(int programaId, int moduloId, int insId, string modeloDetalle, string nombreCotitular,string adhesionCotitularInputCuitUno,string adhesionCotitularInputCuitDos,string adhesionCotitularInputCuitDni, string adhesionLugarTrabajo)
+        public JsonResult Adherir(int programaId, int moduloId, int insId, string modeloDetalle, string nombreCotitular,string adhesionCotitularInputCuitUno,string adhesionCotitularInputCuitDos,string adhesionCotitularInputCuitDni)
         {
             if(moduloId== 0) moduloId = 12;
 
             // public int InsId { get; set; }
             var tokenSource = new CancellationTokenSource();
-           if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle) || string.IsNullOrEmpty(adhesionLugarTrabajo) || string.IsNullOrEmpty(adhesionCotitularInputCuitDni) || string.IsNullOrEmpty(adhesionCotitularInputCuitUno) || string.IsNullOrEmpty(adhesionCotitularInputCuitDos) || string.IsNullOrEmpty(nombreCotitular))
+           if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle))
                 return Json(new
                 {
                     redirectUrl = "",
@@ -72,8 +72,8 @@
                 CuitCuilUno = adhesionCotitularInputCuitUno?.Trim() ?? " ",
                 CuitCuilDos = adhesionCotitularInputCuitDos?.Trim() ?? " ",
                 InsNumdoc = adhesionCotitularInputCuitDni?.Trim() ?? " ",                
-                RelacionLaboral = modeloDetalle,
-                LugarLaboral = adhesionLugarTrabajo?.Trim() ?? " "
+                RelacionLaboral = modeloDetalle
+                //LugarLaboral = adhesionLugarTrabajo?.Trim() ?? " "
             };
 
             // Asignar archivos a `modeloVM`
@@ -85,7 +85,7 @@
              var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
             var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
              */
-            var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM, null, token).Result;
+            var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM, null, token).Result;
 
             if (service.IsSuccess)
             {
@@ -132,13 +132,28 @@
                 }
                 else
                 {
-                    return Json(new
+                    var redirectUrl1 = Url.Action("GetPdfAdhesion", "Adhesion");
+                    if (string.IsNullOrEmpty(redirectUrl1)){
+                        return Json(new
+                        {
+                            redirectUrl = "",
+                            isRedirect = false,
+                            ob = "Ya se encuentra adherido"
+                        });
+                    }
+                    else
                     {
-                        redirectUrl = "",
-                        isRedirect = false,
-                        ob = respuesta.AdhesionViewModel.Success
-                    });
+                        return Json(new
+                        {
+                            redirectUrl = redirectUrl1,
+                            isRedirect = true,
+                            ob = respuesta.AdhesionViewModel.Success
+                        });
+
+                    }
+                        
                 }
+
             }
             else
             {
@@ -146,7 +161,7 @@
                 {
                     redirectUrl = "",
                     isRedirect = false,
-                    ob = "no llego respuesta"
+                    ob = "Ocurrió un problema, vuelva a intentarlo más tarde."
                 });
             }
         }

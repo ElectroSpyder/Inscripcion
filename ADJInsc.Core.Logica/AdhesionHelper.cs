@@ -34,8 +34,8 @@
             inscViewModel = model;
             
             var adheridoId = await GetAdherido(inscViewModel.AdherirViewModel);
-            string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId, CuitCuilUno, CuitCuilDos, InsNumdoc, NombreApellidoCotitular, RelacionLaboral, LugarLaboral ) VALUES " +
-                                                   " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId, @CuitCuilUno, @CuitCuilDos, @InsNumdoc, @NombreApellidoCotitular, @RelacionLaboral, @LugarLaboral ); SELECT SCOPE_IDENTITY();";
+            string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId, CuitCuilUno, CuitCuilDos, InsNumdoc, NombreApellidoCotitular, RelacionLaboral ) VALUES " +
+                                                   " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId, @CuitCuilUno, @CuitCuilDos, @InsNumdoc, @NombreApellidoCotitular, @RelacionLaboral ); SELECT SCOPE_IDENTITY();";
             if (adheridoId != 0)
             {
                 inscViewModel.AdhesionViewModel.Success = false;
@@ -62,7 +62,7 @@
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@InsNumdoc", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.InsNumdoc) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.InsNumdoc));
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@NombreApellidoCotitular", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.NombreApellidoCotitular) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.NombreApellidoCotitular));
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@RelacionLaboral", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.RelacionLaboral) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.RelacionLaboral));
-                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@LugarLaboral", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.LugarLaboral) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.LugarLaboral));
+                        //cmdInsertAdherido.Parameters.Add(new SqlParameter("@LugarLaboral", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.LugarLaboral) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.LugarLaboral));
 
                         if (con.State == ConnectionState.Closed)
                             await con.OpenAsync();
@@ -308,8 +308,8 @@
                  *   SELECT DepartamentoProgramaId, ProgramaId, DepartamentoId, LocalidadId  FROM DepartamentoPrograma where ProgramaId = 1
                  */
                 string query = "SELECT ProgramaId, Descripcion ,FechaInicio ,FechaLimite ,Estado ,FechaCortePrograma ,MontoAdhesion FROM Programas where Estado = 1 ";
-                string query1 = "SELECT ModuloId, Titulo, Descripcion ,Plazo ,Costo , CostoSinEntrega, CostoConEntrega, IngresoMinimo, Estado ,ProgramaId, CostoUvis , CostoSinEntregaUvis, CostoConEntregaUvis, IngresoMinimoUvis, EsModulo FROM Modulos where ProgramaId = @ProgramId ";
-                string query2 = " SELECT DepartamentoProgramaId, ProgramaId, DepartamentoId, LocalidadId  FROM DepartamentoPrograma where ProgramaId = @ProgramId ";
+                string query1 = "SELECT ModuloId, Titulo, Descripcion ,Plazo ,Costo , CostoSinEntrega, CostoConEntrega, IngresoMinimo, Estado ,ProgramaId, CostoUvis , CostoSinEntregaUvis, CostoConEntregaUvis, IngresoMinimoUvis, EsModulo FROM Modulos where ProgramaId = @ProgramaId ";
+                string query2 = " SELECT DepartamentoProgramaId, ProgramaId, DepartamentoId, LocalidadId  FROM DepartamentoPrograma where ProgramaId = @ProgramaId ";
 
                 var dt =  await GetDataTable(query,0, "Programa");
 
@@ -335,8 +335,14 @@
                         };
                     }
                 }
+                else
+                {
+                    adhesionVM.Success = false;
+                    adhesionVM.ErrorMsg = "No hay programas activos";
+                    return adhesionVM;
+                }
 
-                dt = new DataTable();
+                    dt = new DataTable();
                 dt = await GetDataTable(query1, programaId, "Programa");
                 
                 if (dt.Rows.Count > 0)
@@ -460,7 +466,7 @@
                 
                 if(param > 0 && modo  == "Programa")
                 {
-                    cmd.Parameters.Add(new SqlParameter("@ProgramId", param));
+                    cmd.Parameters.Add(new SqlParameter("@ProgramaId", param));
                 }
                 if(param > 0 && modo == "Inscripto")
                 {

@@ -388,30 +388,36 @@
                                                     </div>
                                                     <div class="form-group col-md-12">
                                                         Postulante Titular CUIL/T (*)
-                                                       @*  <input type="text" class="form-control" id="inputAdhesionTitularCuit" placeholder="Cuit Titular" value="" /> *@
-                                                    <div class="form-inline col-md-12" style="width:auto; margin-bottom:1px;">
+                                                           @*  <input type="text" class="form-control" id="inputAdhesionTitularCuit" placeholder="Cuit Titular" value="" /> *@
+                                                        <div class="form-inline col-md-12" style="width:auto; margin-bottom:1px;">
                                                         
-                                                        <input id="adhesionInputCuitUno"
-                                                               maxlength="2"
-                                                               pattern="[0-9]+"
-                                                               size="2"
-                                                               type="text"
-                                                               class="form-control"
-                                                               style="width:16%; margin-left:4px;"
-                                                               value="@Model.CuitCuilUno.Trim()"> -
-                                                        <input type="text" class="form-control" id="adhesionInputCuitDos" placeholder="D.N.I." value="@Model.InsNumdoc" disabled style="width:40%"> -
+                                                            <input id="adhesionInputCuitUno"
+                                                                   maxlength="2"
+                                                                   pattern="[0-9]+"
+                                                                   size="2"
+                                                                   type="text"
+                                                                   class="form-control"
+                                                                   style="width:16%; margin-left:4px;"
+                                                                   value="@Model.CuitCuilUno.Trim()"> -
+                                                            <input type="text" class="form-control" id="adhesionInputCuitDos" placeholder="D.N.I." value="@Model.InsNumdoc" disabled style="width:40%"> -
 
-                                                        <input id="adhesionInputCuitTres"
-                                                               maxlength="1"
-                                                               pattern="[0-9]+"
-                                                               size="1"
-                                                               type="text"
-                                                               class="form-control"
-                                                               style="width:16%"
-                                                               value="@Model.CuitCuilDos.Trim()">
+                                                            <input id="adhesionInputCuitTres"
+                                                                   maxlength="1"
+                                                                   pattern="[0-9]+"
+                                                                   size="1"
+                                                                   type="text"
+                                                                   class="form-control"
+                                                                   style="width:16%"
+                                                                   value="@Model.CuitCuilDos.Trim()">
+                                                        </div>
                                                     </div>
-                                                    </div>
-                                                <div class="form-group col-md-12">
+                                                <div class="checkbox">
+                                                    <label for="confirmationCotitular-checkbox" id="confirmationCotitular-label">
+                                                        <input class="parpadeo" type="checkbox" id="confirmationCotitular-checkbox" name="confirmationCotitular-checkbox" aria-labelledby="confirmationCotitular-label" />
+                                                        Postulante Cotitular <strong>seleccione y autocomplete</strong>
+                                                    </label>
+                                                </div>
+                                                <div id="cajacotitular" class="form-group col-md-12 display" style="display:none;">
                                                     Ingrese Apellido/s y Nombre/s (completos) de Cotitular
                                                     <div class="col-md-12">
                                                        
@@ -452,12 +458,12 @@
                                         <h3 class="card-subtitle mb-2">Departamento</h3>
                                         
                                         <div class="display" >
-                                            <h3 class="modal-title">Detalles de la unidad habitacional del programa "288 Departamentos e Infraestructura en Alto Comedero".</h3>
+                                            <h5 class="modal-title">Detalles de la unidad habitacional del programa "288 Departamentos e Infraestructura en Alto Comedero".</h5>
                                            @*  @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                             { *@
                                                 <ul class="list-group">
                                                     <li class="list-group-item">                                                   
-                                                        <strong>Costo aproximado de la unidad habitacional</strong> (Dpto. 2 habitaciones) <span>$106.000.000</span> 
+                                                        <strong>Costo aproximado de la unidad habitacional</strong> - agosto 2025 (Dpto. 2 habitaciones) <span>$ 110.236.178,29</span> 
                                                     </li>
                                                     <li class="list-group-item">
                                                     <p>Con un plan de financiación de hasta 25 años aproximado.</p>
@@ -470,10 +476,10 @@
 
                                                 
                                                 <li class="list-group-item">
-                                                    <strong>Monto aproximado del ahorro previo </strong> <span>$10.600.000</span>
+                                                    <strong>Monto aproximado del ahorro previo </strong> <span>$ 22.047.235,66</span>
                                                 </li>
                                                     <li class="list-group-item">
-                                                    <p>El ahorro previo representa el pago del 10% del costo total de la unidad habitacional 
+                                                    <p>El ahorro previo representa el pago del 20% del costo total de la unidad habitacional 
                                                         a cancelar en un plazo de financiación máximo de 4 años, 
                                                         entre 36 a 48 cuotas aproximadas, según plazo de ejecución de obra. </p>
                                                     </li>
@@ -483,7 +489,7 @@
                                                     </li>
                                                 <li class="list-group-item">
                                                     <div class="checkbox">
-                                                        <label for="confirmationDepto-checkbox" id="confirmatioDepto-label">
+                                                        <label for="confirmationDepto-checkbox" id="confirmationDepto-label">
                                                             <input class="parpadeo" type="checkbox" id="confirmationDepto-checkbox" name="confirmationDepto-checkbox" aria-labelledby="confirmationDepto-label" />
                                                             Declaro que he tomado conocimiento de que los montos y tiempos informados en esta adhesión online al 
                                                             programa "288 Departamentos e Infraestructura en Alto Comedero" <strong>son costos y plazos aproximados</strong>
@@ -500,17 +506,17 @@
                                     <div class="tab-pane" id="ingresos" role="tabpanel" aria-labelledby="ingresos-tab">
                                         <h4 class="card-subtitle mb-2">Ingresos del grupo Familiar</h4>
                                         <p>Se considera como ingreso del grupo familiar la suma total de los ingresos individuales de cada uno de los miembros que conforman el grupo familiar. </p>
-                                        <h5><strong>Ingreso mínimo requeridos por grupo familiar:</strong></h5>
+                                        <h5><strong>Ingresos mínimo requeridos por grupo familiar:</strong></h5>
                                         <ul>
                                             <li>
-                                                Si prevé cancelar el Ahorro Previo en un solo pago, se solicitará un <strong>Ingreso familiar mínimo de $ 1.060.000</strong>
+                                                Si prevé cancelar el Ahorro Previo en un solo pago, se solicitará un <br /> <strong>Ingreso familiar mínimo de $ 980.000,00</strong>
                                             </li>
                                             <li>
-                                                Si prevé cancelar solo una parte del Ahorro Previo, se solicitará un <strong>Ingreso familiar superior de entre $ 1.060.001 a $2.049.999</strong>,
+                                                Si prevé cancelar solo una parte del Ahorro Previo, se solicitará un <strong>Ingreso familiar superior de entre $ 980.000,00 a $ 2.514.999,99</strong>,
                                                 dependiendo el monto a entregar (*)
                                             </li>
                                             <li>
-                                                Si no realiza ninguna entrega o anticipo del Ahorro Previo y lo financia entre 36 a 48 cuotas, se solicita un <strong>Ingreso familiar mínimo de $2.050.000</strong>
+                                                Si no realiza ninguna entrega o anticipo del Ahorro Previo y lo financia entre 36 a 48 cuotas, se solicita un <strong>Ingreso familiar mínimo de $ 2.515.000</strong>
                                             </li>
                                         </ul>
                                         <p>
@@ -518,6 +524,13 @@
                                             y el saldo del Ahorro Previo se lo financiará entre 36 a 48 cuotas, según plazo de ejecución de obra. Para obtener más información,
                                             consulte las "Preguntas Frecuentes de Adhesión Online" en nuestro sitio web www.ivuj.gob.ar
                                         </p>
+                                        <div class="checkbox">
+                                            <label for="confirmationIngreso-checkbox" id="confirmationIngreso-label">
+                                                <input class="parpadeo" type="checkbox" id="confirmationIngreso-checkbox" name="confirmationIngreso-checkbox" aria-labelledby="confirmationIngreso-label" />
+                                                Los ingresos mínimos requeridos en esta adhesión online al programa "288 Departamentos e Infraestructura en Alto Comedero", 
+                                                son valores que derivan del Costo Total de la Unidad Habitacional. Por lo tanto declaro conocer, que los mismos son <strong>montos aproximados</strong>
+                                            </label>
+                                        </div>
                                      </div>
 
                                     @*Panel de modulos de relacion laboral*@
@@ -528,7 +541,7 @@
                                         </p>                                                                              
                                         <div class="dropdown">
                                             <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Adherir a
+                                                Seleccione una opción
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 
@@ -552,8 +565,8 @@
 
                                         <p id="selected-option" style="margin-top: 20px; font-weight: bold;">Ninguna opción seleccionada</p>
                                         <div id="cajamonto" class="display" style="display:none;">
-                                            Ingrese lugar donde trabaja
-                                            <p>(le solicitamos que detalle con precisión el nombre de la entidad y la localidad en donde se encuentra su dependencia laboral)</p>
+                                           
+                                            @* <p>(le solicitamos que detalle con precisión el nombre de la entidad y la localidad en donde se encuentra su dependencia laboral)</p>
                                             <div class="col-md-12">
 
                                                 <input type="text" style="width:75%; margin-bottom:1px;"
@@ -561,7 +574,7 @@
                                                        id="inputLugarTrabajo"
                                                        onkeyup="upperCase(this);"
                                                        placeholder="Lugar donde trabaja">
-                                            </div>
+                                            </div> *@
                                             <p>
                                                 Recuerde que esta Adhesión Online, tiene carácter de DECLARACIÓN JURADA. En caso de obtener un orden de prelación en el sorteo público, se verificarán los ingresos del grupo familiar de la siguiente manera:
                                             </p>
@@ -826,13 +839,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="simpleModalMessage">
+            <div class="modal-body" id="simpleMessage">
                 <!-- Aquí se carga el mensaje dinámico -->
             </div>
             <div class="modal-footer">
+                <form asp-controller="Adhesion" asp-action="GetPdfAdhesion" target="_blank">
+                    <input type="hidden" id="hrefsuces" name="pdfUrl" value="@Model.InsId" />
+                    <button type="submit" data-inscriptopdf="@Model.InsId" class="btn btn-danger btnModal aceptarSuccessAdhesion">Descargar PDF</button>
+                </form>
                 <form asp-controller="Inscripcion" asp-action="GoHome">
                     <button type="submit" id="cerrarSuccess" class="btn btn-danger btnModal">Salir y Cerrar</button>
-                </form>
+                </form> 
             </div>
         </div>
     </div>
@@ -860,7 +877,7 @@
                         var adhesionId = @Model.AdhesionViewModel.AdhesionId;
                         if (adhesionId !== 0) {
                              $("#modalExisteAdhesion").modal("show"); // Muestra el modal automáticamente
-                                     $("#btnAdhesion").prop('disabled', true);
+                             $("#btnAdhesion").prop('disabled', true);
                         }
                     });
             });
@@ -934,7 +951,7 @@
         });
 
         function showSimpleModal(message) {
-            $("#simpleModalMessage").text(message);
+            $("#simpleMessage").text(message);
 
              $("#simpleModal").modal('show');
         }
@@ -1568,13 +1585,26 @@
                 $('#confirmationDepto-checkbox').on('change', function () {
                     if ($(this).prop('checked')) {
                         // Checkbox marcado: agregar clase
-                        $('#confirmationDepto-label').addClass('highlighted');
-                        $('#relacionlaboral-link').removeClass('disabled');
+                        $('#confirmationDepto-label').addClass('highlighted');                        
                         $('#ingresos-link').removeClass('disabled');                         
                     } else {
                         // Checkbox desmarcado: quitar clase
                         $('#confirmationDepto-label').removeClass('highlighted');
-                        $('#ingresos-link').addClass('disabled');
+                        $('#ingresos-link').addClass('disabled');                        
+                    }
+                });
+        });
+
+        $(function () {
+                $('#confirmationIngreso-checkbox').on('change', function () {
+                    if ($(this).prop('checked')) {
+                        // Checkbox marcado: agregar clase
+                        $('#confirmationIngreso-label').addClass('highlighted');
+                        $('#relacionlaboral-link').removeClass('disabled');
+                       
+                    } else {
+                        // Checkbox desmarcado: quitar clase
+                        $('#confirmationIngreso-label').removeClass('highlighted');
                         $('#relacionlaboral-link').addClass('disabled');
                     }
                 });
@@ -1662,17 +1692,33 @@
                         // $("#costosinentrega1").text("$" + costoSinEntrega.toLocaleString());
 
                     if (selectedText != 'Sin Seleccionar') {
-                        $('#selected-option').text('Está por adherir a: ' + selectedText); // Actualiza el texto del párrafo
+                        $('#selected-option').text('Opción seleccionada: ' + selectedText); // Actualiza el texto del párrafo
                         const buttonElement = document.activeElement; // Get the currently focused element
                  buttonElement.blur(); // Remove focus from the button
                         $('#cajamonto').show();
                         $('#ingresos-link').removeClass('disabled');
                     } else {
-                        $('#selected-option').text('Se debe adherir para pasar a la siguiente pestaña'); // Actualiza el texto del párrafo
+                        $('#selected-option').text('Debe seleccionar una opción para pasar a la siguiente pestaña'); // Actualiza el texto del párrafo
                         $('#cajamonto').hide();
                         $('#ingresos-link').addClass('disabled');
                     }
                 });
+        });
+
+        $(function() {
+                 $('#cajacotitular').hide();
+                          $('#confirmationCotitular-checkbox').on('change', function (e) {
+                              e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+                        if ($(this).prop('checked')) {
+                            $('#cajacotitular').show();
+                            $('#confirmationCotitular-label').addClass('highlighted');
+
+                        }else{
+                            $('#confirmationCotitular-label').removeClass('highlighted');
+                            $('#cajacotitular').hide();
+                        }
+
+                    });
         });
 
         $(function() {
@@ -1690,7 +1736,7 @@
                     const adhesionCotitularInputCuitUno = document.getElementById('adhesionCotitularInputCuitUno').value;
                     const adhesionCotitularInputCuitTres = document.getElementById('adhesionCotitularInputCuitTres').value;
                     const adhesionCotitularInputCuitDosDni = document.getElementById('adhesionCotitularInputCuitDosDni').value;
-                    const adhesionLugarTrabajo = document.getElementById('inputLugarTrabajo').value;
+                    //const adhesionLugarTrabajo = document.getElementById('inputLugarTrabajo').value;
                     //inputLugarTrabajo
                     var selectedLink = $(this);  // O puedes usar un selector más específico si es necesario
                     // Acceder al data-moduloid del enlace
@@ -1710,8 +1756,7 @@
                                     nombreCotitular : nombreCotitular,
                                     adhesionCotitularInputCuitUno : adhesionCotitularInputCuitUno,
                                     adhesionCotitularInputCuitDos : adhesionCotitularInputCuitTres,
-                                    adhesionCotitularInputCuitDni : adhesionCotitularInputCuitDosDni,
-                                    adhesionLugarTrabajo : adhesionLugarTrabajo
+                                    adhesionCotitularInputCuitDni : adhesionCotitularInputCuitDosDni
                              },
                              type: "get",
                              success: function (result) {
@@ -1726,7 +1771,8 @@
 
                                         $("#modalAdhesion").modal('hide');
                                         $("#modalSuccessAdhesion").modal('show');
-                                        $("#btnAdhesion").prop('disabled', true);
+                                        // $("#btnAdhesion").prop('disabled', true);
+                                         $('#btnAdhesion').addClass('disabled');
                                     } else {
                                              e.preventDefault();
                                                 //  $("#modalAdhesion").modal('hide');
@@ -1739,7 +1785,8 @@
                                                 //     }
                                                 // });
                                                 $("#modalAdhesion").modal('hide');
-                                                showSimpleModalError(result.ob);
+                                                showSimpleModal(result.ob);
+                                                  
                                     }
                              },
                                 error: function (errormessage) {

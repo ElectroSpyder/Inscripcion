@@ -612,7 +612,7 @@
              var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "GetAdhesionModel",null, modelOut, token).Result;
             var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "GetAdhesionModel",null, modelOut, token).Result;
              */
-            var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "GetAdhesionModel", null, modelOut, token).Result;
+            var service = _apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "GetAdhesionModel", null, modelOut, token).Result;
             var result = (AdhesionViewModel)service?.Result;
 
             if (result.Success)
@@ -623,23 +623,28 @@
 
         public bool Verificado(InscViewModel model)
         {
-            if (model.AdherirViewModel.AdhesionId != 0) return false; //si ya esta no comparo nada
+            if(model.AdhesionViewModel.ProgramaVM.Estado == 0)
+                return false; //si el programa no esta activo no dejo adherir
+
+            if (model.AdherirViewModel.AdhesionId != 0) 
+                return false; //si ya esta no comparo nada
 
             string[] formatos = { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM-dd" };                     
 
-            if (!DateTime.TryParseExact(model.InsFecins, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaConvertida))
+            if (!DateTime.TryParseExact(model.InsFecins, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaInscripcion))
                 return false;
 
-            var fechaInicioComparar = ConvertirFechaInicio(model.AdhesionViewModel.ProgramaVM.FechaInicio); 
+            var fechaInicio = ConvertirFechaInicio(model.AdhesionViewModel.ProgramaVM.FechaInicio); 
 
-            bool verificado =fechaConvertida.Date <= fechaInicioComparar.Date;
+            bool verificado = fechaInscripcion.Date <= fechaInicio.Date;
                            
             if (!verificado)
                 return false; // Retorna false si la fecha no está en el rango permitido
-            return true;  //modificado para testear
-            //return model.AdhesionViewModel.DepartamentoProgramas.Any(x =>
-            //    x.DepartamentoId == model.DepartamentoKey &&
-            //    (x.LocalidadId <= 0 || x.LocalidadId == model.LocalidadKey));
+            //return true;  //modificado para testear
+            var result =  model.AdhesionViewModel.DepartamentoProgramas.Any(x =>
+                x.DepartamentoId == model.DepartamentoKey &&
+                x.LocalidadId == model.LocalidadKey);
+            return result;
 
         }
 
