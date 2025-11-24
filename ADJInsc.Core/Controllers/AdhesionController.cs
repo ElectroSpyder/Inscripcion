@@ -35,8 +35,9 @@
 
             // public int InsId { get; set; }
             var tokenSource = new CancellationTokenSource();
-           if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle))
-                return Json(new
+            //if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle))
+            if(programaId == 0 || insId == 0 )
+            return Json(new
                 {
                     redirectUrl = "",
                     isRedirect = false,

@@ -658,9 +658,9 @@
             string mes = partes[1];  // "11"
             string anio = partes[2]; // "2025"
 
-            Console.WriteLine($"Día: {dia}");
-            Console.WriteLine($"Mes: {mes}");
-            Console.WriteLine($"Año: {anio}");
+            //Console.WriteLine($"Día: {dia}");
+            //Console.WriteLine($"Mes: {mes}");
+            //Console.WriteLine($"Año: {anio}");
             return DateTime.Parse(mes+"/"+ dia+"/" + anio);
         }
         public JsonResult Adherir(int ProgramaId, int moduloId)

@@ -30,12 +30,14 @@
 <div style="float:right;">
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
-            @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)
+            @* @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true) *@
+            @if(string.Equals(Model.InsEstado, "I"))
             {
                 <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
                 
                 <button id="btnAdhesion" type="button" class="btn btn-outline-success" float-right" data-toggle="modal" data-target="#modalAdhesion">
-                    <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span>
+                    @* <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span> *@
+                    <span>Adhesión Viviendas San Antonio</span>
                     <i class="fas fa-plus-circle"></i>
                 </button>
             }
@@ -344,7 +346,7 @@
                                     </li>
                                     <li class="nav-item">
                                         @*<a class="nav-link disabled" href="#programas" id="programas-link" role="tab" aria-controls="programas" aria-selected="false">Tipología</a> *@
-                                        <a class="nav-link disabled" href="#departamentos" id="departamentos-link" role="tab" aria-controls="departamentos" aria-selected="false">Departamentos</a>
+                                        <a class="nav-link disabled" href="#departamentos" id="departamentos-link" role="tab" aria-controls="departamentos" aria-selected="false">Vivienda</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link disabled" href="#ingresos" id="ingresos-link" role="tab" aria-controls="ingresos" aria-selected="false">Ingresos</a>
@@ -376,10 +378,13 @@
                                                     <input class="parpadeo" type="checkbox" id="confirmation-checkbox" name="confirmation-checkbox" aria-labelledby="confirmation-label">
                                                    @*  Se deja expresamente aclarado, que la “tipología” a seleccionar dentro del programa, corresponderá a los “ingresos”
                                                     a declarar de mi grupo familiar. Siendo la misma, mi única opción de adhesión para este Programa. *@
-                                                    Acepto tener conocimiento sobre las condiciones del programa "288 Departamentos e Infraestructura en Alto Comedero"
-                                                    y dejo conformidad que la presentación de información falsa o incompleta en este formulario o el incumplimiento de los requisitos informados 
-                                                    en esta adhesión online, darán lugar a mi exclusión inmediata del programa.
+                                                    Acepto tener conocimiento sobre las condiciones de la operatoria "Refacción y Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio, Provincia de Jujuy" y dejo conformidad que la presentación de información falsa o incompleta en este formulario o el incumplimiento de los requisitos informados en esta adhesión online, darán lugar a mi exclusión inmediata de la operatoria.
                                                 </label>
+                                            </div>
+                                            <div>
+                                                <p>
+                                                    Aclaración: los postulantes deben registrar una residencia mínima de 5 Años en el Dpto. San Antonio, Provincia de Jujuy y constituir un Grupo Familiar. Requisitos excluyentes de la operatoria.
+                                                </p>
                                             </div>
                                              <div class="form-group card-body">
                                                     <div class="form-group col-md-12">
@@ -455,44 +460,42 @@
                                     </div>
                                     @*Panel de Departamento*@
                                      <div class="tab-pane" id="departamentos" role="tabpanel" aria-labelledby="departamentos-tab">
-                                        <h3 class="card-subtitle mb-2">Departamento</h3>
+                                        <h3 class="card-subtitle mb-2">Vivienda</h3>
                                         
                                         <div class="display" >
-                                            <h5 class="modal-title">Detalles de la unidad habitacional del programa "288 Departamentos e Infraestructura en Alto Comedero".</h5>
+                                            <h5 class="modal-title">Detalles de la unidad habitacional de la operatoria “Refacción y Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio, Provincia de Jujuy” de obra existente.</h5>
                                            @*  @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                             { *@
                                                 <ul class="list-group">
-                                                    <li class="list-group-item">                                                   
-                                                        <strong>Costo aproximado de la unidad habitacional</strong> - agosto 2025 (Dpto. 2 habitaciones) <span>$ 110.236.178,29</span> 
-                                                    </li>
                                                     <li class="list-group-item">
+                                                    <strong>Costo aproximado de la unidad habitacional</strong> <span>$ 90.563.988,14</span>
+                                                </li>
+                                                    <li class="list-group-item">
+                                                    <p>Vivienda de 3 habitaciones </p>
                                                     <p>Con un plan de financiación de hasta 25 años aproximado.</p>
                                                     </li>
                                                     <li class="list-group-item">
-                                                        <p><u>Aclaración</u>: el plazo máximo de financiación puede ser menor, 
-                                                            ya que el mismo se ajustará de acuerdo a la edad de las personas postulantes.
-                                                            La edad límite de las personas postulantes es de 55 años.</p>
+                                                    <p><u>Aclaración</u>: el plazo máximo de financiación puede ser menor, ya que el mismo se ajustará de acuerdo a la edad de las personas postulantes. La edad límite de las personas postulantes es de 60 años.</p>
                                                     </li>
 
                                                 
                                                 <li class="list-group-item">
-                                                    <strong>Monto aproximado del ahorro previo </strong> <span>$ 22.047.235,66</span>
+                                                    <strong>Monto aproximado de entrega inicial </strong> <span>$ 1.000.000,00</span>
                                                 </li>
                                                     <li class="list-group-item">
-                                                    <p>El ahorro previo representa el pago del 20% del costo total de la unidad habitacional 
+                                                    @* <p>El ahorro previo representa el pago del 20% del costo total de la unidad habitacional 
                                                         a cancelar en un plazo de financiación máximo de 4 años, 
-                                                        entre 36 a 48 cuotas aproximadas, según plazo de ejecución de obra. </p>
+                                                        entre 36 a 48 cuotas aproximadas, según plazo de ejecución de obra. </p> *@
                                                     </li>
                                                      <li class="list-group-item">
-                                                    <p><u>Aclaración</u>: luego de cancelar el 50% del "Ahorro Previo" en cuotas (entre 18 a 24 cuotas aproximadas),
-                                                        se sumaran a las cuotas restantes, el valor de las cuotas correspondientes al "Plan de Financiación" de la unidad habitacional. </p>
+                                                    <p><u>Aclaración</u>: finalizada todas las evaluaciones de adjudicación, la Entrega Inicial será abonada al momento de suscribir el "Anexo del Plan de Financiación". </p>
                                                     </li>
                                                 <li class="list-group-item">
                                                     <div class="checkbox">
                                                         <label for="confirmationDepto-checkbox" id="confirmationDepto-label">
                                                             <input class="parpadeo" type="checkbox" id="confirmationDepto-checkbox" name="confirmationDepto-checkbox" aria-labelledby="confirmationDepto-label" />
-                                                            Declaro que he tomado conocimiento de que los montos y tiempos informados en esta adhesión online al 
-                                                            programa "288 Departamentos e Infraestructura en Alto Comedero" <strong>son costos y plazos aproximados</strong>
+                                                            Declaro que he tomado conocimiento de que los montos y años informados en esta adhesión online de la operatoria "Refacción y 
+                                                            Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio, Provincia de Jujuy"  <strong>son costos y plazos aproximados</strong>
                                                         </label>
                                                     </div>
                                                 </li>
@@ -506,29 +509,28 @@
                                     <div class="tab-pane" id="ingresos" role="tabpanel" aria-labelledby="ingresos-tab">
                                         <h4 class="card-subtitle mb-2">Ingresos del grupo Familiar</h4>
                                         <p>Se considera como ingreso del grupo familiar la suma total de los ingresos individuales de cada uno de los miembros que conforman el grupo familiar. </p>
-                                        <h5><strong>Ingresos mínimo requeridos por grupo familiar:</strong></h5>
+                                        @* <h5><strong>Ingresos mínimo requeridos por grupo familiar:</strong></h5> *@
                                         <ul>
                                             <li>
-                                                Si prevé cancelar el Ahorro Previo en un solo pago, se solicitará un <br /> <strong>Ingreso familiar mínimo de $ 980.000,00</strong>
+                                                <strong>	Ingresos mínimos requeridos del grupo familiar  $ 980.000,00</strong>
                                             </li>
-                                            <li>
+                                           @*  <li>
                                                 Si prevé cancelar solo una parte del Ahorro Previo, se solicitará un <strong>Ingreso familiar superior de entre $ 980.000,00 a $ 2.514.999,99</strong>,
                                                 dependiendo el monto a entregar (*)
                                             </li>
                                             <li>
                                                 Si no realiza ninguna entrega o anticipo del Ahorro Previo y lo financia entre 36 a 48 cuotas, se solicita un <strong>Ingreso familiar mínimo de $ 2.515.000</strong>
-                                            </li>
+                                            </li> *@
                                         </ul>
-                                        <p>
+                                        @* <p>
                                             (*) <u>Aclaración</u>: toda entrega o anticipo del “Ahorro Previo” a realizar reducirá el ingreso mínimo requerido por grupo familiar,
                                             y el saldo del Ahorro Previo se lo financiará entre 36 a 48 cuotas, según plazo de ejecución de obra. Para obtener más información,
                                             consulte las "Preguntas Frecuentes de Adhesión Online" en nuestro sitio web www.ivuj.gob.ar
-                                        </p>
+                                        </p> *@
                                         <div class="checkbox">
                                             <label for="confirmationIngreso-checkbox" id="confirmationIngreso-label">
                                                 <input class="parpadeo" type="checkbox" id="confirmationIngreso-checkbox" name="confirmationIngreso-checkbox" aria-labelledby="confirmationIngreso-label" />
-                                                Los ingresos mínimos requeridos en esta adhesión online al programa "288 Departamentos e Infraestructura en Alto Comedero", 
-                                                son valores que derivan del Costo Total de la Unidad Habitacional. Por lo tanto declaro conocer, que los mismos son <strong>montos aproximados</strong>
+                                                Los ingresos mínimos requeridos en esta adhesión online de la operatoria "Refacción y Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio, Provincia de Jujuy", son valores que derivan del Costo Total de la Unidad Habitacional. Por lo tanto declaro conocer, que los mismos son n <strong>montos aproximados</strong>
                                             </label>
                                         </div>
                                      </div>
@@ -537,9 +539,25 @@
                                     <div class="tab-pane" id="relacionlaboral" role="tabpanel" aria-labelledby="relacionlaboral-tab">
                                         <h4 class="card-subtitle mb-2">Relación Laboral</h4>
                                         <p>
-                                            Relación laboral de la persona Postulante Titular
-                                        </p>                                                                              
-                                        <div class="dropdown">
+                                            Esta Adhesión Online, tiene carácter de DECLARACIÓN JURADA. En caso de obtener un orden de prelación en el sorteo público, se verificarán los ingresos del Grupo Familiar de la siguiente manera:
+                                        </p> 
+                                      @*   <ul>
+                                            <li>Relación de Dependencia: se solicitarán los recibos de sueldo del grupo familiar y se analizarán de acuerdo a los ingresos mínimos requeridos</li>
+                                            <li>Relación Independiente: los registros se verificarán desde la Base de Datos de ARCA (Ex AFIP) y se analizarán de acuerdo a los ingresos mínimos requeridos.</li>
+                                        </ul> *@
+                                          
+                                           
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                
+                                                @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
+                                                {
+                                                    <li><a class="dropdown-item mod02" data-moduloid="@opcion.ModuloId" data-modelodetalle="@opcion.Titulo"></a>Relación de Dependencia: se solicitarán los recibos de sueldo del grupo familiar y se analizarán de acuerdo a los ingresos mínimos requeridos</li>
+                                                    <li>Relación Independiente: los registros se verificarán desde la Base de Datos de ARCA (Ex AFIP) y se analizarán de acuerdo a los ingresos mínimos requeridos.</li>                                                    
+                                                }
+
+                                            </ul>
+                                        
+                                      @*   <div class="dropdown">
                                             <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Seleccione una opción
                                             </button>
@@ -549,21 +567,30 @@
                                                 {
                                                     @if (Convert.ToInt32(opcion.EsModulo) != 1)
                                                     {
-                                                        <li><a class="dropdown-item mod01" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)">@opcion.Titulo</a></li>
+                                                        <li><a class="dropdown-item mod01" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid1="@opcion.ModuloId1" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)">@opcion.Titulo</a></li>
                                                     }
                                                     else
                                                     {
-                                                        <li hidden><a class="dropdown-item mod02" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)" type="hidden">@opcion.Titulo</a></li>
+                                                        <li hidden><a class="dropdown-item mod02" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid1="@opcion.ModuloId1" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)" type="hidden">@opcion.Titulo</a></li>
                                                     }
 
                                                 }
                                             </ul>
-                                        </div> 
+                                        </div>  *@
                                        
                                         <div class="mb-3"></div> 
                                         <div class="mb-3"></div> <!-- Espacio entre divs -->
+                                        <div class="checkbox">
+                                            <label for="confirmationLaboral-checkbox" id="confirmationLaboral-label">
+                                                <input class="parpadeo" type="checkbox" id="confirmationLaboral-checkbox" name="confirmationLaboral-checkbox" aria-labelledby="confirmationLaboral-label" />
+                                                Declaro que, como Postulante Titular, Cotitular o Grupo Familiar, la presente relación laboral Dependiente, se reflejará en los recibos
+                                                de haberes correspondientes, e Independiente (Responsable Inscripto/Monotributo), se registran en ARCA (Ex AFIP). Entendiendo que el ocultamiento
+                                                y/o falsedad de datos darán lugar a la exclusión inmediata del orden de prelación que me otorgue el sorteo público en el programa
+                                                " Refacción y Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio. Provincia de Jujuy "
 
-                                        <p id="selected-option" style="margin-top: 20px; font-weight: bold;">Ninguna opción seleccionada</p>
+                                            </label>
+                                        </div>
+                                        @* <p id="selected-option" style="margin-top: 20px; font-weight: bold;">Ninguna opción seleccionada</p> *@
                                         <div id="cajamonto" class="display" style="display:none;">
                                            
                                             @* <p>(le solicitamos que detalle con precisión el nombre de la entidad y la localidad en donde se encuentra su dependencia laboral)</p>
@@ -587,7 +614,7 @@
                                                 </li>
                                                 
                                             </ul>                                            
-                                                <div class="checkbox">
+                                              @*   <div class="checkbox">
                                                 <label for="confirmationLaboral-checkbox" id="confirmationLaboral-label">
                                                     <input class="parpadeo" type="checkbox" id="confirmationLaboral-checkbox" name="confirmationLaboral-checkbox" aria-labelledby="confirmationLaboral-label" />
                                                         Declaro que, como Postulante Titular, Cotitular o Grupo Familiar, la presente relación laboral Dependiente, se reflejará en los recibos
@@ -596,7 +623,7 @@
                                                         " 288 Departamentos e Infraestructura en Alto Comedero "
 
                                                     </label>
-                                                </div>                                            
+                                                </div>   *@                                          
                                         </div>
 
                                     </div>
@@ -607,16 +634,19 @@
                                         <div class="form-group">
                                             <div>
                                                 <p>
-                                                    Declaro que, como Postulante Titular, Cotitular o miembro del Grupo Familiar, <strong>no soy propietario/a de un inmueble ni adjudicatario/a IVUJ</strong>,
-                                                    y que <strong>no poseo ningún registro de propiedad</strong> que interfiera con mi adhesión al programa "288 Departamentos e Infraestructura en Alto Comedero".
+                                                    Declaro que, como Postulante Titular, Cotitular o miembro del Grupo Familiar
                                                 </p>
-                                               
+                                                <ul>
+                                                    <li><strong>No ser propietario/a, ni haberlo sido durante el año anterior a la adhesión, de bienes inmuebles, ni el/la solicitante ni ningún miembro del grupo familiar declarado, ya sea en calidad de titular de dominio, condómino o usufructuario.</strong></li>
+                                                    <li><strong>No ser adjudicatarios o tenedores de tierras fiscales, sean nacionales, provinciales, municipales ni otro beneficio otorgado por el I.V.U.J.</strong></li>
+                                                    <li><strong>No ser ocupantes irregulares de inmuebles públicos o privados.</strong></li>
+                                                </ul>
+                                                <p>Y que no poseo ningún registro de propiedad que interfiera con mi adhesión a la operatoria "Refacción y Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio, Provincia de Jujuy".</p>
                                             </div>
                                             <div class="checkbox">
                                                 <label for="confirmationInmueble-checkbox" id="confirmationInmueble-label">
                                                     <input class="parpadeo" type="checkbox" id="confirmationInmueble-checkbox" name="confirmationInmueble-checkbox" aria-labelledby="confirmationInmueble-label">
-                                                    Y entiendo que, si algún miembro del grupo familiar es propietario/a de un inmueble en cualquier proporción o adjudicatario/a IVUJ es causal de exclusión del programa "288 Departamentos e Infraestructura en Alto Comedero". 
-                                                    Como así también que, el ocultamiento y/o falsedad de datos darán lugar a la exclusión inmediata del orden de prelación que otorgue el sorteo público.
+                                                    Y entiendo que, si algún miembro del grupo familiar es propietario/a de un inmueble en cualquier proporción o adjudicatario/a IVUJ es causal de exclusión de la operatoria " Refacción y Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio, Provincia de Jujuy”. Como así también que, el ocultamiento y/o falsedad de datos darán lugar a la exclusión inmediata del orden de prelación que otorgue el sorteo público.
                                                 </label>
                                             </div>                                            
 
@@ -630,7 +660,7 @@
                                                 <div id="fin-label">
                                                     <input type="checkbox" id="fin-checkbox" class="parpadeo" />
                                                     <div><span class="text-justify">
-                                                            El presente formulario reviste carácter de <strong>DECLARACIÓN JURADA</strong>. Declaro conocer que la falsificación de datos es punible por el artículo 172 del Código Penal. En consecuencia, acepto que el ocultamiento y/o falsedad de datos en la información que brindo o que aporte posteriormente, o la falta de documentación respaldatoria, o el no contar con los requisitos mínimos solicitados, serán causales de exclusión y darán lugar a la baja directa al programa "288 Departamentos e Infraestructura en Alto Comedero".
+                                                            El presente formulario reviste carácter de <strong>DECLARACIÓN JURADA</strong>. Declaro conocer que la falsificación de datos es punible por el artículo 172 del Código Penal. En consecuencia, acepto que el ocultamiento y/o falsedad de datos en la información que brindo o que aporte posteriormente, o la falta de documentación respaldatoria, o el no contar con los requisitos mínimos solicitados, serán causales de exclusión y darán lugar a la baja directa de la operatoria "Refacción y Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio, Provincia de Jujuy”.
                                                         </span></div>
                                                       <div class="mb-3"></div> <!-- Espacio entre divs -->
                                                     <div><span class="text-justify">
@@ -638,7 +668,7 @@
                                                         </span></div>
                                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
                                                     <div><span class="text-justify">
-                                                            Entiendo que esta adhesión online <u>no genera un derecho adquirido</u> para la adjudicación de una unidad habitacional en la presente operatoria. Asimismo, el orden de prelación otorgado por el sorteo público no garantiza la adjudicación,<strong> ya que todo está sujeto al cumplimiento de los requisitos exigidos por este Programa.</strong>
+                                                            Entiendo que esta adhesión online <u>no genera un derecho adquirido</u> para la adjudicación de una unidad habitacional en la presente operatoria. Asimismo, el orden de prelación otorgado por el sorteo público no garantiza la adjudicación,<strong> ya que todo está sujeto al cumplimiento de los requisitos exigidos por este Operatoria.</strong>
                                                     </span></div>
                                                 </div>
                                             </div>
@@ -1727,8 +1757,9 @@
                     e.preventDefault();
                     var cont = 0
                     //let moduloId = selectedModulo.data("moduloid");
-                    let modeloDetalles = selectedModulo.data("modelodetalle");
-
+                    
+                    //let modeloDetalles = selectedModulo.data("modelodetalle");
+                    let modeloDetalles = $(".dropdown-item.mod02").attr("data-modelodetalle");
 
                     let moduloId = $(".dropdown-item.mod02").attr("data-moduloid");
 
@@ -1742,8 +1773,7 @@
                     // Acceder al data-moduloid del enlace
                     var programaId = $(this).data("programaid");
                     var idInscripto = $(this).data("inscripto");
-
-
+                    
                     $("#AjaxLoader").show("fast");
 
                      $.ajax({
