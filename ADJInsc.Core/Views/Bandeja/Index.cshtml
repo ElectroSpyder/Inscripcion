@@ -30,14 +30,14 @@
 <div style="float:right;">
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10" style="display: flex; gap: 10px; align-items: center;">
-            @* @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true) *@
-            @if(string.Equals(Model.InsEstado, "I"))
+            @if (string.Equals(Model.InsEstado, "I"))
+            @if (string.Equals(Model.InsEstado, "I") && Model.AdhesionViewModel.Habilitar == true)            
             {
                 <img id="AjaxLoader" alt="Enviando ..." style="display:none; width:60px; height:60px;" src="~/image/loader.gif" />
                 
                 <button id="btnAdhesion" type="button" class="btn btn-outline-success" float-right" data-toggle="modal" data-target="#modalAdhesion">
                     @* <span>@(string.IsNullOrEmpty(Model.AdhesionViewModel.ProgramaVM.Descripcion) ? "Adhesión" : Model.AdhesionViewModel.ProgramaVM.Descripcion)</span> *@
-                    <span>Adhesión Viviendas San Antonio</span>
+                    <span>Adhesión de Viviendas en el Dpto. San Antonio</span>
                     <i class="fas fa-plus-circle"></i>
                 </button>
             }
@@ -512,7 +512,7 @@
                                         @* <h5><strong>Ingresos mínimo requeridos por grupo familiar:</strong></h5> *@
                                         <ul>
                                             <li>
-                                                <strong>	Ingresos mínimos requeridos del grupo familiar  $ 980.000,00</strong>
+                                                <strong>	Ingresos mínimos requeridos del grupo familiar  $995.000,00</strong>
                                             </li>
                                            @*  <li>
                                                 Si prevé cancelar solo una parte del Ahorro Previo, se solicitará un <strong>Ingreso familiar superior de entre $ 980.000,00 a $ 2.514.999,99</strong>,
@@ -530,7 +530,7 @@
                                         <div class="checkbox">
                                             <label for="confirmationIngreso-checkbox" id="confirmationIngreso-label">
                                                 <input class="parpadeo" type="checkbox" id="confirmationIngreso-checkbox" name="confirmationIngreso-checkbox" aria-labelledby="confirmationIngreso-label" />
-                                                Los ingresos mínimos requeridos en esta adhesión online de la operatoria "Refacción y Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio, Provincia de Jujuy", son valores que derivan del Costo Total de la Unidad Habitacional. Por lo tanto declaro conocer, que los mismos son n <strong>montos aproximados</strong>
+                                                Los ingresos mínimos requeridos en esta adhesión online de la operatoria "Refacción y Terminación de Viviendas e Infraestructura en Barrio Navea, Dpto. San Antonio, Provincia de Jujuy", son valores que derivan del Costo Total de la Unidad Habitacional. Por lo tanto declaro conocer, que los mismos son <strong>montos aproximados</strong>
                                             </label>
                                         </div>
                                      </div>
@@ -668,7 +668,7 @@
                                                         </span></div>
                                                        <div class="mb-3"></div> <!-- Espacio entre divs -->
                                                     <div><span class="text-justify">
-                                                            Entiendo que esta adhesión online <u>no genera un derecho adquirido</u> para la adjudicación de una unidad habitacional en la presente operatoria. Asimismo, el orden de prelación otorgado por el sorteo público no garantiza la adjudicación,<strong> ya que todo está sujeto al cumplimiento de los requisitos exigidos por este Operatoria.</strong>
+                                                            Entiendo que esta adhesión online <u>no genera un derecho adquirido</u> para la adjudicación de una unidad habitacional en la presente operatoria. Asimismo, el orden de prelación otorgado por el sorteo público no garantiza la adjudicación,<strong> ya que todo está sujeto al cumplimiento de los requisitos exigidos por esta Operatoria.</strong>
                                                     </span></div>
                                                 </div>
                                             </div>

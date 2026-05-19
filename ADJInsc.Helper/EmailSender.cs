@@ -44,8 +44,9 @@ namespace ADJInsc.Helper
                     Text = request.Body
                 };
 
-                return SendEmailAsync(mensaje);
-                
+                //return SendEmailAsync(mensaje);
+                return SendEmailOutlookAsync(mensaje);
+
             }
             catch (Exception ex)
             {
@@ -76,8 +77,9 @@ namespace ADJInsc.Helper
                     Text = request.Body
                 };
                 
-                return  SendEmailAsync(mensaje);
-                
+               // return  SendEmailAsync(mensaje);
+               return SendEmailOutlookAsync(mensaje);
+
             }
             catch (Exception ex)
             {
@@ -93,9 +95,30 @@ namespace ADJInsc.Helper
                 {
                     smtp.Connect("vps-3513664-x.dattaweb.com",465 , true); //465
                     smtp.Authenticate("info_inscripcion@ivuj.gob.ar", "Q5mUB**5uQ");//sldXm/B7sJ
-
+                    
                     await smtp.SendAsync(mailRequest);
                     
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        private async Task<bool> SendEmailOutlookAsync(MimeMessage mailRequest)
+        {
+            try
+            {
+
+                using (var smtp = new SmtpClient())
+                {
+                    smtp.Connect("smtp-mail.outlook.com", 587, MailKit.Security.SecureSocketOptions.StartTls); //465
+                    smtp.Authenticate("info_inscripcion@ivuj.gob.ar", "Inf/Inc853*$");//sldXm/B7sJ
+                    //smtp.SslProtocols = System.Security.Authentication.SslProtocols.Tls12; // si es necesario descomentar esta línea porque StartTls lo hace automatico
+                    await smtp.SendAsync(mailRequest);
+
                 }
 
                 return true;
