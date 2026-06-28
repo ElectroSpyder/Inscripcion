@@ -634,9 +634,9 @@
             if (!DateTime.TryParseExact(model.InsFecins, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaInscripcion))
                 return false;
 
-            var fechaInicio = ConvertirFechaInicio(model.AdhesionViewModel.ProgramaVM.FechaInicio); 
+            var fechaInicio = ConvertirFechaInicio(model.AdhesionViewModel.ProgramaVM.FechaInicio);
 
-            bool verificado = fechaInscripcion.Date <= fechaInicio.Date;
+            bool verificado = true; // fechaInscripcion.Date <= fechaInicio.Date;
                            
             if (!verificado)
                 return false; // Retorna false si la fecha no está en el rango permitido
