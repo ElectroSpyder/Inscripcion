@@ -340,10 +340,8 @@
 
         public IActionResult GetPdfHome()
         {
-            var modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");
-
+            var modelo = HttpContext.Session.GetObjectFromJson<InscViewModel>("viewModelo");            
             return new ViewAsPdf("_Reporte", modelo);
-
         }
         public JsonResult List()
         {
@@ -636,7 +634,7 @@
 
             var fechaInicio = ConvertirFechaInicio(model.AdhesionViewModel.ProgramaVM.FechaInicio);
 
-            bool verificado = true; // fechaInscripcion.Date <= fechaInicio.Date;
+            bool verificado = fechaInscripcion.Date <= fechaInicio.Date;
                            
             if (!verificado)
                 return false; // Retorna false si la fecha no está en el rango permitido

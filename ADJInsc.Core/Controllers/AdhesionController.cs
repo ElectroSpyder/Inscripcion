@@ -31,12 +31,12 @@
         }
         public JsonResult Adherir(int programaId, int moduloId, int insId, string modeloDetalle, string nombreCotitular,string adhesionCotitularInputCuitUno,string adhesionCotitularInputCuitDos,string adhesionCotitularInputCuitDni)
         {
-            if(moduloId== 0) moduloId = 12;
+            //if(moduloId== 0) moduloId = 12; para cuando hay un solo modulo se setea por defecto
 
             // public int InsId { get; set; }
             var tokenSource = new CancellationTokenSource();
-            //if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle))
-            if(programaId == 0 || insId == 0 )
+
+            if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle))            
             return Json(new
                 {
                     redirectUrl = "",

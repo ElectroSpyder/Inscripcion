@@ -552,7 +552,7 @@
                                                 
                                                 @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                                 {
-                                                    <li><a class="dropdown-item mod01" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid1="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)">@opcion.Titulo</a></li>                                                   
+                                                    <li><a class="dropdown-item mod01" href="#" data-esmodulo="@opcion.EsModulo" data-moduloid="@opcion.ModuloId" data-plazo="@opcion.Plazo" data-ingresominimo="@String.Format("{0:N2}", opcion.IngresoMinimo)" data-costo="@String.Format("{0:N2}", opcion.Costo)" data-ingresominimouvis="@String.Format("{0:N2}", opcion.IngresoMinimoUvis)" data-costouvis="@String.Format("{0:N2}", opcion.CostoUvis)" data-modelodetalle="@opcion.Titulo" data-descripcioncosto="@opcion.Descripcion" data-costoconentrega="@String.Format("{0:N2}", opcion.CostoConEntrega)" data-costosinentrega="@String.Format("{0:N2}", opcion.CostoSinEntrega)" data-costoconentregauvis="@String.Format("{0:N2}", opcion.CostoConEntregaUvis)" data-costosinentregauvis="@String.Format("{0:N2}", opcion.CostoSinEntregaUvis)">@opcion.Titulo</a></li>                                                   
                                                 }
                                             </ul>
                                         </div>
@@ -591,7 +591,7 @@
                                                 
                                               @*   @foreach (var opcion in Model.AdhesionViewModel.ModulosVM.ToList())
                                                 {
-                                                    <li><a class="dropdown-item mod02" data-moduloid="@opcion.ModuloId" data-modelodetalle="@opcion.Titulo"></a>Relación de Dependencia: se solicitarán los recibos de sueldo del grupo familiar y se analizarán de acuerdo a los ingresos mínimos requeridos</li>
+                                                    <li><a class="dropdown-itemx mod02" data-moduloid="@opcion.ModuloId" data-modelodetalle="@opcion.Titulo"></a>Relación de Dependencia: se solicitarán los recibos de sueldo del grupo familiar y se analizarán de acuerdo a los ingresos mínimos requeridos</li>
                                                     <li>Relación Independiente: los registros se verificarán desde la Base de Datos de ARCA (Ex AFIP) y se analizarán de acuerdo a los ingresos mínimos requeridos.</li>                                                    
                                                 } *@
 
@@ -1729,6 +1729,7 @@
                     var costoSinEntregauvis = $(this).data("costosinentregauvis");
                     selectedModulo = $(this);
                     // Actualizar los valores en el div
+                    
                         $("#plazo").text(plazo.toLocaleString());
                         $("#descripcioncosto").text(descripcionCosto.toLocaleString());
 
@@ -1782,13 +1783,15 @@
                
                     e.preventDefault();
                     var cont = 0
-                    //let moduloId = selectedModulo.data("moduloid");
+                    let moduloId = selectedModulo.data("moduloid");
                     
-                    //let modeloDetalles = selectedModulo.data("modelodetalle");
-                    let modeloDetalles = $(".dropdown-item.mod02").attr("data-modelodetalle");
+                    let modeloDetalles = selectedModulo.data("modelodetalle");
+                    //let modeloDetalles = $(".dropdown-item.mod01").attr("data-modelodetalle");
 
-                    let moduloId = $(".dropdown-item.mod02").attr("data-moduloid");
+                    //let moduloId = $(".dropdown-item.mod01").attr("data-moduloid");
 
+                    //console.log('mod01 -> ' + moduloId.toString() + modeloDetalles);
+                    
                     const nombreCotitular = document.getElementById('inputCotitularNombreInicial').value;
                     const adhesionCotitularInputCuitUno = document.getElementById('adhesionCotitularInputCuitUno').value;
                     const adhesionCotitularInputCuitTres = document.getElementById('adhesionCotitularInputCuitTres').value;
@@ -1798,8 +1801,8 @@
                     var selectedLink = $(this);  // O puedes usar un selector más específico si es necesario
                     // Acceder al data-moduloid del enlace
                     var programaId = $(this).data("programaid");
-                    var idInscripto = $(this).data("inscripto");
-                    
+                    var idInscripto = $(this).data("inscripto");                    
+
                     $("#AjaxLoader").show("fast");
 
                      $.ajax({
