@@ -619,9 +619,11 @@
             return modelOut;
         }
 
+       
         public bool Verificado(InscViewModel model)
         {
-            if(model.AdhesionViewModel.ProgramaVM.Estado == 0)
+            
+            if (model.AdhesionViewModel.ProgramaVM.Estado == 0)
                 return false; //si el programa no esta activo no dejo adherir
 
             if (model.AdherirViewModel.AdhesionId != 0) 
@@ -630,18 +632,21 @@
             string[] formatos = { "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM-dd" };                     
 
             if (!DateTime.TryParseExact(model.InsFecins, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaInscripcion))
-                return false;
+                return false;           
 
             var fechaInicio = ConvertirFechaInicio(model.AdhesionViewModel.ProgramaVM.FechaInicio);
-
-            bool verificado = fechaInscripcion.Date <= fechaInicio.Date;
+            var fechaLimite = ConvertirFechaInicio(model.AdhesionViewModel.ProgramaVM.FechaLimite);
+            
+            bool verificado = fechaInscripcion.Date <= fechaInicio.Date && DateTime.Now.Date <= fechaLimite.Date;
                            
             if (!verificado)
-                return false; // Retorna false si la fecha no está en el rango permitido
+                return false; // Retorna false si la fecha no está en el rango permitido                     
+
             //return true;  //modificado para testear
             var result =  model.AdhesionViewModel.DepartamentoProgramas.Any(x =>
                 x.DepartamentoId == model.DepartamentoKey &&
                 x.LocalidadId == model.LocalidadKey);
+
             return result;
 
         }
