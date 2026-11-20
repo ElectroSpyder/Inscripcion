@@ -11,5 +11,6 @@
         public string Localidad { get; set; }
         public string Correo { get; set; }
         public string InscriptoId { get; set; }
+        public string RelacionLaboral { get; set; }
     }
 }

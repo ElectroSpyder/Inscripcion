@@ -34,8 +34,8 @@
             inscViewModel = model;
             
             var adheridoId = await GetAdherido(inscViewModel.AdherirViewModel);
-            string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId, CuitCuilUno, CuitCuilDos, InsNumdoc, NombreApellidoCotitular, RelacionLaboral ) VALUES " +
-                                                   " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId, @CuitCuilUno, @CuitCuilDos, @InsNumdoc, @NombreApellidoCotitular, @RelacionLaboral ); SELECT SCOPE_IDENTITY();";
+            string insertAdherido = "INSERT INTO Adhesion  ( FechaAdhesion, Estado,  ModuloId, InscriptoId, ProgramaId, CuitCuilUno, CuitCuilDos, InsNumdoc, NombreApellidoCotitular, RelacionLaboral, Descripcion ) VALUES " +
+                                                   " (  @fechaAdhesion, @estado, @moduloId, @inscriptoId, @programaId, @CuitCuilUno, @CuitCuilDos, @InsNumdoc, @NombreApellidoCotitular, @RelacionLaboral, @Descripcion ); SELECT SCOPE_IDENTITY();";
             if (adheridoId != 0)
             {
                 inscViewModel.AdhesionViewModel.Success = false;
@@ -62,6 +62,7 @@
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@InsNumdoc", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.InsNumdoc) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.InsNumdoc));
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@NombreApellidoCotitular", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.NombreApellidoCotitular) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.NombreApellidoCotitular));
                         cmdInsertAdherido.Parameters.Add(new SqlParameter("@RelacionLaboral", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.RelacionLaboral) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.RelacionLaboral));
+                        cmdInsertAdherido.Parameters.Add(new SqlParameter("@Descripcion", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.Descripcion) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.Descripcion));
                         //cmdInsertAdherido.Parameters.Add(new SqlParameter("@LugarLaboral", string.IsNullOrEmpty(inscViewModel.AdherirViewModel.LugarLaboral) ? (object)DBNull.Value : inscViewModel.AdherirViewModel.LugarLaboral));
 
                         if (con.State == ConnectionState.Closed)
@@ -416,7 +417,7 @@
             try
             {
                 //solo el programa activo
-                string consultarAdherido = "select a.AdhesionId, a.FechaAdhesion, m.Titulo from Adhesion a " +
+                string consultarAdherido = "select a.AdhesionId, a.FechaAdhesion, p.Descripcion from Adhesion a " +
                     " inner join modulos m on a.ModuloId = m.ModuloId " +
                     " inner join Programas p on p.ProgramaId = a.ProgramaId where p.Estado = 1 and a.InscriptoId = @inscriptoId";
                 using SqlCommand cmdConsulta = new SqlCommand(consultarAdherido, con);
@@ -429,7 +430,7 @@
                     {
                         model.AdhesionId = ConvertFromReader<int>(item["AdhesionId"]);
                         model.FechaAdhesion = ConvertFromReader<string>(item["FechaAdhesion"]); //item["FechaAdhesion"] is DBNull ? null : ((DateTime)item["FechaAdhesion"]).ToString();
-                        model.DescripcionModulo = ConvertFromReader<string>(item["Titulo"]);
+                        model.DescripcionModulo = ConvertFromReader<string>(item["Descripcion"]);
                         break;
                     }
                 }               
@@ -504,7 +505,7 @@
         {
             var model = new ModelPdf();
             var inscripto = modelPdf.InscriptoId;
-            string script = "select A.AdhesionId, L.LocalidadDesc, I.ins_email, I.ins_nombre, I.cuit_cuil, I.ins_numdoc,A.FechaAdhesion, M.Titulo from Localidad L inner join InsDomici N on (N.IdDepartamento = L.DepartamentoKey and N.IdLocalidad = L.LocalidadKey) inner join Inscriptos I on I.IdDomicilio = N.insd_id inner join Adhesion A on I.ins_id = A.InscriptoId inner join Modulos M on (M.ProgramaId = A.ProgramaId and M.ModuloId = A.ModuloId) where A.InscriptoId = @inscriptoId";
+            string script = "select A.AdhesionId, L.LocalidadDesc, I.ins_email, I.ins_nombre, I.cuit_cuil, I.ins_numdoc,A.FechaAdhesion, M.Titulo, A.Descripcion from Localidad L inner join InsDomici N on (N.IdDepartamento = L.DepartamentoKey and N.IdLocalidad = L.LocalidadKey) inner join Inscriptos I on I.IdDomicilio = N.insd_id inner join Adhesion A on I.ins_id = A.InscriptoId inner join Modulos M on (M.ProgramaId = A.ProgramaId and M.ModuloId = A.ModuloId) where A.InscriptoId = @inscriptoId";
             //@inscriptoId
             try
             {
@@ -517,14 +518,15 @@
                 {
                     foreach (DataRow item in dt.Rows)
                     {
-                        model.AdheridoId = ConvertFromReader<int>(item["AdhesionId"]).ToString();
-                        model.Localidad = ConvertFromReader<string>(item["LocalidadDesc"]);
+                        model.AdheridoId = ConvertFromReader<int>(item["AdhesionId"]).ToString().Trim();
+                        model.Localidad = ConvertFromReader<string>(item["LocalidadDesc"].ToString().Trim());
                         model.Correo = ConvertFromReader<string>(item["ins_email"]);
                         model.NombreAdherido = ConvertFromReader<string>(item["ins_nombre"]);
                         model.CuitAdherido = ConvertFromReader<string>(item["cuit_cuil"]).ToString();
                         model.DniAdherido = ConvertFromReader<string>(item["ins_numdoc"]).ToString();
                         model.FechaAdhesion = ConvertFromReader<string>(item["FechaAdhesion"]).ToString();
                         model.TipologiaDescripcion = ConvertFromReader<string>(item["Titulo"]);
+                        model.RelacionLaboral = ConvertFromReader<string>(item["Descripcion"]);
                         break;
                     }
                 }

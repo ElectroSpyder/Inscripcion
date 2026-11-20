@@ -29,14 +29,14 @@
             // this.mailService = mailService;
             this._apiService = apiService;
         }
-        public JsonResult Adherir(int programaId, int moduloId, int insId, string modeloDetalle, string nombreCotitular,string adhesionCotitularInputCuitUno,string adhesionCotitularInputCuitDos,string adhesionCotitularInputCuitDni)
+        public JsonResult Adherir(int programaId, int moduloId, int insId, string modeloDetalle, string nombreCotitular,string adhesionCotitularInputCuitUno,string adhesionCotitularInputCuitDos,string adhesionCotitularInputCuitDni, string relacionDependencia)
         {
             //if(moduloId== 0) moduloId = 12; para cuando hay un solo modulo se setea por defecto
 
             // public int InsId { get; set; }
             var tokenSource = new CancellationTokenSource();
 
-            if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle))            
+            if(programaId == 0 || moduloId == 0 || insId == 0 || string.IsNullOrEmpty(modeloDetalle) || string.IsNullOrEmpty(relacionDependencia))            
             return Json(new
                 {
                     redirectUrl = "",
@@ -73,7 +73,8 @@
                 CuitCuilUno = adhesionCotitularInputCuitUno?.Trim() ?? " ",
                 CuitCuilDos = adhesionCotitularInputCuitDos?.Trim() ?? " ",
                 InsNumdoc = adhesionCotitularInputCuitDni?.Trim() ?? " ",                
-                RelacionLaboral = modeloDetalle
+                RelacionLaboral = modeloDetalle,
+                Descripcion = relacionDependencia?.Trim() ?? " "
                 //LugarLaboral = adhesionLugarTrabajo?.Trim() ?? " "
             };
 
@@ -85,6 +86,7 @@
             /*
              var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
             var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Test.Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM,null, token).Result;
+
              */
             var service = this._apiService.PostAdhesionAsync<ResponseViewModel>("/Insc.Api/adhesion/", "PostModeloAdhesion", modeloVM, null, token).Result;
 
@@ -186,7 +188,8 @@
                     Localidad = modeloView.LocalidadDesc,
                     InscriptoId = modeloView.InsId.ToString(),
                     NombreAdherido = modeloView.InsNombre,
-                    TipologiaDescripcion = modeloView.AdherirViewModel.Descripcion
+                    TipologiaDescripcion = modeloView.AdherirViewModel.Descripcion,
+                    RelacionLaboral = modeloView.AdherirViewModel.RelacionLaboral,
                 };
                 return new ViewAsPdf("_ReporteAdhesion", modeloSesion);
             }

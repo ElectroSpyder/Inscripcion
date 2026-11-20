@@ -15,31 +15,26 @@
 <body>
     <div style="        display: block;
         background-position: left top;
-        padding-top: 20px;
+        padding-top: 15px;
         margin-bottom: 50px;
 ">
         <img style="        width: 150px;
-        height: 120px;
+        height: 110px;
         float: left;
 
 " src="~/image/Logo ivuj-izq.png" />
         <img style="        width: 150px;
-        height: 120px;
+        height: 110px;
         float: right;
 
 " src="~/image/Logo Ivuj-der.jpg" />
     </div>
     <div style="background-position: left top; padding-top: 68px;">
 
-
-
         <br />
         <h2 class=" text-light bg-info">
-            Adhesión Viviendas El Carmen
-        </h2>
-        <div class="col-xs-12">
-            <h5><strong>Nº de Adhesión  @Model.AdheridoId.Trim() </strong></h5>
-        </div>
+            Operatoria Público - Privado: Torres del Alto II -Nº de Adhesión <strong>  @Model.AdheridoId.Trim() </strong>
+        </h2>       
         <br />
 
         <div class="flexrow">
@@ -81,39 +76,40 @@
                                 <strong>Correo electrónico</strong>
                                 <input type="text" class="form-control" id="inputEmail" placeholder="Email" value="@Model.Correo">
                             </div>
+                              <div class="col-xs-6 col-md-6">
+                                <strong>Relación Laboral</strong>
+                                <input type="text" class="form-control" id="inputRelacionLaboral" placeholder=" Relación Laboral " value="@Model.RelacionLaboral">
+                            </div> 
 
                         </div>
                     </div>
 
                     <br />
+                    <div class="declaracion-jurada">
+                <div style="text-align: center;">
+                <strong>El presente formulario reviste el carácter de DECLARACIÓN JURADA.</strong><br>
+                <strong>En tal sentido, DECLARO Y MANIFIESTO:</strong>
+            </div>
+    
+    <ol class="terminos-lista">
+        <li>
+            <strong>Veracidad y requisitos:</strong> Que toda la información suministrada es veraz, exacta y completa. Comprendo que la falta de documentación respaldatoria, el incumplimiento de los requisitos o el ocultamiento y/o falsedad de datos darán lugar a la exclusión y baja automática de la "Operatoria Público-Privado", sin perjuicio de las sanciones administrativas, civiles y penales que correspondan.
+        </li>
+        <li>
+            <strong>Carencia habitacional y de inmuebles:</strong> Que ni la persona solicitante ni ningún integrante del grupo familiar declarado somos titulares (en forma exclusiva o conjunta) de derechos reales sobre inmuebles urbanos o rurales (propiedad, condominio, propiedad horizontal, nuda propiedad, usufructo, entre otros). Asimismo, declaro no ser adjudicatario/a, beneficiario/a, tenedor/a u ocupante de tierras fiscales ni de otros beneficios habitacionales incompatibles, ni encontrarme en situación de ocupación irregular o posesión de inmuebles públicos o privados.
+        </li>       
+        <li>
+            <strong>Alcance de la adhesión y sorteo:</strong> Comprendo y acepto que la presente adhesión online no genera un derecho adquirido ni garantiza la adjudicación de una unidad habitacional. El orden de prelación obtenido mediante el sorteo público queda estrictamente sujeto al cumplimiento e idoneidad de la totalidad de los requisitos exigidos por la operatoria e instituciones pertinentes.
+        </li>
+        <li>
+            <strong>Domicilio electrónico y notificaciones:</strong> Presto expresa conformidad para que la dirección de correo electrónico consignada en este formulario constituya mi domicilio electrónico constituido, siendo válidas en el mismo todas las notificaciones e intimaciones que efectúe el Instituto de Vivienda y Urbanismo de Jujuy (IVUJ). Asumo la responsabilidad de mantener dicha casilla operativa, con capacidad suficiente y de notificar fehacientemente al IVUJ cualquier modificación.
+        </li>
+    </ol>
 
-                    <div class="form-group">
-                        <h6 class="text-center"><strong> INFORMACIÓN IMPORTANTE PARA EL/LA ADHERIDO/A.</strong></h6>
-                        <p class="justify">
-                            El formulario que completó reviste carácter de <strong>DECLARACIÓN JURADA</strong> por lo tanto <strong>DECLARÓ CONOCER Y ACEPTAR</strong>
-                            que el ocultamiento y/o falsedad de la información que aquí brindó, o las que a posterior aportará,
-                            o el no contar con la documentación respaldatoria, dará lugar a su Exclusión para el/los Programa/s de viviendas de referencia.
-                        </p>
-                        <p class="justify">
-                            Se deja expresamente aclarado que la presente Adhesión no genera un derecho adquirido a la adjudicación de una
-                            vivienda por parte de este Organismo y que el/la Adherido/a. declara conocer y cumplir los requisitos.
-                        </p>
-
-                        <p class="justify">
-                            El correo electrónico que declaró, y el número de teléfono celular/fijo serán las vías de contacto del IVUJ con usted.
-                        </p>
-
-                       @*  <p class="justify">
-                            ¿Cómo participa de los Sorteos Públicos de Viviendas para Demanda Libre?
-                            Para participar de los Sorteo Públicos de Viviendas para Demanda Libre, además de estar inscripto/a
-                            en el IVUJ tendrá que manifestar su interés en participar de los sorteos públicos, para eso deberá registrar
-                            la ADHESIÓN ONLINE cuando se anuncien sorteos para localidad donde reside.
-                            Los anuncios de sorteos públicos para demanda libre se hacen a través del sitio web oficial ivuj.gob.ar
-                        </p> *@
-
-
-
-                    </div>
+    <p class="confirmacion-dj">
+        <strong>Confirmación:</strong> Al enviar este formulario, confirmo los datos declarados, constituyo domicilio electrónico y presto mi conformidad integral a la presente declaración jurada.
+    </p>
+</div>   
                 </form>
 
             </main>

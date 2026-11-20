@@ -622,7 +622,7 @@
        
         public bool Verificado(InscViewModel model)
         {
-            
+            //return true; es usado apra probar 
             if (model.AdhesionViewModel.ProgramaVM.Estado == 0)
                 return false; //si el programa no esta activo no dejo adherir
 
